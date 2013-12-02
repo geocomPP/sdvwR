@@ -26,6 +26,10 @@ Might be good to mention New York Times etc here as key users of R.
 
 Chapter overview, including of example dataset used.
 
+#Components of a Good Map
+
+Krygier and Wood 2005's checklist
+
 What makes for a good map and why R is a valuable tool for making them.
 
 # R and Spatial Data

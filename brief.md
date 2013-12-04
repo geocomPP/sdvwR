@@ -54,6 +54,15 @@ Exporting graphics for publication.
 
 # A detailed worked example
 
+This needs to somehow incorporate: 
+Choropleths, points and segments
+Layering
+Basemaps with ggmap
+The inclusion of images and other adornments such as scale and north arrow
+Colour selection- both discrete and continuous palettes.
+Line widths and transparency
+Faceting
+
 # Conclusion
 
 # Taking spatial analysis in R further
@@ -66,6 +75,8 @@ Harris, R. (2012). A Short Introduction to R.
 [social-statistics.org](http://www.social-statistics.org/).
 
 Kabacoff, R. (2011). R in Action. Manning Publications Co.
+
+Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for GIS (2nd Ed.). New York: The Guildford Press
 
 Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future. 
 GeoInformatics, 16(4). 

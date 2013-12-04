@@ -1,13 +1,23 @@
 R and Spatial Data
 ========================================================
 
-## Loading Spatial Data
+## Spatial Data in R
 
-```{r}
-summary(cars)
-```
+In any data analysis project, spatial or otherwise, it is important to have a strong 
+understanding of the dataset before progressing. 
 
 ## The structure of spatial data in R
+
+### Spatial* data
+
+#### 
+
+```{r}
+
+```
+
+
+### Simplifying spatial data with `fortify`
 
 ## The main spatial packages
 

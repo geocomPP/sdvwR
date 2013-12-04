@@ -16,7 +16,20 @@ We therefore need to include some introductory material. The key to fitting all 
 
 # Introduction
 
-The rise of R in spatial data analysis 
+R is a statistical programming environment that relies primarily 
+on a *command line* model for data input. This means that instead of 
+moving your mouse around clicking on different parts of the screen, you 
+interact with R by typing on a keyboard. This will seem to strange to people 
+accustomed to relying on a graphical user interface (GUI) for most of their 
+computing, e.g. via popular programs such as Microsoft Excel or SPSS.
+
+Aside from a one word name that can cause confusion and seem difficult to search for online[1], 
+R can al
+
+
+Since the birth of the 
+
+The rise of R in spatial data analysis. 
 
 (Analysis can include visualisation)
 
@@ -92,3 +105,14 @@ GeoInformatics, 16(4).
 Torfs and Brauer (2012). A (very) short Introduction to R. The Comprehensive R Archive Network.
 
 Wickham, H. (2009). ggplot2: elegant graphics for data analysis. Springer.
+
+# End/footnotes
+
+1. R is notoriously difficult to search for on major search 
+engines, as it is such a common letter with many other uses beyond the name
+of a statistical programming language. This should not be a deterrent, as 
+R has a wealth of excellent online resources. To overcome the issue, 
+you can either be more specific with the search term (e.g. "R spatial statistics")
+or use an R specific search engine such as [rseek.org](http://www.rseek.org/).
+You can also search of online help *from within R* using the command `RSiteSearch`.
+E.g. `RSiteSearch("spatial statistics")`. Experiment and see which you prefer!

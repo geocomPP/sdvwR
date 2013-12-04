@@ -83,7 +83,8 @@ Harris, R. (2012). A Short Introduction to R.
 
 Kabacoff, R. (2011). R in Action. Manning Publications Co.
 
-Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for GIS (2nd Ed.). New York: The Guildford Press
+Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for 
+GIS (2nd Ed.). New York: The Guildford Press
 
 Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future. 
 GeoInformatics, 16(4). 

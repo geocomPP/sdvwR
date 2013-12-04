@@ -1,0 +1,34 @@
+R and Spatial Data
+========================================================
+
+## Loading Spatial Data
+
+```{r}
+summary(cars)
+```
+
+## The structure of spatial data in R
+
+## The main spatial packages
+
+### sp
+
+### rgdal
+
+### rgeos
+
+## Maps with ggplot2
+
+### Adding base maps with ggmap
+
+## Manipulating spatial data
+
+### Coordinate reference systems and transformations
+
+### Attribute joins
+
+### Spatial joins
+
+### Aggregation
+
+### Clipping

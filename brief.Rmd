@@ -24,7 +24,22 @@ accustomed to relying on a graphical user interface (GUI) for most of their
 computing, e.g. via popular programs such as Microsoft Excel or SPSS.
 
 Aside from a one word name that can cause confusion and seem difficult to search for online[1], 
-R can al
+R may also seem like a strange choice of software for a chapter on spatial data visualisation 
+to people who have already heard of it. This is because R was traditionally
+conceived - and is primarily known - as a
+"statistical programming language" (Bivand and Gebhardt 2000). Although R does have world-leading and cutting 
+edge statistical capabilities, this definition does not do justice to its power and 
+flexibility. Consider for a moment that there are now more than 4,000 official add-on packages
+for R, allowing it to tackle almost any computational or numerical problem one could image. 
+Thus, a more accurate albeit longer definition of R
+is "an integrated suite of software facilities for data manipulation, calculation and graphical
+display" (Venables et al. 2013). It is important to consider this 
+wider definition before diving into R: it is a fully fledged programming language
+meaning that it is highly extensible but also that the same result can 
+often be generated in different ways, which can be confusing. 
+
+One important way that R has been extended is the addition of spatial functionality. 
+
 
 
 Since the birth of the 
@@ -89,6 +104,8 @@ Faceting
 
 # References
 
+Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial statistical analysis using the language. Journal of Geographical Systems, 2(3), 307–317.
+
 Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial data: analysis with R. Springer.
 
 Harris, R. (2012). A Short Introduction to R. 
@@ -103,6 +120,8 @@ Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future.
 GeoInformatics, 16(4). 
 
 Torfs and Brauer (2012). A (very) short Introduction to R. The Comprehensive R Archive Network.
+
+Venables, W. N., Smith, D. M., & Team, R. D. C. (2013). An introduction to R. The Comprehensive R Archive Network (CRAN). Retrieved from http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf .
 
 Wickham, H. (2009). ggplot2: elegant graphics for data analysis. Springer.
 

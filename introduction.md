@@ -16,21 +16,20 @@ yet the approach has a number of benefits, as highlighted by Gary Sherman
 
 > With the advent of
 “modern” GIS software, most people want to point and click their way
-through life. That’s good, but there is a tremendous amount of flexibil-
-ity and power waiting for you with the command line. Many times you
+through life. That’s good, but there is a tremendous amount of flexibility 
+and power waiting for you with the command line. Many times you
 can do something on the command line in a fraction of the time you can
 do it with a GUI.
 
-The joy of this, when you get used to it, is that any
+The joy of this, when you get accustomed to it, is that any
 command is only ever a few keystrokes
 away, and the order of the commands sent to R can be stored and repeated in 
 scripts, saving even more time in the long-term (more on this in section ...).
 
 Another important attribute of R, related to its command line interface, 
 is that it is a fully fledged *programming language*. Other 
-GIS programs are written in lower level languages such as C++ but 
-the never needs to know this and can be kept at a safe distance from 
-the internal workings of the program by the user interface. In R, by contrast, 
+GIS programs are written in lower level languages such as C++ 
+which are kept at a safe distance from the users by the GUI. In R, by contrast, 
 the user is 'close to the metal' in the sense that what he or she inputs 
 is the same as what R sees when it processes the request. This 'openness' 
 can seem raw and daunting to beginners, but it is vital to R's success. 

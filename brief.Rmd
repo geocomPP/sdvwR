@@ -1,7 +1,7 @@
 Brief (for authors only)
 ========================================================
 
-This is the master document that will eventually be used to tie
+This is the master .Rmd document that will eventually be used to tie
 all the sections together for the final book chapter.
 "to do" lists, ideas and conventions can be written here, 
 but it's main purpose is to provide an up-to-date structure on the final chapter.
@@ -14,71 +14,39 @@ to reduce complexity and time taken to compile.
 
 We therefore need to include some introductory material. The key to fitting all this in will be to keep it applied – we can assume some prior knowledge of spatial data.
 
+### Typographic conventions (for authors)
+
+Use !!! to flag an issue that requires future attention - e.g. "see section !!!"
+
+Endnotes - add this section to the end of each section.
+
 # Introduction
 
-R is a statistical programming environment that relies primarily 
-on a *command line* model for data input. This means that instead of 
-moving your mouse around clicking on different parts of the screen, you 
-interact with R by typing on a keyboard. This will seem to strange to people 
-accustomed to relying on a graphical user interface (GUI) for most of their 
-computing, e.g. via popular programs such as Microsoft Excel or SPSS.
-
-Aside from a one word name that can cause confusion and seem difficult to search for online[1], 
-R may also seem like a strange choice of software for a chapter on spatial data visualisation 
-to people who have already heard of it. This is because R was traditionally
-conceived - and is primarily known - as a
-"statistical programming language" (Bivand and Gebhardt 2000). Although R does have world-leading and cutting 
-edge statistical capabilities, this definition does not do justice to its power and 
-flexibility. Consider for a moment that there are now more than 4,000 official add-on packages
-for R, allowing it to tackle almost any computational or numerical problem one could image. 
-Thus, a more accurate albeit longer definition of R
-is "an integrated suite of software facilities for data manipulation, calculation and graphical
-display" (Venables et al. 2013). It is important to consider this 
-wider definition before diving into R: it is a fully fledged programming language
-meaning that it is highly extensible but also that the same result can 
-often be generated in different ways, which can be confusing. 
-
-One important way that R has been extended is the addition of spatial functionality. 
+ What is R? The rise of R's spatial capabilities.  Why R for spatial data visualisation?
+ R for Reproducible research. An introductory session. Chapter overview.
 
 
+# Components of a Good Map
 
-Since the birth of the 
-
-The rise of R in spatial data analysis. 
-
-(Analysis can include visualisation)
-
-Include examples of where R has had an important visual impact.
-
-Might be good to mention New York Times etc here as key users of R.
-
-Chapter overview, including of example dataset used.
-
-#Components of a Good Map
-
-Krygier and Wood 2005's checklist
-
+Krygier and Wood 2005's checklist. 
 What makes for a good map and why R is a valuable tool for making them.
 
 # R and Spatial Data
 
-Basic R syntax
-Key spatial packages and the roles they play- rgdal, sp, maptools(?)
-Key visualisation packages: ggplot2 and ggmap. Base plots may also be worth a mention, I don’t want to go near lattice or anything like that.
+Loading and saving data.
+The structure of spatial data in R.
+Spatial* data. Simplifying spatial data with `fortify`. 
+The main spatial packages (sp, rgdal rgeos).
 
-How spatial data are stored and how their elements (attribute table, coordinates, bbox etc) can be accessed. 
 
-Rasters vs Vectors
+Maps with ggplot2. Adding base maps with ggmap. 
+Manipulating spatial data. 
+Coordinate reference systems and transformations. 
+Attribute joins. Spatial joins.
+Aggregation.
+Clipping.
 
-Common types of plot –choropleth, points, lines, basemaps.
 
-Concept of layering.
-
-Key parameters to consider- colour, transparency, line width, background.
-
-Adornments: title, north arrow? Scale?
-
-Exporting graphics for publication.
 
 # A detailed worked example
 
@@ -102,11 +70,30 @@ Faceting
 
 # Taking spatial analysis in R further
 
+# Misc/unallocated topics/discussion
+
+Key spatial packages and the roles they play- rgdal, sp, maptools(?)
+Key visualisation packages: ggplot2 and ggmap. Base plots may also be worth a mention, I don’t want to go near lattice or anything like that.
+
+How spatial data are stored and how their elements (attribute table, coordinates, bbox etc) can be accessed. 
+
+Common types of plot –choropleth, points, lines, basemaps.
+
+Concept of layering.
+
+Key parameters to consider- colour, transparency, line width, background.
+
+Adornments: title, north arrow? Scale?
+
+Exporting graphics for publication.
+
 # References
 
 Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial statistical analysis using the language. Journal of Geographical Systems, 2(3), 307–317.
 
 Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial data: analysis with R. Springer.
+
+Burrough, P. A., & McDonnell, R. A. (1998). Principals of Geographic Information Systems (revised edition). Clarendon Press, Oxford.
 
 Harris, R. (2012). A Short Introduction to R. 
 [social-statistics.org](http://www.social-statistics.org/).
@@ -114,10 +101,15 @@ Harris, R. (2012). A Short Introduction to R.
 Kabacoff, R. (2011). R in Action. Manning Publications Co.
 
 Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for 
-GIS (2nd Ed.). New York: The Guildford Press
+GIS (2nd Ed.). New York: The Guildford Press.
+
+Longley, P., Goodchild, M. F., Maguire, D. J., & Rhind, D. W. (2005). 
+Geographic information systems and science. John Wiley & Sons.
 
 Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future. 
 GeoInformatics, 16(4). 
+
+Sherman, G. (2008). Desktop GIS: Mapping the Planet with Open Source Tools. Pragmatic Bookshelf.
 
 Torfs and Brauer (2012). A (very) short Introduction to R. The Comprehensive R Archive Network.
 
@@ -125,13 +117,4 @@ Venables, W. N., Smith, D. M., & Team, R. D. C. (2013). An introduction to R. Th
 
 Wickham, H. (2009). ggplot2: elegant graphics for data analysis. Springer.
 
-# End/footnotes
 
-1. R is notoriously difficult to search for on major search 
-engines, as it is such a common letter with many other uses beyond the name
-of a statistical programming language. This should not be a deterrent, as 
-R has a wealth of excellent online resources. To overcome the issue, 
-you can either be more specific with the search term (e.g. "R spatial statistics")
-or use an R specific search engine such as [rseek.org](http://www.rseek.org/).
-You can also search of online help *from within R* using the command `RSiteSearch`.
-E.g. `RSiteSearch("spatial statistics")`. Experiment and see which you prefer!

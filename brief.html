@@ -143,7 +143,7 @@ hr {
 <body>
 <h1>Brief (for authors only)</h1>
 
-<p>This is the master document that will eventually be used to tie
+<p>This is the master .Rmd document that will eventually be used to tie
 all the sections together for the final book chapter.
 &ldquo;to do&rdquo; lists, ideas and conventions can be written here, 
 but it&#39;s main purpose is to provide an up-to-date structure on the final chapter.</p>
@@ -156,29 +156,64 @@ to reduce complexity and time taken to compile. </p>
 
 <p>We therefore need to include some introductory material. The key to fitting all this in will be to keep it applied – we can assume some prior knowledge of spatial data.</p>
 
+<h3>Typographic conventions (for authors)</h3>
+
+<p>Use !!! to flag an issue that requires future attention - e.g. &ldquo;see section !!!&rdquo;</p>
+
+<p>Endnotes - add this section to the end of each section.</p>
+
 <h1>Introduction</h1>
 
-<p>The rise of R in spatial data analysis </p>
+<p>What is R? The rise of R&#39;s spatial capabilities.  Why R for spatial data visualisation?
+ R for Reproducible research. An introductory session. Chapter overview.</p>
 
-<p>(Analysis can include visualisation)</p>
+<h1>Components of a Good Map</h1>
 
-<p>Include examples of where R has had an important visual impact.</p>
-
-<p>Might be good to mention New York Times etc here as key users of R.</p>
-
-<p>Chapter overview, including of example dataset used.</p>
-
-<p>What makes for a good map and why R is a valuable tool for making them.</p>
+<p>Krygier and Wood 2005&#39;s checklist. 
+What makes for a good map and why R is a valuable tool for making them.</p>
 
 <h1>R and Spatial Data</h1>
 
-<p>Basic R syntax
-Key spatial packages and the roles they play- rgdal, sp, maptools(?)
+<p>Loading and saving data.
+The structure of spatial data in R.
+Spatial* data. Simplifying spatial data with <code>fortify</code>. 
+The main spatial packages (sp, rgdal rgeos).</p>
+
+<p>Maps with ggplot2. Adding base maps with ggmap. 
+Manipulating spatial data. 
+Coordinate reference systems and transformations. 
+Attribute joins. Spatial joins.
+Aggregation.
+Clipping.</p>
+
+<h1>A detailed worked example</h1>
+
+<p>This needs to somehow incorporate: </p>
+
+<p>Choropleths, points and segments</p>
+
+<p>Layering</p>
+
+<p>Basemaps with ggmap</p>
+
+<p>The inclusion of images and other adornments such as scale and north arrow</p>
+
+<p>Colour selection- both discrete and continuous palettes.</p>
+
+<p>Line widths and transparency</p>
+
+<p>Faceting</p>
+
+<h1>Conclusion</h1>
+
+<h1>Taking spatial analysis in R further</h1>
+
+<h1>Misc/unallocated topics/discussion</h1>
+
+<p>Key spatial packages and the roles they play- rgdal, sp, maptools(?)
 Key visualisation packages: ggplot2 and ggmap. Base plots may also be worth a mention, I don’t want to go near lattice or anything like that.</p>
 
 <p>How spatial data are stored and how their elements (attribute table, coordinates, bbox etc) can be accessed. </p>
-
-<p>Rasters vs Vectors</p>
 
 <p>Common types of plot –choropleth, points, lines, basemaps.</p>
 
@@ -190,25 +225,33 @@ Key visualisation packages: ggplot2 and ggmap. Base plots may also be worth a me
 
 <p>Exporting graphics for publication.</p>
 
-<h1>A detailed worked example</h1>
-
-<h1>Conclusion</h1>
-
-<h1>Taking spatial analysis in R further</h1>
-
 <h1>References</h1>
 
+<p>Bivand, R., &amp; Gebhardt, A. (2000). Implementing functions for spatial statistical analysis using the language. Journal of Geographical Systems, 2(3), 307–317.</p>
+
 <p>Bivand, R. S., Pebesma, E. J., &amp; Rubio, V. G. (2008). Applied spatial data: analysis with R. Springer.</p>
+
+<p>Burrough, P. A., &amp; McDonnell, R. A. (1998). Principals of Geographic Information Systems (revised edition). Clarendon Press, Oxford.</p>
 
 <p>Harris, R. (2012). A Short Introduction to R. 
 <a href="http://www.social-statistics.org/">social-statistics.org</a>.</p>
 
 <p>Kabacoff, R. (2011). R in Action. Manning Publications Co.</p>
 
+<p>Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for 
+GIS (2nd Ed.). New York: The Guildford Press.</p>
+
+<p>Longley, P., Goodchild, M. F., Maguire, D. J., &amp; Rhind, D. W. (2005). 
+Geographic information systems and science. John Wiley &amp; Sons.</p>
+
 <p>Ramsey, P., &amp; Dubovsky, D. (2013). Geospatial Software&#39;s Open Future. 
 GeoInformatics, 16(4). </p>
 
+<p>Sherman, G. (2008). Desktop GIS: Mapping the Planet with Open Source Tools. Pragmatic Bookshelf.</p>
+
 <p>Torfs and Brauer (2012). A (very) short Introduction to R. The Comprehensive R Archive Network.</p>
+
+<p>Venables, W. N., Smith, D. M., &amp; Team, R. D. C. (2013). An introduction to R. The Comprehensive R Archive Network (CRAN). Retrieved from <a href="http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf">http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf</a> .</p>
 
 <p>Wickham, H. (2009). ggplot2: elegant graphics for data analysis. Springer.</p>
 

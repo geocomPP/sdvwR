@@ -111,7 +111,20 @@ its outputs, a feature that we will be using to great effect in this chapter.
 
 !!! Are all the examples going to be reproducible?
 
-Include examples of where R has had an important visual impact.
+All these components - scripting, stability and the ability to 
+embed 'live' code in documents - make R an excellent tool for 
+transparent research. By using R and carefully documenting what has been done, 
+one ensures that the methods used to reach a certain result can be reproduced 
+by anyone anywhere in the world, provided they have access to the input dataset.
+The RStudio graphical interface with R encourages good documentation.
+RStudio enables presentations to be created and professional-quality 
+pdf documents to be produced using the custom file formats `.Rpres` and `.rnw`.
+In fact, this chapter was written in RMarkdown and 
+converted into a pdf document using only RStudio editor!
+
+## R in the wild
+
+Examples of where R has had an important visual impact.
 
 Might be good to mention New York Times etc here as key users of R.
 

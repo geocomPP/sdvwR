@@ -9,7 +9,7 @@ a description of the input data used in this section. We will see how data can
 be loaded into R and exported to other formats, before going into more detail about the 
 underlying structure of spatial data in R: how it 'sees' spatial data is quite unique.
 
-## Loading and saving data
+### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is 
 loading in pre-existing datasets. These may originate from government agencies, 
@@ -33,7 +33,8 @@ to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
 
 ```r
-download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
+# = 'data/gps-trace.gpx')
 library(rgdal)  # load the gdal package
 ```
 
@@ -119,6 +120,157 @@ directory, one would use `dsn = "."` instead. Again, it may be wise to plot the 
 results, to ensure that it has worked correctly.
 Now that the data has been loaded into R's own `sp` format, try interogating and 
 plotting it, using functions such as `summary` and `plot`.
+
+### The size of spatial datasets in R
+
+Any data that has been read into R's *workspace*, which constitutes all 
+objects that can be accessed by name and can be listed using the `ls()` function, 
+can be saved in R's own data storage file type, `.RData`. Spatial datasets can get 
+quite large and this can cause problems on computers by consuming all available 
+random access memory (RAM) or
+hard disk space available to the computer. It is therefore wise to understand 
+roughly how large spatial objects are; this will also provide insight into 
+how long certain functions will take to run. 
+
+In the absence of prior knowledge, which of the two objects loaded in the 
+previous section would be expected to take up more memory. One could 
+hypothesise that the London borroughs represented by the object `lnd` would be
+larger, but how much larger? We could simply look at the size of the associated 
+files, but R also provides a function (`object.size`) for discovering how large objects loaded into
+its workspace are:
+
+
+```r
+object.size(shf2lds)
+```
+
+```
+## 103168 bytes
+```
+
+```r
+object.size(lnd)
+```
+
+```
+## 79168 bytes
+```
+
+
+Surprisingly, the GPS data is larger. To see why, we can find out how many 
+*vertices* (points connected by lines) are contained in each dataset:
+
+
+```r
+sapply(lnd@polygons, function(x) length(x))
+```
+
+```
+##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+```
+
+```r
+x <- sapply(lnd@polygons, function(x) nrow(x@Polygons[[1]]@coords))
+sum(x)
+```
+
+```
+## [1] 1102
+```
+
+```r
+
+sapply(shf2lds@lines, function(x) length(x))
+```
+
+```
+## [1] 1
+```
+
+```r
+sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords))
+```
+
+```
+## [1] 6085
+```
+
+
+It is quite likely that the above code little sense at first; the important thing
+to remember is that for each object we performed two functions: 1) a check that 
+each line or polygon consists only of a single *part* (that can be joined to attribut data)
+and 2) the use of `nrow` to count the number of vertices. The use of the `@` symbol should 
+seem strange - its meaning will become clear in the section !!!. (Note also that the 
+function `fortify`, discussed in section !!!, can also be used to extract the vertice count of 
+spatial objects in R.)
+
+Without worrying,
+for now, about how these vertice counts were performed, it is clear that the GPS data 
+has almost 6 times the number of vertices as does the London data, explaining its larger size.
+Yet when plotted, the GPS data does not seem more detailed, implying that 
+some of the vertices in the object are not needed for visualisation at the scale of 
+the objects *bounding box*. 
+
+### Simplifying geometries
+
+The wastefulness of the GPS data for visualisation (the full dataset may
+be useful for other types of analysis) raises the question following question: 
+can the object be simplified such that its key features
+features remain while substantially reducing its size? The answer is yes.
+In the code below, we harness the 
+power of the `rgeos` package and its `gSimplify` function to simplify 
+spatial R objects (the code can also be used to simplify polygon geometries):
+
+
+```r
+library(rgeos)
+```
+
+```
+## rgeos version: 0.2-19, (SVN revision 394)
+##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
+##  Polygon checking: TRUE
+```
+
+```r
+shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
+object.size(shf2lds.simple)/object.size(shf2lds)
+```
+
+```
+## 0.0304745657568238 bytes
+```
+
+```r
+plot(shf2lds.simple)
+plot(shf2lds, col = "red", add = T)
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+
+In the above block of code, `gSimplify` is given the object 
+`shf2lds` and the `tol` argument, short for "tolerance",
+is set at 0.001 (much larger values may be needed, for
+data that use is *projected* - does not use latitude and longitude).
+The comparison between the simplified object and the orginal shows 
+that the new object is less than a third of its original size. 
+Yet when visualised using the `plot` function, it is clear that 
+`shf2lds.simple` retains the overall shape of the line and is virtually
+indistinguishable from the orginal object.
+
+This example is rather contrived because even the larger object 
+`shf2lds` is only 0.103 Mb, 
+negligible compared with the gigabytes of RAM available to modern computers. 
+However, it underlines a wider point: for *visualisation* purposes at 
+small spatial scales (i.e. covering a large area of the Earth on a small map), 
+the *geometries* associated with spatial data can often be simplified to 
+reduce processing time and usage of RAM. The other advantage of simplification 
+is that it reduces the size occupied by spatial datasets when they are saved.
+
+### Saving and exporting spatial objects
+
+
 
 ## The structure of spatial data in R
 

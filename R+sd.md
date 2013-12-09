@@ -33,8 +33,7 @@ to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
 
 ```r
-# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
-# = 'gps-trace.gpx')
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal)  # load the gdal package
 ```
 
@@ -49,7 +48,7 @@ library(rgdal)  # load the gdal package
 ```
 
 ```r
-ogrListLayers(dsn = "gps-trace.gpx")  # which layers are available?
+ogrListLayers(dsn = "data/gps-trace.gpx")  # which layers are available?
 ```
 
 ```
@@ -58,24 +57,24 @@ ogrListLayers(dsn = "gps-trace.gpx")  # which layers are available?
 ```
 
 ```r
-shf2lds <- readOGR(dsn = "gps-trace.gpx", layer = "tracks")  # load track
+shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
 ```
 
 ```
 ## OGR data source with driver: GPX 
-## Source: "gps-trace.gpx", layer: "tracks"
+## Source: "data/gps-trace.gpx", layer: "tracks"
 ## with 1 features and 12 fields
 ## Feature type: wkbMultiLineString with 2 dimensions
 ```
 
 ```r
 plot(shf2lds)
-shf2lds.p <- readOGR(dsn = "gps-trace.gpx", layer = "track_points")  # load points
+shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load points
 ```
 
 ```
 ## OGR data source with driver: GPX 
-## Source: "gps-trace.gpx", layer: "track_points"
+## Source: "data/gps-trace.gpx", layer: "track_points"
 ## with 6085 features and 26 fields
 ## Feature type: wkbPoint with 2 dimensions
 ```

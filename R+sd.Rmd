@@ -32,12 +32,12 @@ Let's start with a `.gpx` file, a tracklog recording a bicycle ride from Sheffie
 to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
 ```{r}
-# download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "gps-trace.gpx")
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
-ogrListLayers(dsn = "gps-trace.gpx") # which layers are available?
-shf2lds <- readOGR(dsn = "gps-trace.gpx", layer = "tracks") # load track
+ogrListLayers(dsn = "data/gps-trace.gpx") # which layers are available?
+shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
 plot(shf2lds)
-shf2lds.p <- readOGR(dsn = "gps-trace.gpx", layer = "track_points") # load points
+shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points") # load points
 points(shf2lds.p[seq(1, 3000, 100),])
 ```
 

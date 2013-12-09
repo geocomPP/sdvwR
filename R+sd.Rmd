@@ -136,7 +136,7 @@ spatial R objects (the code can also be used to simplify polygon geometries):
 ```{r}
 library(rgeos)
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
-object.size(shf2lds.simple) / object.size(shf2lds)
+(object.size(shf2lds.simple) / object.size(shf2lds))[1]
 plot(shf2lds.simple) 
 plot(shf2lds, col = "red", add = T)
 ```
@@ -146,7 +146,7 @@ In the above block of code, `gSimplify` is given the object
 is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
 The comparison between the simplified object and the orginal shows 
-that the new object is less than a third of its original size. 
+that the new object is less than 3% of its original size. 
 Yet when visualised using the `plot` function, it is clear that 
 `shf2lds.simple` retains the overall shape of the line and is virtually
 indistinguishable from the orginal object.
@@ -176,7 +176,7 @@ is that it reduces the size occupied by spatial datasets when they are saved.
 
 #### Grids and raster data
 
-### Simplifying spatial data with `fortify`
+### 'Flattening' data with `fortify`
 
 ## The main spatial packages
 

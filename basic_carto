@@ -1,0 +1,98 @@
+library(rgdal)
+library(ggplot2)
+library(gridExtra)
+
+setwd("/Users/james/Dropbox/Abstracts_Papers_Reviews/Geocomp_Chapter")
+
+
+# get data- map of the world
+download.file(url="http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip", "ne_110m_admin_0_countries.zip", "auto")
+unzip("ne_110m_admin_0_countries.zip")
+file.remove("ne_110m_admin_0_countries.zip")
+
+# read shape file using rgdal library
+
+wrld <- readOGR(".", "ne_110m_admin_0_countries")
+
+# transform this to the robinson projection- this is much better for showing  population datasets
+
+wrld.rob<-spTransform(wrld, CRS("+init=ESRI:54030"))
+
+wrld.rob.f<-fortify(wrld.rob, region="sov_a3")
+
+wrld.pop.f <- merge(wrld.rob.f, wrld.rob@data, by.x = "id", by.y = "sov_a3")
+
+# continuous colour ramp
+
+ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
+  geom_polygon() + 
+  coord_equal() + 
+  labs(x = "Longitude", y = "Latitude", fill = "World Population") + 
+  ggtitle("World Population")
+
+#better colours with more breaks- to finish
+
+map+ scale_fill_continuous(breaks=)
+
+#categorical variables
+
+ 
+# Conforming to colour conventions
+
+map2<- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
+  
+blue<-map2+ geom_polygon(fill="light blue") + theme(panel.background = element_rect(fill = "dark green"))
+  
+green<-map2 + geom_polygon(fill="dark green") + theme(panel.background = element_rect(fill = "light blue"))
+  
+grid.arrange(green, blue, ncol=2)
+
+#Experimenting with line colour and line widths
+
+map3<-map2+theme(panel.background = element_rect(fill = "light blue"))
+
+yellow<-map3+ geom_polygon(fill="dark green", colour="yellow") 
+  
+black<-map3+geom_polygon(fill="dark green", colour="black") 
+  
+thin<-map3+ geom_polygon(fill="dark green", colour="black", lwd=0.1) 
+
+thick<-map3+ geom_polygon(fill="dark green", colour="black", lwd=1.5)
+  
+grid.arrange(yellow, black,thick, thin, ncol=2)
+
+#Annotations
+
+#north arrow- can this be done?
+
+#scale bar- found this function
+
+hscale_segment = function(breaks, ...)
+{
+    y = unique(breaks$y)
+    stopifnot(length(y) == 1)
+    dx = max(breaks$x) - min(breaks$x)
+    dy = 1/30 * dx
+    hscale = data.frame(ix=min(breaks$x), iy=y, jx=max(breaks$x),
+jy=y)
+    vticks = data.frame(ix=breaks$x, iy=(y - dy), jx=breaks$x, jy=(y +
+dy))
+    df = rbind(hscale, vticks)
+    return(geom_segment(data=df,
+                        aes(x=ix, xend=jx, y=iy, yend=jy),
+                        ...))
+
+}
+
+hscale_text = function(breaks, ...)
+{
+    dx = max(breaks$x) - min(breaks$x)
+    dy = 2/30 * dx
+    breaks$y = breaks$y + dy
+    return(geom_text(data=breaks,
+                     aes(x=x, y=y, label=label),
+                     hjust=0.5,
+                     vjust=0,
+                     ...))
+
+}

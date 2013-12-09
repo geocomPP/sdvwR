@@ -5,7 +5,7 @@ Introduction
 
 R is a free and open source computer program that runs on 
 all major operating systems. R relies primarily 
-on the *command line* for data input: instead of 
+on a *command line* interface for data input: instead of 
 interacting with the program by
 moving your mouse around clicking on different parts of the screen, users
 enter commands via the keyboard. This will seem to strange to people 
@@ -137,6 +137,51 @@ way to learn how it works is to 'get your hands dirty' and try it
 out on your own computer. This introductory session will therefore serve 
 as an introduction to R's unque *syntax*, as well an illustration of 
 how other visualisations presented in this chapter can be reproduced. 
+
+## R's syntax
+
+### Objects
+
+### Functions and arguments
+
+Most operations that are performed on objects are done using *functions*. 
+Understanding functions and their various *arguments* is key to manipulating 
+and visualising data in R: the more functions and arguments you know, the more
+you will be able to do. Functions, in broad terms, are operations that change objects in 
+R from one thing to another. In mathematical language, they *map* sets of numbers onto each other.
+Arguments are the variables or parameters that are fed into functions to alter their behavior.
+In terms of R's syntax, arguments are separated by commas within the curved brackets that 
+follow from the function's name. A source of confusion with arguments can be that in 
+some cases they can be inserted directly, wheras in others R needs to be told which 
+argument is being referred to, as illustrated in the code below:
+
+```{r}
+seq(from = 0, to = 2, by = 0.5)
+seq(0, 2, 0.5)
+
+seq(0, 2, length.out = 6)
+seq(0, 2, 6)
+```
+
+
+Before learning about specific functions for spatial 
+analysis and visualisation, it is worth taking some time to think about what 
+a function is and how the arguments passed to it affect how it works. 
+The function `plot` is a good example, because it can take many different 
+input datasets and arguments and produces very different results depending on 
+the arguments it is given. Let's start with a basic example:
+
+```{r}
+x <- 1:20
+y <- 20 * x^2 - x^3
+plot(x, y)
+```
+
+In the above code, the funtion `plot` was given two arguments, `x` and `y` and its default 
+settings are to interpret these as values on a cartesian coordinate system to plot. 
+
+
+
 
 ## Chapter overview
 

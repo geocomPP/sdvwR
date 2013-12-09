@@ -7,9 +7,24 @@ In any data analysis project, spatial or otherwise, it is important to have a st
 understanding of the dataset before progressing. This section will therefore begin with 
 a description of the input data used in this section. We will see how data can 
 be loaded into R and exported to other formats, before going into more detail about the 
-underlying structure of spatial data in R: how it 'sees' spatial data is quite particular.
+underlying structure of spatial data in R: how it 'sees' spatial data is quite unique.
 
 ## Loading and saving data
+
+In most situations, the starting point of spatial analysis tasks is 
+loading in pre-existing datasets. These may originate from government agencies, 
+remote sensing devices or 'volunteered geographical information' from GPS devices, 
+online databases such as Open Street Map or geo-tagged social media (Goodchild 2007).
+In any case, the diversity of geographical data formats is large. 
+
+R is able to import a very wide range of spatial data formats thanks to its
+interface with the Geospatial Data Abstraction Library (GDAL). 
+
+```{r Plot of London}
+library(rgdal)
+lnd <- readOGR(dsn = ".", "london_sport")
+plot(lnd); nrow(lnd)
+```
 
 ## The structure of spatial data in R
 

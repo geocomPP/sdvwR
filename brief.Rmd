@@ -93,7 +93,9 @@ Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial statistica
 
 Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial data: analysis with R. Springer.
 
-Burrough, P. A., & McDonnell, R. A. (1998). Principals of Geographic Information Systems (revised edition). Clarendon Press, Oxford.
+Burrough, P. A. & McDonnell, R. A. (1998). Principals of Geographic Information Systems (revised edition). Clarendon Press, Oxford.
+
+Goodchild, M. F. (2007). Citizens as sensors: the world of volunteered geography. GeoJournal, 69(4), 211–221. 
 
 Harris, R. (2012). A Short Introduction to R. 
 [social-statistics.org](http://www.social-statistics.org/).

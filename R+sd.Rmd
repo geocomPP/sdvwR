@@ -341,7 +341,7 @@ To illustrate the power of the `aggregate` function, let us use it to
 find the average number of mices spotted in transport points in each 
 London borough, and the standard deviation:
 
-```{r}
+```{r, results='hide'}
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
 summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)

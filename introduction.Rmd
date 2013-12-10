@@ -91,19 +91,31 @@ for collecting, storing, retrieving at will, transforming, and displaying spatia
 data from the real world for a particular set of purposes" (Burrough and McDonnell, 1998, 
 from Bivand et al. 2013, p. 5); R excels at each of these tasks.
 
-That being said, there are a few major differences between R and conventional GIS programs
+That being said, there are a few major 
+differences between R and conventional GIS programs
 in terms of spatial data visualisation:
-R is more suited to creating one-off graphics than exploring spatial data through 
-repeated zooming, panning and spatial sub-setting using custom-drawn polygons, 
-compared with conventional GIS programs. Although interactive maps in R can 
-be created (e.g. using the web interface `shiny`), it is recommended that R
-is used *in addition to* rather than as a direct replacement of dedicated GIS
+R is more suited to creating one-off graphics than exploring spatial data
+interactively on a map. Conventional GIS packages are better at 
+repeated zooming, panning and spatial sub-setting using custom-drawn polygons
+than R. Use of the `locator` function allows some interactive 
+selection capabilities in R, but these are limited (Bivand et al. 2013, 3.4). 
+Although interactive maps in R can 
+be created (e.g. using the web interface `shiny`), R
+should not be seen as a direct replacement of dedicated GIS
 programs, especially now that there are myriad free options to try (Sherman 2008).
-An additional point is that while dedicated GIS programs handle spatial data by 
+One should use the program which is most appropriate for the task: R can tackle 
+almost any spatial visualisation problem and may be the best option in many cases. 
+In others, however, it may be best used alongside other programs (e.g. Google Earth).
+
+While dedicated GIS programs handle spatial data by 
 default and display the results in a single way, there are various options in R
-that must be decided by the user, for example whether to use R's base graphics 
-or a dedicated graphics package such as ggplot2. On the other hand, the main 
-benefits of R for spatial data visualisation lie in the *reproducibility* of 
+that must be decided by the user. This can be daunting.
+For example, the user must decide whether to use R's base graphics 
+or a dedicated graphics package such as ggplot2 for mapping.
+On the other hand, a major benefit of R is that allows spatial and 
+non-spatial analysis to occur in a *consistent* and *cohesive* framework. 
+Another benefit of R for spatial data visualisation lies in the 
+*reproducibility* of 
 its outputs, a feature that we will be using to great effect in this chapter.
 
 ## R for Reproducible research
@@ -147,9 +159,12 @@ how other visualisations presented in this chapter can be reproduced.
 Most operations that are performed on objects are done using *functions*. 
 Understanding functions and their various *arguments* is key to manipulating 
 and visualising data in R: the more functions and arguments you know, the more
-you will be able to do. Functions, in broad terms, are operations that change objects in 
-R from one thing to another. In mathematical language, they *map* sets of numbers onto each other.
-Arguments are the variables or parameters that are fed into functions to alter their behavior.
+you will be able to do. Functions, in broad terms, are operations
+that change objects in 
+R from one thing to another. In mathematical 
+language, they *map* sets of numbers onto each other.
+Arguments are the variables or parameters 
+that are fed into functions to alter their behavior.
 In terms of R's syntax, arguments are separated by commas within the curved brackets that 
 follow from the function's name. A source of confusion with arguments can be that in 
 some cases they can be inserted directly, wheras in others R needs to be told which 

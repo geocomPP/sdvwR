@@ -33,21 +33,19 @@ to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
 
 ```r
-# download.file('http://www.openstreetmap.org/trace/1619756/data',
-# destfile = 'data/gps-trace.gpx')
+# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
+# = 'data/gps-trace.gpx')
 library(rgdal)  # load the gdal package
 ```
 
 ```
 ## Loading required package: sp
-```
-
-```
-## rgdal: version: 0.8-13, (SVN revision 494) Geospatial Data Abstraction
-## Library extensions to R successfully loaded Loaded GDAL runtime: GDAL
-## 1.10.0, released 2013/04/24 Path to GDAL shared files:
-## /usr/share/gdal/1.10 Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012,
-## [PJ_VERSION: 480] Path to PROJ.4 shared files: (autodetected)
+## rgdal: version: 0.8-14, (SVN revision 496)
+## Geospatial Data Abstraction Library extensions to R successfully loaded
+## Loaded GDAL runtime: GDAL 1.9.0, released 2011/12/29
+## Path to GDAL shared files: /usr/share/gdal/1.9
+## Loaded PROJ.4 runtime: Rel. 4.7.1, 23 September 2009, [PJ_VERSION: 470]
+## Path to PROJ.4 shared files: (autodetected)
 ```
 
 ```r
@@ -136,7 +134,7 @@ how long certain functions will take to run.
 
 In the absence of prior knowledge, which of the two objects loaded in the 
 previous section would be expected to take up more memory. One could 
-hypothesise that the London borroughs represented by the object `lnd` would be
+hypothesise that the London boroughs represented by the object `lnd` would be
 larger, but how much larger? We could simply look at the size of the associated 
 files, but R also provides a function (`object.size`) for discovering how large objects loaded into
 its workspace are:
@@ -147,7 +145,7 @@ object.size(shf2lds)
 ```
 
 ```
-## 107464 bytes
+## 103168 bytes
 ```
 
 ```r
@@ -155,7 +153,7 @@ object.size(lnd)
 ```
 
 ```
-## 125544 bytes
+## 79168 bytes
 ```
 
 
@@ -229,8 +227,9 @@ library(rgeos)
 ```
 
 ```
-## rgeos version: 0.3-2, (SVN revision 413M) GEOS runtime version:
-## 3.3.8-CAPI-1.7.8 Polygon checking: TRUE
+## rgeos version: 0.3-2, (SVN revision 413M)
+##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
+##  Polygon checking: TRUE
 ```
 
 ```r
@@ -239,7 +238,7 @@ shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 ```
 
 ```
-## [1] 0.04608
+## [1] 0.03047
 ```
 
 ```r
@@ -256,12 +255,12 @@ is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
 The comparison between the simplified object and the orginal shows 
 that the new object is less than 3% of its original size. 
-Yet when visualised using the `plot` function, it is clear that 
+Yet when visualised using the `plot` function, it is clear that the object
 `shf2lds.simple` retains the overall shape of the line and is virtually
-indistinguishable from the orginal object.
+indistinguishable from the orginal object when plotted as a small scale map.
 
 This example is rather contrived because even the larger object 
-`shf2lds` is only 0.107 Mb, 
+`shf2lds` is only 0.103 Mb, 
 negligible compared with the gigabytes of RAM available to modern computers. 
 However, it underlines a wider point: for *visualisation* purposes at 
 small spatial scales (i.e. covering a large area of the Earth on a small map), 
@@ -270,6 +269,7 @@ reduce processing time and usage of RAM. The other advantage of simplification
 is that it reduces the size occupied by spatial datasets when they are saved.
 
 ### Saving and exporting spatial objects
+
 
 
 
@@ -306,6 +306,233 @@ is that it reduces the size occupied by spatial datasets when they are saved.
 ### Attribute joins
 
 ### Spatial joins
+
+A spatial join, like attribute joins, is used to transfer information from 
+one dataset to another. There is a clearly defined direction to spatial joins, 
+with the *target layer* receiving information from another spatial layer based on 
+the proximity of elements from both layers to each other. There are three broad 
+types of spatial join: one-to-one, many-to-one and one-to-many. We will focus only
+the former two as the third type is rarely used.
+
+One-to-one spatial joins are by far the easiest to understand and compute
+because they simply involve the transfer of attributes in one layer to 
+another, based on location. A one-to-one join is depicted in figure x below. 
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
+
+Many-to-one spatial joins involve taking a spatial layer with many elements
+and allocating the attributes associated with these elements to relatively few 
+elements in the target spatial layer. A common type of many-to-one spatial join 
+is the allocation of data collected at many point sources unevenly scattered over
+space to polygons representing administrative boundaries, as represented in 
+Fig. x.
+
+
+
+
+
+
+```r
+lnd.stations <- readOGR("data/", "lnd-stns", p4s = "+init=epsg:27700")
+```
+
+```
+## OGR data source with driver: ESRI Shapefile 
+## Source: "data/", layer: "lnd-stns"
+## with 2532 features and 6 fields
+## Feature type: wkbPoint with 2 dimensions
+```
+
+```r
+plot(lnd)
+plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))), 
+    ], add = T)
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
+
+The above code reads in a `SpatialPointsDataFrame` consisting of 2532 transport nodes
+in and surrounding London and then plots a random sample of 500 of these over 
+the previously loaded borough level adminsitrative boundaries. 
+The reason for ploting a sample of the points rather than all of them is 
+that the boundary data becomes difficult to see if all of the points are ploted. 
+It is also useful to see and practice sampling techniques in practice; try to 
+plot only the first 500 points, rather than a random selection, and describe the difference. 
+
+The most obvious issue with the point data from the perspective 
+of a spatial join with the 
+borough data is that many of the points in the dataset are in fact located outside 
+the region of interest. Thus, the first stage in the analysis is to filter the 
+point data such that only those that lie within London's administrative zones are 
+selected. This in itself is a kind of spatial join, and can be accomplished with the 
+following code. 
+
+
+```r
+proj4string(lnd) <- proj4string(lnd.stations)
+```
+
+```
+## Warning: A new CRS was assigned to an object with an existing CRS:
+## +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
+## without reprojecting.
+## For reprojection, use function spTransform in package rgdal
+```
+
+```r
+lnd.stations <- lnd.stations[lnd, ]  # select only points within lnd
+plot(lnd.stations)  # check the result
+```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+
+
+The station points now clearly follow the form of the `lnd` shape, indicating that the 
+procedure worked. Let's review the code that allowed this to happen:
+the first line ensured that the CRS associated with each layer is *exactly* the 
+same: this step should not be required in most cases, but it is worth knowing about. 
+Of course, if the coordinate systems are *actually* different in each layer, 
+the function `spTransform` will be needed to make them compatible. This procedure 
+is discussed in section !!!. In this case, only the name was slightly different hence 
+direct alteration of the CRS name via the function `proj4string`. 
+
+The second line of code is where the magic happens and the brilliance of 
+R's sp package becomes clear: all that was needed was to place another spatial 
+object in the row index of the points (`[lnd, ]`) and R automatically 
+understood that a subset based on location should be produced. 
+This line of code is an example of R's 'terseness' - only a single line
+of code is needed to perform what is in fact quite a complex operation. 
+
+## Spatial aggregation
+
+Now that only stations which *intersect* with the `lnd` polygon have been selected, 
+the next stage is to extract information about the points within each zone. 
+This many-to-one spatial join is also known as *spatial aggregation*. 
+To do this there are 
+a couple of approaches: one using the `sp` package and the other using `rgeos`
+(see Bivand et al. 2013, 5.3).
+
+As with the *spatial subest* method described above, the developers of R 
+have been very clever in their implementation of spatial aggregations methods.
+To minimise typing and ensure consistency with R's base functions, 
+`sp` extends the capabilities of the `aggregate` function 
+to automatically detect whether the user is asking for a spatial or a non-spatial 
+aggregation (they are, in essence, the same thing - we recommend learning 
+about the non-spatial use of `aggregate` in R for comparison).
+
+Continuing with the example of station points in London polygons, 
+let us use the spatial extension of `aggregate` to count how many points are
+in each borough:
+
+
+```r
+lndStC <- aggregate(lnd.stations, by = lnd, FUN = length)
+summary(lndStC)
+plot(lndStC)
+```
+
+
+As with the spatial subset function, the above code is extremely terse. 
+The aggregate function here does three things: 1) identifies which 
+stations are in which London borough; 2) uses this information to 
+perform a function on the output, in this case `length`, which 
+simply means "count" in this context; and 3) creates a new
+spatial object equivalent to `lnd` but with updated attribute 
+data to reflect the results of the spatial aggregation. The results, 
+with a legend and colours added, are presented in Fig !!! below.
+
+
+
+
+![Number of stations in London boroughs](figure/nStations.png)
+
+
+As with any spatial attribute data stored as an `sp` object,
+we can look at the attributes 
+of the point data using the `@` symbol:
+
+
+```r
+head(lnd.stations@data)
+```
+
+```
+##    CODE          LEGEND FILE_NAME NUMBER                   NAME MICE
+## 91 5520 Railway Station  gb_south  17607        Belmont Station   19
+## 92 5520 Railway Station  gb_south  17608  Woodmansterne Station    5
+## 93 5520 Railway Station  gb_south  17609 Coulsdon South Station   11
+## 94 5520 Railway Station  gb_south  17610        Smitham Station   14
+## 95 5520 Railway Station  gb_south  17611         Kenley Station   11
+## 96 5520 Railway Station  gb_south  17612        Reedham Station    8
+```
+
+
+In this case we have three potentially interesting variables: 
+"LEGEND", telling us what the point is, "NAME", and "MICE", 
+which represents the number of mice sightings reported by the public
+at that point  (this is a fictional variable).
+To illustrate the power of the `aggregate` function, let us use it to 
+find the average number of mices spotted in transport points in each 
+London borough, and the standard deviation:
+
+
+```r
+lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
+summary(lndAvMice)
+```
+
+```
+## Object of class SpatialPolygonsDataFrame
+## Coordinates:
+##      min    max
+## x 503571 561941
+## y 155851 200932
+## Is projected: TRUE 
+## proj4string :
+## [+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717
+## +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m
+## +no_defs
+## +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894]
+## Data attributes:
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    8.83    9.32   10.10   10.00   10.50   11.80
+```
+
+```r
+lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
+summary(lndSdMice)
+```
+
+```
+## Object of class SpatialPolygonsDataFrame
+## Coordinates:
+##      min    max
+## x 503571 561941
+## y 155851 200932
+## Is projected: TRUE 
+## proj4string :
+## [+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717
+## +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m
+## +no_defs
+## +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894]
+## Data attributes:
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.50    2.73    2.92    2.96    3.25    4.31
+```
+
+
+
+
+
+```r
+lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
+```
+
+
+
+
 
 ### Aggregation
 

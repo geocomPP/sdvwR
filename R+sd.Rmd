@@ -86,7 +86,7 @@ how long certain functions will take to run.
 
 In the absence of prior knowledge, which of the two objects loaded in the 
 previous section would be expected to take up more memory. One could 
-hypothesise that the London borroughs represented by the object `lnd` would be
+hypothesise that the London boroughs represented by the object `lnd` would be
 larger, but how much larger? We could simply look at the size of the associated 
 files, but R also provides a function (`object.size`) for discovering how large objects loaded into
 its workspace are:
@@ -235,14 +235,15 @@ plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),], ad
 
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532 transport nodes
 in and surrounding London and then plots a random sample of 500 of these over 
-the previously loaded borrough level adminsitrative boundaries. 
+the previously loaded borough level adminsitrative boundaries. 
 The reason for ploting a sample of the points rather than all of them is 
 that the boundary data becomes difficult to see if all of the points are ploted. 
 It is also useful to see and practice sampling techniques in practice; try to 
 plot only the first 500 points, rather than a random selection, and describe the difference. 
 
-The most obvious issue with the point data from the perspective of a spatial join with the 
-burrough data is that many of the points in the dataset are in fact located outside 
+The most obvious issue with the point data from the perspective 
+of a spatial join with the 
+borough data is that many of the points in the dataset are in fact located outside 
 the region of interest. Thus, the first stage in the analysis is to filter the 
 point data such that only those that lie within London's administrative zones are 
 selected. This in itself is a kind of spatial join, and can be accomplished with the 
@@ -250,36 +251,107 @@ following code.
 
 ```{r}
 proj4string(lnd) <- proj4string(lnd.stations)
-lnd.stations <- lnd.stations[lnd,] # select only points within lnd
+lnd.stations <- lnd.stations[lnd, ] # select only points within lnd
 plot(lnd.stations) # check the result
 ```
 
-```{r}
-lnd.stations@data[1:10,]
+The station points now clearly follow the form of the `lnd` shape, indicating that the 
+procedure worked. Let's review the code that allowed this to happen:
+the first line ensured that the CRS associated with each layer is *exactly* the 
+same: this step should not be required in most cases, but it is worth knowing about. 
+Of course, if the coordinate systems are *actually* different in each layer, 
+the function `spTransform` will be needed to make them compatible. This procedure 
+is discussed in section !!!. In this case, only the name was slightly different hence 
+direct alteration of the CRS name via the function `proj4string`. 
+
+The second line of code is where the magic happens and the brilliance of 
+R's sp package becomes clear: all that was needed was to place another spatial 
+object in the row index of the points (`[lnd, ]`) and R automatically 
+understood that a subset based on location should be produced. 
+This line of code is an example of R's 'terseness' - only a single line
+of code is needed to perform what is in fact quite a complex operation. 
+
+## Spatial aggregation
+
+Now that only stations which *intersect* with the `lnd` polygon have been selected, 
+the next stage is to extract information about the points within each zone. 
+This many-to-one spatial join is also known as *spatial aggregation*. 
+To do this there are 
+a couple of approaches: one using the `sp` package and the other using `rgeos`
+(see Bivand et al. 2013, 5.3).
+
+As with the *spatial subest* method described above, the developers of R 
+have been very clever in their implementation of spatial aggregations methods.
+To minimise typing and ensure consistency with R's base functions, 
+`sp` extends the capabilities of the `aggregate` function 
+to automatically detect whether the user is asking for a spatial or a non-spatial 
+aggregation (they are, in essence, the same thing - we recommend learning 
+about the non-spatial use of `aggregate` in R for comparison).
+
+Continuing with the example of station points in London polygons, 
+let us use the spatial extension of `aggregate` to count how many points are
+in each borough:
+
+```{r, fig.keep='none', results='hide'}
+lndStC <- aggregate(lnd.stations, by = lnd, FUN = length)
+summary(lndStC)
+plot(lndStC)
 ```
 
+As with the spatial subset function, the above code is extremely terse. 
+The aggregate function here does three things: 1) identifies which 
+stations are in which London borough; 2) uses this information to 
+perform a function on the output, in this case `length`, which 
+simply means "count" in this context; and 3) creates a new
+spatial object equivalent to `lnd` but with updated attribute 
+data to reflect the results of the spatial aggregation. The results, 
+with a legend and colours added, are presented in Fig !!! below.
+
+```{r, echo=F, eval=FALSE}
+library(RColorBrewer)
+brewer.pal.info
+cols <- brewer.pal(4, "Greens")
+# brks <- quantile(lndStC$NUMBER, type=3)
+brks <- c(4, 12, 19, 29, 55)
+cut(lndStC$NUMBER, brks)
+gs <- cols[findInterval(lndStC$NUMBER, vec = brks)]
+png(filename="figure/nStations.png", width = 600, height= 550)
+plot(lndStC, col = gs)
+legend("topleft", legend = levels(cut(lndStC$NUMBER, brks)), 
+       fill = cols, title="N. stations")
+dev.off()
+```
+
+![Number of stations in London boroughs](figure/nStations.png)
 
 
-As with any spatial attribute data stored as an `sp` object, we can look at the attributes 
+As with any spatial attribute data stored as an `sp` object,
+we can look at the attributes 
 of the point data using the `@` symbol:
 
 ```{r}
 head(lnd.stations@data)
 ```
 
-In this case there is not much of interest, so we will create an artificial 
-field called "MICE", representing an imaginary dataset of the number of reported 
-mouse sitings in each sightings. This is so that we can allocate quantitative 
-data to the administrative zones from the points, a common task in spatial 
-data analysis. 
+In this case we have three potentially interesting variables: 
+"LEGEND", telling us what the point is, "NAME", and "MICE", 
+which represents the number of mice sightings reported by the public
+at that point  (this is a fictional variable).
+To illustrate the power of the `aggregate` function, let us use it to 
+find the average number of mices spotted in transport points in each 
+London borough, and the standard deviation:
 
 ```{r}
-lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
+lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
+summary(lndAvMice)
+lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
+summary(lndSdMice)
 ```
 
 
 
-
-### Aggregation
+```{r, echo=FALSE}
+lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
+```
 
 ### Clipping

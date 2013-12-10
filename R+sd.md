@@ -33,19 +33,21 @@ to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
 
 ```r
-# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
-# = 'data/gps-trace.gpx')
+# download.file('http://www.openstreetmap.org/trace/1619756/data',
+# destfile = 'data/gps-trace.gpx')
 library(rgdal)  # load the gdal package
 ```
 
 ```
 ## Loading required package: sp
-## rgdal: version: 0.8-10, (SVN revision 478)
-## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.10.0, released 2013/04/24
-## Path to GDAL shared files: /usr/share/gdal/1.10
-## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-## Path to PROJ.4 shared files: (autodetected)
+```
+
+```
+## rgdal: version: 0.8-13, (SVN revision 494) Geospatial Data Abstraction
+## Library extensions to R successfully loaded Loaded GDAL runtime: GDAL
+## 1.10.0, released 2013/04/24 Path to GDAL shared files:
+## /usr/share/gdal/1.10 Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012,
+## [PJ_VERSION: 480] Path to PROJ.4 shared files: (autodetected)
 ```
 
 ```r
@@ -145,7 +147,7 @@ object.size(shf2lds)
 ```
 
 ```
-## 103168 bytes
+## 107464 bytes
 ```
 
 ```r
@@ -153,7 +155,7 @@ object.size(lnd)
 ```
 
 ```
-## 79168 bytes
+## 125544 bytes
 ```
 
 
@@ -227,18 +229,17 @@ library(rgeos)
 ```
 
 ```
-## rgeos version: 0.2-19, (SVN revision 394)
-##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
-##  Polygon checking: TRUE
+## rgeos version: 0.3-2, (SVN revision 413M) GEOS runtime version:
+## 3.3.8-CAPI-1.7.8 Polygon checking: TRUE
 ```
 
 ```r
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
-object.size(shf2lds.simple)/object.size(shf2lds)
+(object.size(shf2lds.simple)/object.size(shf2lds))[1]
 ```
 
 ```
-## 0.0304745657568238 bytes
+## [1] 0.04608
 ```
 
 ```r
@@ -254,13 +255,13 @@ In the above block of code, `gSimplify` is given the object
 is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
 The comparison between the simplified object and the orginal shows 
-that the new object is less than a third of its original size. 
+that the new object is less than 3% of its original size. 
 Yet when visualised using the `plot` function, it is clear that 
 `shf2lds.simple` retains the overall shape of the line and is virtually
 indistinguishable from the orginal object.
 
 This example is rather contrived because even the larger object 
-`shf2lds` is only 0.103 Mb, 
+`shf2lds` is only 0.107 Mb, 
 negligible compared with the gigabytes of RAM available to modern computers. 
 However, it underlines a wider point: for *visualisation* purposes at 
 small spatial scales (i.e. covering a large area of the Earth on a small map), 
@@ -284,7 +285,7 @@ is that it reduces the size occupied by spatial datasets when they are saved.
 
 #### Grids and raster data
 
-### Simplifying spatial data with `fortify`
+### 'Flattening' data with `fortify`
 
 ## The main spatial packages
 

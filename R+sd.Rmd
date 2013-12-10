@@ -147,9 +147,9 @@ is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
 The comparison between the simplified object and the orginal shows 
 that the new object is less than 3% of its original size. 
-Yet when visualised using the `plot` function, it is clear that 
+Yet when visualised using the `plot` function, it is clear that the object
 `shf2lds.simple` retains the overall shape of the line and is virtually
-indistinguishable from the orginal object.
+indistinguishable from the orginal object when plotted as a small scale map.
 
 This example is rather contrived because even the larger object 
 `shf2lds` is only `r round(object.size(shf2lds) / 1000000, 3)[1]` Mb, 
@@ -161,6 +161,7 @@ reduce processing time and usage of RAM. The other advantage of simplification
 is that it reduces the size occupied by spatial datasets when they are saved.
 
 ### Saving and exporting spatial objects
+
 
 
 
@@ -197,6 +198,87 @@ is that it reduces the size occupied by spatial datasets when they are saved.
 ### Attribute joins
 
 ### Spatial joins
+
+A spatial join, like attribute joins, is used to transfer information from 
+one dataset to another. There is a clearly defined direction to spatial joins, 
+with the *target layer* receiving information from another spatial layer based on 
+the proximity of elements from both layers to each other. There are three broad 
+types of spatial join: one-to-one, many-to-one and one-to-many. We will focus only
+the former two as the third type is rarely used.
+
+One-to-one spatial joins are by far the easiest to understand and compute
+because they simply involve the transfer of attributes in one layer to 
+another, based on location. A one-to-one join is depicted in figure x below. 
+
+```{r, echo=FALSE}
+plot(lnd)
+points(coordinates(lnd))
+```
+
+Many-to-one spatial joins involve taking a spatial layer with many elements
+and allocating the attributes associated with these elements to relatively few 
+elements in the target spatial layer. A common type of many-to-one spatial join 
+is the allocation of data collected at many point sources unevenly scattered over
+space to polygons representing administrative boundaries, as represented in 
+Fig. x.
+
+```{r, echo=FALSE}
+set.seed(5876)
+```
+
+
+```{r}
+lnd.stations <- readOGR("data/", "lnd-stns", p4s="+init=epsg:27700")
+plot(lnd)
+plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),], add = T)
+```
+
+The above code reads in a `SpatialPointsDataFrame` consisting of 2532 transport nodes
+in and surrounding London and then plots a random sample of 500 of these over 
+the previously loaded borrough level adminsitrative boundaries. 
+The reason for ploting a sample of the points rather than all of them is 
+that the boundary data becomes difficult to see if all of the points are ploted. 
+It is also useful to see and practice sampling techniques in practice; try to 
+plot only the first 500 points, rather than a random selection, and describe the difference. 
+
+The most obvious issue with the point data from the perspective of a spatial join with the 
+burrough data is that many of the points in the dataset are in fact located outside 
+the region of interest. Thus, the first stage in the analysis is to filter the 
+point data such that only those that lie within London's administrative zones are 
+selected. This in itself is a kind of spatial join, and can be accomplished with the 
+following code. 
+
+```{r}
+proj4string(lnd) <- proj4string(lnd.stations)
+lnd.stations <- lnd.stations[lnd,] # select only points within lnd
+plot(lnd.stations) # check the result
+```
+
+```{r}
+lnd.stations@data[1:10,]
+```
+
+
+
+As with any spatial attribute data stored as an `sp` object, we can look at the attributes 
+of the point data using the `@` symbol:
+
+```{r}
+head(lnd.stations@data)
+```
+
+In this case there is not much of interest, so we will create an artificial 
+field called "MICE", representing an imaginary dataset of the number of reported 
+mouse sitings in each sightings. This is so that we can allocate quantitative 
+data to the administrative zones from the points, a common task in spatial 
+data analysis. 
+
+```{r}
+lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
+```
+
+
+
 
 ### Aggregation
 

@@ -14,8 +14,9 @@ underlying structure of spatial data in R: how it 'sees' spatial data is quite u
 In most situations, the starting point of spatial analysis tasks is 
 loading in pre-existing datasets. These may originate from government agencies, 
 remote sensing devices or 'volunteered geographical information' from GPS devices, 
-online databases such as Open Street Map or geo-tagged social media (Goodchild 2007).
-In any case, the diversity of geographical data formats is large. 
+online databases such as Open Street Map or geo-tagged 
+social media (Goodchild 2007).
+The diversity of geographical data formats is large. 
 
 R is able to import a very wide range of spatial data formats thanks to its
 interface with the Geospatial Data Abstraction Library (GDAL), which is 

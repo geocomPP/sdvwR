@@ -32,7 +32,7 @@ of loading most common spatial file formats, but behaves differently depending o
 Let's start with a `.gpx` file, a tracklog recording a bicycle ride from Sheffield
 to Wakefield which was uploaded Open Street Map. [!!! more detail?]
 
-```{r}
+```{r Leeds to Sheffield GPS data}
 # download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 ogrListLayers(dsn = "data/gps-trace.gpx") # which layers are available?
@@ -134,7 +134,7 @@ In the code below, we harness the
 power of the `rgeos` package and its `gSimplify` function to simplify 
 spatial R objects (the code can also be used to simplify polygon geometries):
 
-```{r}
+```{r fig.keep='none'}
 library(rgeos)
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 (object.size(shf2lds.simple) / object.size(shf2lds))[1]
@@ -146,11 +146,12 @@ In the above block of code, `gSimplify` is given the object
 `shf2lds` and the `tol` argument, short for "tolerance",
 is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
-The comparison between the simplified object and the orginal shows 
+Comparison between the sizes of the simplified object and the orginal shows 
 that the new object is less than 3% of its original size. 
-Yet when visualised using the `plot` function, it is clear that the object
+Try plotting the orginal and simplified tracks on your computer:
+when visualised using the `plot` function, it becomes clear that the object
 `shf2lds.simple` retains the overall shape of the line and is virtually
-indistinguishable from the orginal object when plotted as a small scale map.
+indistinguishable from the orginal object.
 
 This example is rather contrived because even the larger object 
 `shf2lds` is only `r round(object.size(shf2lds) / 1000000, 3)[1]` Mb, 
@@ -211,7 +212,7 @@ One-to-one spatial joins are by far the easiest to understand and compute
 because they simply involve the transfer of attributes in one layer to 
 another, based on location. A one-to-one join is depicted in figure x below. 
 
-```{r, echo=FALSE}
+```{r Illustration of a one-to-one spatial join , echo=FALSE}
 plot(lnd)
 points(coordinates(lnd))
 ```
@@ -228,7 +229,7 @@ set.seed(5876)
 ```
 
 
-```{r}
+```{r Input data for a spatial join}
 lnd.stations <- readOGR("data/", "lnd-stns", p4s="+init=epsg:27700")
 plot(lnd)
 plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),], add = T)
@@ -250,7 +251,7 @@ point data such that only those that lie within London's administrative zones ar
 selected. This in itself is a kind of spatial join, and can be accomplished with the 
 following code. 
 
-```{r}
+```{r A spatial subset of the points}
 proj4string(lnd) <- proj4string(lnd.stations)
 lnd.stations <- lnd.stations[lnd, ] # select only points within lnd
 plot(lnd.stations) # check the result
@@ -308,7 +309,7 @@ spatial object equivalent to `lnd` but with updated attribute
 data to reflect the results of the spatial aggregation. The results, 
 with a legend and colours added, are presented in Fig !!! below.
 
-```{r, echo=F, eval=FALSE}
+```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
 library(RColorBrewer)
 brewer.pal.info
 cols <- brewer.pal(4, "Greens")

@@ -2,8 +2,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
-\usepackage{ifxetex}
-\usepackage{fixltx2e} % provides \textsubscript
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
 \ifnum 0\ifxetex 1\fi=0 % if pdftex
@@ -337,7 +335,7 @@ for showing population datasets}
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/World_map_with_continuous_colour_ramp_fill.png}
-\caption{World map with continuous colour ramp fill}
+\caption{plot of chunk World map with continuous colour ramp fill}
 \end{figure}
 
 \section{better colours with more breaks- to finish}
@@ -403,7 +401,7 @@ time:
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/World_map_with_custom_lines_added1.png}
-\caption{World map with custom lines added}
+\caption{plot of chunk World map with custom lines added}
 \end{figure}
 
 \begin{Shaded}
@@ -415,7 +413,7 @@ time:
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/World_map_with_custom_lines_added2.png}
-\caption{World map with custom lines added}
+\caption{plot of chunk World map with custom lines added}
 \end{figure}
 
 \begin{Shaded}
@@ -430,7 +428,7 @@ time:
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/World_map_with_custom_lines_added3.png}
-\caption{World map with custom lines added}
+\caption{plot of chunk World map with custom lines added}
 \end{figure}
 
 Here we created an empty plot, meaning that each new layer must be given
@@ -449,7 +447,7 @@ to add a pre-made arrow:
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/World_map_with_a_North_arrow.png}
-\caption{World map with a North arrow}
+\caption{plot of chunk World map with a North arrow}
 \end{figure}
 
 \section{scale bar- found this function}
@@ -572,7 +570,7 @@ uploaded Open Street Map. {[}!!! more detail?{]}
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/Leeds_to_Sheffield_GPS_data.png}
-\caption{Leeds to Sheffield GPS data}
+\caption{plot of chunk Leeds to Sheffield GPS data}
 \end{figure}
 
 There is a lot going on in the preceding 7 lines of code, including
@@ -832,7 +830,7 @@ figure x below.
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/Illustration_of_a_one-to-one_spatial_join_.png}
-\caption{Illustration of a one-to-one spatial join}
+\caption{plot of chunk Illustration of a one-to-one spatial join}
 \end{figure}
 
 Many-to-one spatial joins involve taking a spatial layer with many
@@ -866,7 +864,7 @@ administrative boundaries, as represented in Fig. x.
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/Input_data_for_a_spatial_join.png}
-\caption{Input data for a spatial join}
+\caption{plot of chunk Input data for a spatial join}
 \end{figure}
 
 The above code reads in a \texttt{SpatialPointsDataFrame} consisting of
@@ -909,7 +907,7 @@ following code.
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/A_spatial_subset_of_the_points.png}
-\caption{A spatial subset of the points}
+\caption{plot of chunk A spatial subset of the points}
 \end{figure}
 
 The station points now clearly follow the form of the \texttt{lnd}

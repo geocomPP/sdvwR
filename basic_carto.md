@@ -13,22 +13,17 @@ library(grid)
 
 # get data- map of the world
 
+To download data of the world the block of code below was used. 
+It is commented out because the data may already be on your system.
+Uncomment each new line (by deleting the `#` symbol) if you need to 
+download and extract the data.
+
 
 ```r
-# uncomment first two lines if data not already downloaded
 # download.file(url='http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip',
 # 'ne_110m_admin_0_countries.zip', 'auto')
 # unzip('ne_110m_admin_0_countries.zip', exdir = 'data/')
-file.remove("ne_110m_admin_0_countries.zip")
-```
-
-```
-## Warning: cannot remove file 'ne_110m_admin_0_countries.zip', reason 'No
-## such file or directory'
-```
-
-```
-## [1] FALSE
+# file.remove('ne_110m_admin_0_countries.zip')
 ```
 
 
@@ -70,8 +65,8 @@ wrld.rob.f <- fortify(wrld, region = "sov_a3")
 
 ```
 ## Loading required package: rgeos
-## rgeos version: 0.2-19, (SVN revision 394)
-##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
+## rgeos version: 0.3-2, (SVN revision 413M)
+##  GEOS runtime version: 3.3.9-CAPI-1.7.9 
 ##  Polygon checking: TRUE
 ```
 
@@ -93,7 +88,7 @@ ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + geom_polygon
     ggtitle("World Population")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk World map with continuous colour ramp fill](figure/World_map_with_continuous_colour_ramp_fill.png) 
 
 
 #better colours with more breaks- to finish
@@ -147,13 +142,13 @@ names(arrow) <- c("x", "y")
 qplot(data = arrow, x = x, y = y)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-61.png) 
+![plot of chunk World map with custom lines added](figure/World_map_with_custom_lines_added1.png) 
 
 ```r
 qplot(data = arrow, x = x, y = y) + geom_line()
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-62.png) 
+![plot of chunk World map with custom lines added](figure/World_map_with_custom_lines_added2.png) 
 
 ```r
 arrow <- arrow * 5 - 40
@@ -162,7 +157,7 @@ ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = 
     geom_line(data = arrow, aes(x, y))
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-63.png) 
+![plot of chunk World map with custom lines added](figure/World_map_with_custom_lines_added3.png) 
 
 
 Here we created an empty plot, meaning that each new layer must be given its 
@@ -176,7 +171,7 @@ ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = 
     geom_line(aes(x = c(-160, -160), y = c(0, 25)), arrow = arrow())
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk World map with a North arrow](figure/World_map_with_a_North_arrow.png) 
 
 
 

@@ -14,8 +14,9 @@ underlying structure of spatial data in R: how it 'sees' spatial data is quite u
 In most situations, the starting point of spatial analysis tasks is 
 loading in pre-existing datasets. These may originate from government agencies, 
 remote sensing devices or 'volunteered geographical information' from GPS devices, 
-online databases such as Open Street Map or geo-tagged social media (Goodchild 2007).
-In any case, the diversity of geographical data formats is large. 
+online databases such as Open Street Map or geo-tagged 
+social media (Goodchild 2007).
+The diversity of geographical data formats is large. 
 
 R is able to import a very wide range of spatial data formats thanks to its
 interface with the Geospatial Data Abstraction Library (GDAL), which is 
@@ -40,11 +41,11 @@ library(rgdal)  # load the gdal package
 
 ```
 ## Loading required package: sp
-## rgdal: version: 0.8-14, (SVN revision 496)
+## rgdal: version: 0.8-11, (SVN revision 479M)
 ## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.9.0, released 2011/12/29
-## Path to GDAL shared files: /usr/share/gdal/1.9
-## Loaded PROJ.4 runtime: Rel. 4.7.1, 23 September 2009, [PJ_VERSION: 470]
+## Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+## Path to GDAL shared files: /usr/share/gdal
+## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
 ## Path to PROJ.4 shared files: (autodetected)
 ```
 
@@ -84,7 +85,7 @@ shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load
 points(shf2lds.p[seq(1, 3000, 100), ])
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+![plot of chunk Leeds to Sheffield GPS data](figure/Leeds_to_Sheffield_GPS_data.png) 
 
 
 There is a lot going on in the preceding 7 lines of code, including functions that 
@@ -145,7 +146,7 @@ object.size(shf2lds)
 ```
 
 ```
-## 103168 bytes
+## 107464 bytes
 ```
 
 ```r
@@ -153,7 +154,7 @@ object.size(lnd)
 ```
 
 ```
-## 79168 bytes
+## 125544 bytes
 ```
 
 
@@ -228,7 +229,7 @@ library(rgeos)
 
 ```
 ## rgeos version: 0.3-2, (SVN revision 413M)
-##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
+##  GEOS runtime version: 3.3.9-CAPI-1.7.9 
 ##  Polygon checking: TRUE
 ```
 
@@ -238,7 +239,7 @@ shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 ```
 
 ```
-## [1] 0.03047
+## [1] 0.04608
 ```
 
 ```r
@@ -246,21 +247,20 @@ plot(shf2lds.simple)
 plot(shf2lds, col = "red", add = T)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
-
 
 In the above block of code, `gSimplify` is given the object 
 `shf2lds` and the `tol` argument, short for "tolerance",
 is set at 0.001 (much larger values may be needed, for
 data that use is *projected* - does not use latitude and longitude).
-The comparison between the simplified object and the orginal shows 
+Comparison between the sizes of the simplified object and the orginal shows 
 that the new object is less than 3% of its original size. 
-Yet when visualised using the `plot` function, it is clear that the object
+Try plotting the orginal and simplified tracks on your computer:
+when visualised using the `plot` function, it becomes clear that the object
 `shf2lds.simple` retains the overall shape of the line and is virtually
-indistinguishable from the orginal object when plotted as a small scale map.
+indistinguishable from the orginal object.
 
 This example is rather contrived because even the larger object 
-`shf2lds` is only 0.103 Mb, 
+`shf2lds` is only 0.107 Mb, 
 negligible compared with the gigabytes of RAM available to modern computers. 
 However, it underlines a wider point: for *visualisation* purposes at 
 small spatial scales (i.e. covering a large area of the Earth on a small map), 
@@ -318,7 +318,7 @@ One-to-one spatial joins are by far the easiest to understand and compute
 because they simply involve the transfer of attributes in one layer to 
 another, based on location. A one-to-one join is depicted in figure x below. 
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk Illustration of a one-to-one spatial join ](figure/Illustration_of_a_one-to-one_spatial_join_.png) 
 
 
 Many-to-one spatial joins involve taking a spatial layer with many elements
@@ -350,7 +350,7 @@ plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),
     ], add = T)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk Input data for a spatial join](figure/Input_data_for_a_spatial_join.png) 
 
 
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532 transport nodes
@@ -386,7 +386,7 @@ lnd.stations <- lnd.stations[lnd, ]  # select only points within lnd
 plot(lnd.stations)  # check the result
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk A spatial subset of the points](figure/A_spatial_subset_of_the_points.png) 
 
 
 The station points now clearly follow the form of the `lnd` shape, indicating that the 
@@ -481,59 +481,14 @@ London borough, and the standard deviation:
 ```r
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
 summary(lndAvMice)
-```
-
-```
-## Object of class SpatialPolygonsDataFrame
-## Coordinates:
-##      min    max
-## x 503571 561941
-## y 155851 200932
-## Is projected: TRUE 
-## proj4string :
-## [+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717
-## +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m
-## +no_defs
-## +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894]
-## Data attributes:
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    8.83    9.32   10.10   10.00   10.50   11.80
-```
-
-```r
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
 summary(lndSdMice)
 ```
 
-```
-## Object of class SpatialPolygonsDataFrame
-## Coordinates:
-##      min    max
-## x 503571 561941
-## y 155851 200932
-## Is projected: TRUE 
-## proj4string :
-## [+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717
-## +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m
-## +no_defs
-## +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894]
-## Data attributes:
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    1.50    2.73    2.92    2.96    3.25    4.31
-```
 
 
 
 
 
-```r
-lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
-```
-
-
-
-
-
-### Aggregation
 
 ### Clipping

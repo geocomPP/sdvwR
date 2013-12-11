@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.12.3)  11 DEC 2013 09:10
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.12.3)  11 DEC 2013 09:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**book.tex
-(./book.tex
+**chapter.tex
+(./chapter.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 2 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -725,8 +725,8 @@ Package hyperref Warning: Option `bookmarks' has already been used,
 (hyperref)                setting the option has no effect on input line 65.
 
 Package hyperref Info: Option `colorlinks' set `true' on input line 65.
-(./book.aux)
-\openout1 = `book.aux'.
+(./chapter.aux)
+\openout1 = `chapter.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
 LaTeX Font Info:    ... okay on input line 75.
@@ -813,9 +813,9 @@ LaTeX Info: Redefining \ref on input line 75.
 LaTeX Info: Redefining \pageref on input line 75.
 LaTeX Info: Redefining \nameref on input line 75.
 
-(./book.out) (./book.out)
+(./chapter.out) (./chapter.out)
 \@outlinefile=\write4
-\openout4 = `book.out'.
+\openout4 = `chapter.out'.
 
  [1
 
@@ -1095,22 +1095,22 @@ Overfull \hbox (6.74898pt too wide) in paragraph at lines 1059--1059
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1113.
  [27]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 1113.
- (./book.aux)
+ (./chapter.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1113.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1113.
 
-Package rerunfilecheck Info: File `book.out' has not changed.
+Package rerunfilecheck Info: File `chapter.out' has not changed.
 (rerunfilecheck)             Checksum: AFBCF7DD10A0F1C3D9A451B953BFD638;7669.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1113.
  ) 
 Here is how much of TeX's memory you used:
  12306 strings out of 495031
- 177366 string characters out of 6181531
- 266720 words of memory out of 5000000
+ 177405 string characters out of 6181531
+ 266723 words of memory out of 5000000
  15138 multiletter control sequences out of 15000+600000
  45732 words of font info for 100 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 30i,6n,35p,596b,493s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,6n,35p,599b,493s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
 ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share
 /texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
@@ -1120,7 +1120,7 @@ pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/t
 ype1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></
 usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/
 public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb>
-Output written on book.pdf (27 pages, 404511 bytes).
+Output written on chapter.pdf (27 pages, 404511 bytes).
 PDF statistics:
  397 PDF objects out of 1000 (max. 8388607)
  341 compressed objects within 4 object streams

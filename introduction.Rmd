@@ -216,3 +216,7 @@ you can either be more specific with the search term (e.g. "R spatial statistics
 or use an R specific search engine such as [rseek.org](http://www.rseek.org/).
 You can also search of online help *from within R* using the command `RSiteSearch`.
 E.g. `RSiteSearch("spatial statistics")`. Experiment and see which you prefer!
+
+
+
+

@@ -28,8 +28,6 @@ download and extract the data.
 
 
 
-
-
 # read shape file using rgdal library
 
 
@@ -52,21 +50,14 @@ wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 
 ```r
 wrld.rob <- spTransform(wrld, CRS("+init=ESRI:54030"))
-```
-
-```
-## Error: error in evaluating the argument 'CRSobj' in selecting a method for function 'spTransform': Error in CRS("+init=ESRI:54030") : no system list, errno: 2
-```
-
-```r
 
 wrld.rob.f <- fortify(wrld, region = "sov_a3")
 ```
 
 ```
 ## Loading required package: rgeos
-## rgeos version: 0.3-2, (SVN revision 413M)
-##  GEOS runtime version: 3.3.9-CAPI-1.7.9 
+## rgeos version: 0.2-16, (SVN revision 389)
+##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
 ##  Polygon checking: TRUE
 ```
 

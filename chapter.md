@@ -5,8 +5,8 @@ What is R?
 ----------
 
 R is a free and open source computer program that runs on all major
-operating systems. R relies primarily on the *command line* for data
-input: instead of interacting with the program by moving your mouse
+operating systems. R relies primarily on a *command line* interface for
+data input: instead of interacting with the program by moving your mouse
 around clicking on different parts of the screen, users enter commands
 via the keyboard. This will seem to strange to people accustomed to
 relying on a graphical user interface (GUI) for most of their computing,
@@ -99,19 +99,27 @@ et al. 2013, p. 5); R excels at each of these tasks.
 That being said, there are a few major differences between R and
 conventional GIS programs in terms of spatial data visualisation: R is
 more suited to creating one-off graphics than exploring spatial data
-through repeated zooming, panning and spatial sub-setting using
-custom-drawn polygons, compared with conventional GIS programs. Although
-interactive maps in R can be created (e.g. using the web interface
-`shiny`), it is recommended that R is used *in addition to* rather than
-as a direct replacement of dedicated GIS programs, especially now that
-there are myriad free options to try (Sherman 2008). An additional point
-is that while dedicated GIS programs handle spatial data by default and
-display the results in a single way, there are various options in R that
-must be decided by the user, for example whether to use R's base
-graphics or a dedicated graphics package such as ggplot2. On the other
-hand, the main benefits of R for spatial data visualisation lie in the
-*reproducibility* of its outputs, a feature that we will be using to
-great effect in this chapter.
+interactively on a map. Conventional GIS packages are better at repeated
+zooming, panning and spatial sub-setting using custom-drawn polygons
+than R. Use of the `locator` function allows some interactive selection
+capabilities in R, but these are limited (Bivand et al. 2013, 3.4).
+Although interactive maps in R can be created (e.g. using the web
+interface `shiny`), R should not be seen as a direct replacement of
+dedicated GIS programs, especially now that there are myriad free
+options to try (Sherman 2008). One should use the program which is most
+appropriate for the task: R can tackle almost any spatial visualisation
+problem and may be the best option in many cases. In others, however, it
+may be best used alongside other programs (e.g. Google Earth).
+
+While dedicated GIS programs handle spatial data by default and display
+the results in a single way, there are various options in R that must be
+decided by the user. This can be daunting. For example, the user must
+decide whether to use R's base graphics or a dedicated graphics package
+such as ggplot2 for mapping. On the other hand, a major benefit of R is
+that allows spatial and non-spatial analysis to occur in a *consistent*
+and *cohesive* framework. Another benefit of R for spatial data
+visualisation lies in the *reproducibility* of its outputs, a feature
+that we will be using to great effect in this chapter.
 
 R for Reproducible research
 ---------------------------
@@ -148,55 +156,163 @@ introductory session will therefore serve as an introduction to R's
 unque *syntax*, as well an illustration of how other visualisations
 presented in this chapter can be reproduced.
 
+R's syntax
+----------
+
+### Objects
+
+### Functions and arguments
+
+Most operations that are performed on objects are done using
+*functions*. Understanding functions and their various *arguments* is
+key to manipulating and visualising data in R: the more functions and
+arguments you know, the more you will be able to do. Functions, in broad
+terms, are operations that change objects in R from one thing to
+another. In mathematical language, they *map* sets of numbers onto each
+other. Arguments are the variables or parameters that are fed into
+functions to alter their behavior. In terms of R's syntax, arguments are
+separated by commas within the curved brackets that follow from the
+function's name. A source of confusion with arguments can be that in
+some cases they can be inserted directly, wheras in others R needs to be
+told which argument is being referred to, as illustrated in the code
+below:
+
+~~~~ {.r}
+seq(from = 0, to = 2, by = 0.5)
+~~~~
+
+    ## [1] 0.0 0.5 1.0 1.5 2.0
+
+~~~~ {.r}
+seq(0, 2, 0.5)
+~~~~
+
+    ## [1] 0.0 0.5 1.0 1.5 2.0
+
+~~~~ {.r}
+
+seq(0, 2, length.out = 6)
+~~~~
+
+    ## [1] 0.0 0.4 0.8 1.2 1.6 2.0
+
+~~~~ {.r}
+seq(0, 2, 6)
+~~~~
+
+    ## [1] 0
+
+Before learning about specific functions for spatial analysis and
+visualisation, it is worth taking some time to think about what a
+function is and how the arguments passed to it affect how it works. The
+function `plot` is a good example, because it can take many different
+input datasets and arguments and produces very different results
+depending on the arguments it is given. Let's start with a basic
+example:
+
+~~~~ {.r}
+x <- 1:20
+y <- 20 * x^2 - x^3
+plot(x, y)
+~~~~
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png)
+
+In the above code, the funtion `plot` was given two arguments, `x` and
+`y` and its default settings are to interpret these as values on a
+cartesian coordinate system to plot.
+
 Chapter overview
 ----------------
 
-including of example dataset used.
+Map Production: Best Practice
+=============================
 
-Endnotes
---------
+Good maps depend on sound analysis and data preparation and can have an
+enormous impact on the understanding and communication of results. It
+has never been easier to produce a map. The underlying data required are
+available in unprecedented volumes and the technological capabilities of
+transforming them into compelling maps and graphics are increasingly
+sophisticated and straightforward to use. Data and software, however,
+only offer the starting points of good spatial data visualisation since
+they need to be refined and calibrated by the researchers seeking to
+communicate their findings. In this section we will run through the
+features of a good map. We will then seek to emulate them with R in
+Section XX. It is worth noting that not all good maps and graphics
+contain all the features below – they should simply be seen as
+suggestions rather than firm principles.
 
-1.  R's name originates from the creators of R, Ross Ihaka and Robert
-    Gentleman. R is an open source implementation of the statistical
-    programming language S, so its name is also a play on words that
-    makes implicit reference to this.
+Effective map making is hard process – as Krygier and Wood (XXX) put it
+“there is a lot to see, think about, and do” (p6). It often comes at the
+end of a period of intense data analysis and perhaps when the priority
+is to get a paper finished or results published and can therefore be
+rushed as a result. The beauty of R (and other scripting languages) is
+the ability to save code and simply re-run it with different data.
+Colours, map adornments and other parameters can therefore be quickly
+applied so it is well worth creating a template script that adheres to
+best practice.
 
-2.  R is notoriously difficult to search for on major search engines, as
-    it is such a common letter with many other uses beyond the name of a
-    statistical programming language. This should not be a deterrent, as
-    R has a wealth of excellent online resources. To overcome the issue,
-    you can either be more specific with the search term (e.g. "R
-    spatial statistics") or use an R specific search engine such as
-    [rseek.org](http://www.rseek.org/). You can also search of online
-    help *from within R* using the command `RSiteSearch`. E.g.
-    `RSiteSearch("spatial statistics")`. Experiment and see which you
-    prefer!
+We have selected ggplot2 as our package of choice for the bulk of our
+maps and spatial data visualisations because it has a number of these
+elements at its core. The “gg” in its slightly odd name stands for
+“Grammar of Graphics”, which is a set of rules developed by Leland
+Wilkinson (2005) in a book of the same name. Grammar in the context of
+graphics works in much the same way as it does in language- it provides
+a structure. The structure is informed by both human perception and also
+mathematics to ensure that the resulting visualisations are both
+technically sound and comprehensible. Through creating ggplot2, Hadley
+Wickham, implemented these rules as well as developing ways in which
+plots can be built up in layers (see Wickham, 2010). This layering
+component is especially useful in the context of spatial data since it
+is conceptually the same as map layers in Geographical Information
+Systems (GIS).
+
+First load the libraries required for this section:
 
 ~~~~ {.r}
-# Packages we'll be using for this session
 library(rgdal)
-library(ggplot2)
-library(grid)
-# setwd('/Users/james/Dropbox/Abstracts_Papers_Reviews/Geocomp_Chapter')
 ~~~~
 
-get data- map of the world
-==========================
-
-To download data of the world the block of code below was used. It is
-commented out because the data may already be on your system. Uncomment
-each new line (by deleting the `#` symbol) if you need to download and
-extract the data.
+    ## Loading required package: sp
+    ## rgdal: version: 0.8-14, (SVN revision 496)
+    ## Geospatial Data Abstraction Library extensions to R successfully loaded
+    ## Loaded GDAL runtime: GDAL 1.9.0, released 2011/12/29
+    ## Path to GDAL shared files: /usr/share/gdal/1.9
+    ## Loaded PROJ.4 runtime: Rel. 4.7.1, 23 September 2009, [PJ_VERSION: 470]
+    ## Path to PROJ.4 shared files: (autodetected)
 
 ~~~~ {.r}
-# download.file(url='http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip',
-# 'ne_110m_admin_0_countries.zip', 'auto')
-# unzip('ne_110m_admin_0_countries.zip', exdir = 'data/')
-# file.remove('ne_110m_admin_0_countries.zip')
+library(ggplot2)
+library(gridExtra)
 ~~~~
 
-read shape file using rgdal library
-===================================
+    ## Loading required package: grid
+
+You will also need create a folder and then set it as your working
+directory. Below we assume the name is `Uname`, and the folder is saved
+as `sdvwR` in the Desktop in Windows.
+
+~~~~ {.r}
+setwd("c:/Users/Uname/Desktop/sdvwR")
+~~~~
+
+For this section we are going to use a map of the world to demonstrate
+some of the cartographic principles discussed. A world map is available
+from the Natural Earth website. The code below will download this and
+save it to your working directory.
+
+~~~~ {.r}
+download.file(url = "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip", 
+    "ne_110m_admin_0_countries.zip", "auto")
+unzip("ne_110m_admin_0_countries.zip", exdir = "data/")  # unzip to data folder
+file.remove("ne_110m_admin_0_countries.zip")  # remove zip file
+~~~~
+
+    ## [1] TRUE
+
+Once downloaded we can then load the data into the R console. We have
+just downloaded a shapefile, which as Section XX explains, is not
+handled as a "standard" data object in R.
 
 ~~~~ {.r}
 wrld <- readOGR("data/", "ne_110m_admin_0_countries")
@@ -207,152 +323,211 @@ wrld <- readOGR("data/", "ne_110m_admin_0_countries")
     ## with 177 features and 63 fields
     ## Feature type: wkbPolygon with 2 dimensions
 
-transform this to the robinson projection- this is much better for showing population datasets
-==============================================================================================
-
 ~~~~ {.r}
-wrld.rob <- spTransform(wrld, CRS("+init=ESRI:54030"))
+plot(wrld)
 ~~~~
 
-    ## Error: error in evaluating the argument 'CRSobj' in selecting a method for function 'spTransform': Error in CRS("+init=ESRI:54030") : no system list, errno: 2
+![plot of chunk Initial plot of world
+boundaries](figure/Initial_plot_of_world_boundaries.png)
+
+To see the first ten rows of attribute information assocuiated with each
+of the country boundaries type the following
 
 ~~~~ {.r}
+head(wrld@data)
+~~~~
 
-wrld.rob.f <- fortify(wrld, region = "sov_a3")
+You can see there are a lot of columns associated with this file.
+Although we will keep all of the them, we are only really interested in
+the population estimate ("pop\_est") field. Before progressing it is is
+worth reprojecting the data in order that the population data can be
+seen better. The coordinate reference system of the wrld shapefile is
+currently WGS84. This the common latitude and longitude format that all
+spatial software packages understand. From a cartographic perspective
+the standard plots of this projection, of the kind produced above, are
+not suitable since they distort the shapes of those countries further
+from the equator. Instead the Robinson projection provides a good
+compromise between areal distortion and shape preservation. We therefore
+project it as follows.
+
+~~~~ {.r}
+library(geosphere)
+wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
+plot(wrld.rob)
+~~~~
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png)
+
+"ESRI: 54030" is the reference code of the Robinson prjection in the
+database of projections that R downloads with the rgdal package. You
+will have spotted from the plot that the countries in the world map are
+much better proportioned.
+
+We now need to "fortify" this spatial data to convert it into a format
+that ggplot2 understands, we also use "merge" to re-attach the attribute
+data that is lost in the fortify operation.
+
+~~~~ {.r}
+# fortify requires rgeos or maptools packages - have we already loaded it?
+# !!!
+wrld.rob.f <- fortify(wrld.rob, region = "sov_a3")
 ~~~~
 
     ## Loading required package: rgeos
     ## rgeos version: 0.3-2, (SVN revision 413M)
-    ##  GEOS runtime version: 3.3.9-CAPI-1.7.9 
+    ##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
     ##  Polygon checking: TRUE
 
 ~~~~ {.r}
 
-wrld.pop.f <- merge(wrld.rob.f, wrld@data, by.x = "id", by.y = "sov_a3")
+wrld.pop.f <- merge(wrld.rob.f, wrld.rob@data, by.x = "id", by.y = "sov_a3")
 ~~~~
-
-continuous colour ramp
-======================
 
 ~~~~ {.r}
-ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + geom_polygon() + 
+# continuous colour ramp
+
+map <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + geom_polygon() + 
     coord_equal() + labs(x = "Longitude", y = "Latitude", fill = "World Population") + 
     ggtitle("World Population")
+
+# better colours with more breaks- to finish
+
+map + scale_fill_continuous(breaks = c(10^c(8, 9)))
 ~~~~
 
-![plot of chunk World map with continuous colour ramp
-fill](figure/World_map_with_continuous_colour_ramp_fill.png)
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png)
 
-better colours with more breaks- to finish
-==========================================
+~~~~ {.r}
 
-map+ scale\_fill\_continuous(breaks=)
-
-categorical variables
-=====================
+# categorical variables
+~~~~
 
 Conforming to colour conventions
 ================================
 
-map2\<- ggplot(wrld.pop.f, aes(long, lat, group = group)) +
-coord\_equal()
+Colour has an enormous impact on how people will percieve your graphic.
+"Readers" of a map come to it with a range of pre-conceptions about how
+the world looks. If the map's purpose is to clearly communicate data
+then it is often advisable to conform to conventions so as not to
+disorientate readers to ensure they can focus on the key messages
+contained in the data. A good example of this is the use of blue for
+bodies of water and green for landmass. The code example below generates
+two plots with our wrld.pop.f object. The first colours the land blue
+and the sea (in this case the background to the map) green and the
+second is more conventional. We use the "grid.arrange" function from the
+"gridExtra" package to display the maps side by side.
 
-blue\<-map2+ geom\_polygon(fill="light blue") + theme(panel.background =
-element\_rect(fill = "dark green"))
+~~~~ {.r}
+map2 <- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
 
-green\<-map2 + geom\_polygon(fill="dark green") + theme(panel.background
-= element\_rect(fill = "light blue"))
+blue <- map2 + geom_polygon(fill = "light blue") + theme(panel.background = element_rect(fill = "dark green"))
 
-grid.arrange(green, blue, ncol=2)
+green <- map2 + geom_polygon(fill = "dark green") + theme(panel.background = element_rect(fill = "light blue"))
+
+grid.arrange(blue, green, ncol = 2)
+~~~~
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png)
 
 Experimenting with line colour and line widths
 ==============================================
 
-map3\<-map2+theme(panel.background = element\_rect(fill = "light blue"))
+In addition to conforming to colour conventions, line colour and width
+offer important parameters, which are often overlooked tools for
+increasing the legibility of a graphic. As the code below demonstrates,
+it is possible to adjust line colour through using the "colour"
+parameter and the line width using the "lwd" parameter. The impact of
+different line widths will vary depending on your screen size and
+resolution. If you save the plot to pdf (or an image) then the size at
+which you do this will also affect the line widths.
 
-yellow\<-map3+ geom\_polygon(fill="dark green", colour="yellow")
+~~~~ {.r}
+map3 <- map2 + theme(panel.background = element_rect(fill = "light blue"))
 
-black\<-map3+geom\_polygon(fill="dark green", colour="black")
+yellow <- map3 + geom_polygon(fill = "dark green", colour = "yellow")
 
-thin\<-map3+ geom\_polygon(fill="dark green", colour="black", lwd=0.1)
+black <- map3 + geom_polygon(fill = "dark green", colour = "black")
 
-thick\<-map3+ geom\_polygon(fill="dark green", colour="black", lwd=1.5)
+thin <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 0.1)
 
-grid.arrange(yellow, black,thick, thin, ncol=2)
+thick <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 1.5)
 
-Annotations
-===========
+grid.arrange(yellow, black, thick, thin, ncol = 2)
+~~~~
 
-North arrow
-===========
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png)
 
-In the maps created so far, we have defined the *aesthetics* of the map
-in the foundation function `ggplot`. The result of this is that all
+There are other parameters such as layer transparency that can be
+applied to all aspects of the plot - both points, lines and polygons -
+that we will reference in later examples in this chapter.
+
+Map Adornments and Annotations
+==============================
+
+Map adornments and annotations are essential to orientate the viewer and
+provide context; they include graticules, north arrows, scale bars and
+data attribution. Not all are required on a single map, indeed it is
+often best that they are used sparingly to avoid unecessary clutter
+(Monkhouse and Wilkinson, 1971). Unfortunately it is not always as
+straightforward to add these in R, and perhaps less so using the ggplot2
+paradigm, when compared to a conventional GIS. Here we will outline the
+ways in which annotations can be added.
+
+!!!! In the maps created so far, we have defined the *aesthetics* of the
+map in the foundation function `ggplot`. The result of this is that all
 subsequent layers are expected to have the same variables and
 essentially contain data with the same dimensions as original dataset.
 But what if we want to add a new layer from a completely different
-dataset, e.g. to add an arrow? To do this, we must not add any arguments
-to the `ggplot` function, only adding data sources one layer at a time:
+dataset To do this, we must not add any arguments to the `ggplot`
+function, only adding data sources one layer at a time:
 
-~~~~ {.r}
-arrow <- data.frame(c(2.97, 2.97, 2.9, 3, 3.1, 3.03, 3.03, 2.97), c(1, 4, 4, 
-    5.5, 4, 4, 1, 1))
-names(arrow) <- c("x", "y")
-qplot(data = arrow, x = x, y = y)
-~~~~
-
-![plot of chunk World map with custom lines
-added](figure/World_map_with_custom_lines_added1.png)
-
-~~~~ {.r}
-qplot(data = arrow, x = x, y = y) + geom_line()
-~~~~
-
-![plot of chunk World map with custom lines
-added](figure/World_map_with_custom_lines_added2.png)
-
-~~~~ {.r}
-arrow <- arrow * 5 - 40
-
-ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
-    geom_line(data = arrow, aes(x, y))
-~~~~
-
-![plot of chunk World map with custom lines
-added](figure/World_map_with_custom_lines_added3.png)
-
-Here we created an empty plot, meaning that each new layer must be given
-its own dataset. While more code is needed in this example, it enables
-much greater flexibility with regards to what can be included in new
-layer contents. Another possibility is to use the `segment` geom to add
-a pre-made arrow:
+North arrow
+===========
 
 ~~~~ {.r}
 ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
     geom_line(aes(x = c(-160, -160), y = c(0, 25)), arrow = arrow())
 ~~~~
 
-![plot of chunk World map with a North
-arrow](figure/World_map_with_a_North_arrow.png)
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png)
 
-scale bar- found this function
-==============================
+~~~~ {.r}
 
-hscale\_segment = function(breaks, ...) { y =
-unique(breaks$y) stopifnot(length(y) == 1) dx = max(breaks$x) -
-min(breaks$x) dy = 1/30 * dx hscale = data.frame(ix=min(breaks$x), iy=y,
-jx=max(breaks$x), jy=y) vticks = data.frame(ix=breaks$x, iy=(y - dy),
-jx=breaks\$x, jy=(y + dy)) df = rbind(hscale, vticks)
-return(geom\_segment(data=df, aes(x=ix, xend=jx, y=iy, yend=jy), ...))
 
+# scale bar- found this function
+
+hscale_segment = function(breaks, ...) {
+    y = unique(breaks$y)
+    stopifnot(length(y) == 1)
+    dx = max(breaks$x) - min(breaks$x)
+    dy = 1/30 * dx
+    hscale = data.frame(ix = min(breaks$x), iy = y, jx = max(breaks$x), jy = y)
+    vticks = data.frame(ix = breaks$x, iy = (y - dy), jx = breaks$x, jy = (y + 
+        dy))
+    df = rbind(hscale, vticks)
+    return(geom_segment(data = df, aes(x = ix, xend = jx, y = iy, yend = jy), 
+        ...))
+    
 }
 
-hscale\_text = function(breaks, ...) { dx =
-max(breaks$x) - min(breaks$x) dy = 2/30 \* dx breaks$y = breaks$y + dy
-return(geom\_text(data=breaks, aes(x=x, y=y, label=label), hjust=0.5,
-vjust=0, ...))
-
+hscale_text = function(breaks, ...) {
+    dx = max(breaks$x) - min(breaks$x)
+    dy = 2/30 * dx
+    breaks$y = breaks$y + dy
+    return(geom_text(data = breaks, aes(x = x, y = y, label = label), hjust = 0.5, 
+        vjust = 0, ...))
+    
 }
+~~~~
+
+There is an almost infinite number of different combinations of the
+above parameters so take inspiration from maps and graphics you have
+seen and liked. The process is an iterative one, it will take multiple
+attempts to get right. Show your map to friends and colleagues- all will
+have an opinion but don’t be afraid to stand by the decisions you have
+taken.
+
+Consistency- across papers.
 
 R and Spatial Data
 ==================
@@ -833,6 +1008,10 @@ GIS (2nd Ed.). New York: The Guildford Press.
 Longley, P., Goodchild, M. F., Maguire, D. J., & Rhind, D. W. (2005).
 Geographic information systems and science. John Wiley & Sons.
 
+Monkhouse, F.J. and Wilkinson, H. R. (1973). Maps and Diagrams Their
+Compilation and Construction (3rd Edition, reprinted with revisions).
+London: Methuen & Co Ltd.
+
 Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future.
 GeoInformatics, 16(4).
 
@@ -848,3 +1027,29 @@ http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf .
 
 Wickham, H. (2009). ggplot2: elegant graphics for data analysis.
 Springer.
+
+Wickham, H. (2010). A Layered Grammar of Graphics. American Statistical
+Association, Institute of Mathematics Statistics and Interface
+Foundation of North America Journal of Computational and Graphical
+Statistics. 19, 1: 3-28.
+
+Endnotes
+========
+
+1.  R's name originates from the creators of R, Ross Ihaka and Robert
+    Gentleman. R is an open source implementation of the statistical
+    programming language S, so its name is also a play on words that
+    makes implicit reference to this.
+
+2.  R is notoriously difficult to search for on major search engines, as
+    it is such a common letter with many other uses beyond the name of a
+    statistical programming language. This should not be a deterrent, as
+    R has a wealth of excellent online resources. To overcome the issue,
+    you can either be more specific with the search term (e.g. "R
+    spatial statistics") or use an R specific search engine such as
+    [rseek.org](http://www.rseek.org/). You can also search of online
+    help *from within R* using the command `RSiteSearch`. E.g.
+    `RSiteSearch("spatial statistics")`. Experiment and see which you
+    prefer!
+
+

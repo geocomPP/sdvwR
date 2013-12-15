@@ -19,6 +19,8 @@ GIS (2nd Ed.). New York: The Guildford Press.
 Longley, P., Goodchild, M. F., Maguire, D. J., & Rhind, D. W. (2005). 
 Geographic information systems and science. John Wiley & Sons.
 
+Monkhouse, F.J. and Wilkinson, H. R. (1973). Maps and Diagrams Their Compilation and Construction (3rd Edition, reprinted with revisions). London: Methuen & Co Ltd. 
+
 Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future. 
 GeoInformatics, 16(4). 
 
@@ -29,3 +31,20 @@ Torfs and Brauer (2012). A (very) short Introduction to R. The Comprehensive R A
 Venables, W. N., Smith, D. M., & Team, R. D. C. (2013). An introduction to R. The Comprehensive R Archive Network (CRAN). Retrieved from http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf .
 
 Wickham, H. (2009). ggplot2: elegant graphics for data analysis. Springer.
+
+Wickham, H. (2010). A Layered Grammar of Graphics. American Statistical Association, Institute of Mathematics Statistics and Interface Foundation of North America Journal of Computational and Graphical Statistics. 19, 1: 3-28.
+
+# Endnotes
+
+1. R's name originates from the creators of R, Ross Ihaka and Robert Gentleman.
+R is an open source implementation of the statistical programming language S, 
+so its name is also a play on words that makes implicit reference to this.
+
+2. R is notoriously difficult to search for on major search 
+engines, as it is such a common letter with many other uses beyond the name
+of a statistical programming language. This should not be a deterrent, as 
+R has a wealth of excellent online resources. To overcome the issue, 
+you can either be more specific with the search term (e.g. "R spatial statistics")
+or use an R specific search engine such as [rseek.org](http://www.rseek.org/).
+You can also search of online help *from within R* using the command `RSiteSearch`.
+E.g. `RSiteSearch("spatial statistics")`. Experiment and see which you prefer!

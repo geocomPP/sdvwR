@@ -5,7 +5,7 @@ Introduction
 
 R is a free and open source computer program that runs on 
 all major operating systems. R relies primarily 
-on the *command line* for data input: instead of 
+on a *command line* interface for data input: instead of 
 interacting with the program by
 moving your mouse around clicking on different parts of the screen, users
 enter commands via the keyboard. This will seem to strange to people 
@@ -91,19 +91,31 @@ for collecting, storing, retrieving at will, transforming, and displaying spatia
 data from the real world for a particular set of purposes" (Burrough and McDonnell, 1998, 
 from Bivand et al. 2013, p. 5); R excels at each of these tasks.
 
-That being said, there are a few major differences between R and conventional GIS programs
+That being said, there are a few major 
+differences between R and conventional GIS programs
 in terms of spatial data visualisation:
-R is more suited to creating one-off graphics than exploring spatial data through 
-repeated zooming, panning and spatial sub-setting using custom-drawn polygons, 
-compared with conventional GIS programs. Although interactive maps in R can 
-be created (e.g. using the web interface `shiny`), it is recommended that R
-is used *in addition to* rather than as a direct replacement of dedicated GIS
+R is more suited to creating one-off graphics than exploring spatial data
+interactively on a map. Conventional GIS packages are better at 
+repeated zooming, panning and spatial sub-setting using custom-drawn polygons
+than R. Use of the `locator` function allows some interactive 
+selection capabilities in R, but these are limited (Bivand et al. 2013, 3.4). 
+Although interactive maps in R can 
+be created (e.g. using the web interface `shiny`), R
+should not be seen as a direct replacement of dedicated GIS
 programs, especially now that there are myriad free options to try (Sherman 2008).
-An additional point is that while dedicated GIS programs handle spatial data by 
+One should use the program which is most appropriate for the task: R can tackle 
+almost any spatial visualisation problem and may be the best option in many cases. 
+In others, however, it may be best used alongside other programs (e.g. Google Earth).
+
+While dedicated GIS programs handle spatial data by 
 default and display the results in a single way, there are various options in R
-that must be decided by the user, for example whether to use R's base graphics 
-or a dedicated graphics package such as ggplot2. On the other hand, the main 
-benefits of R for spatial data visualisation lie in the *reproducibility* of 
+that must be decided by the user. This can be daunting.
+For example, the user must decide whether to use R's base graphics 
+or a dedicated graphics package such as ggplot2 for mapping.
+On the other hand, a major benefit of R is that allows spatial and 
+non-spatial analysis to occur in a *consistent* and *cohesive* framework. 
+Another benefit of R for spatial data visualisation lies in the 
+*reproducibility* of 
 its outputs, a feature that we will be using to great effect in this chapter.
 
 ## R for Reproducible research
@@ -138,21 +150,89 @@ out on your own computer. This introductory session will therefore serve
 as an introduction to R's unque *syntax*, as well an illustration of 
 how other visualisations presented in this chapter can be reproduced. 
 
+## R's syntax
+
+### Objects
+
+### Functions and arguments
+
+Most operations that are performed on objects are done using *functions*. 
+Understanding functions and their various *arguments* is key to manipulating 
+and visualising data in R: the more functions and arguments you know, the more
+you will be able to do. Functions, in broad terms, are operations
+that change objects in 
+R from one thing to another. In mathematical 
+language, they *map* sets of numbers onto each other.
+Arguments are the variables or parameters 
+that are fed into functions to alter their behavior.
+In terms of R's syntax, arguments are separated by commas within the curved brackets that 
+follow from the function's name. A source of confusion with arguments can be that in 
+some cases they can be inserted directly, wheras in others R needs to be told which 
+argument is being referred to, as illustrated in the code below:
+
+
+```r
+seq(from = 0, to = 2, by = 0.5)
+```
+
+```
+## [1] 0.0 0.5 1.0 1.5 2.0
+```
+
+```r
+seq(0, 2, 0.5)
+```
+
+```
+## [1] 0.0 0.5 1.0 1.5 2.0
+```
+
+```r
+
+seq(0, 2, length.out = 6)
+```
+
+```
+## [1] 0.0 0.4 0.8 1.2 1.6 2.0
+```
+
+```r
+seq(0, 2, 6)
+```
+
+```
+## [1] 0
+```
+
+
+
+Before learning about specific functions for spatial 
+analysis and visualisation, it is worth taking some time to think about what 
+a function is and how the arguments passed to it affect how it works. 
+The function `plot` is a good example, because it can take many different 
+input datasets and arguments and produces very different results depending on 
+the arguments it is given. Let's start with a basic example:
+
+
+```r
+x <- 1:20
+y <- 20 * x^2 - x^3
+plot(x, y)
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+
+In the above code, the funtion `plot` was given two arguments, `x` and `y` and its default 
+settings are to interpret these as values on a cartesian coordinate system to plot. 
+
+
+
+
 ## Chapter overview
 
-including of example dataset used.
 
-## Endnotes
 
-1. R's name originates from the creators of R, Ross Ihaka and Robert Gentleman.
-R is an open source implementation of the statistical programming language S, 
-so its name is also a play on words that makes implicit reference to this.
 
-2. R is notoriously difficult to search for on major search 
-engines, as it is such a common letter with many other uses beyond the name
-of a statistical programming language. This should not be a deterrent, as 
-R has a wealth of excellent online resources. To overcome the issue, 
-you can either be more specific with the search term (e.g. "R spatial statistics")
-or use an R specific search engine such as [rseek.org](http://www.rseek.org/).
-You can also search of online help *from within R* using the command `RSiteSearch`.
-E.g. `RSiteSearch("spatial statistics")`. Experiment and see which you prefer!
+
+

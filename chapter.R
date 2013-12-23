@@ -1,5 +1,5 @@
-# Compiling the book
-# The following can be used to compile the book into a single document:
+# Compiling the chapter
+# The following can be used to compile the chapter into a single document:
 
 system("pandoc -f markdown -t markdown S*.md >  chapter.md")
 mess <- paste('pandoc -f markdown -t latex -s -o', "chapter.tex", 

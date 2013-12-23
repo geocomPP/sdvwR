@@ -38,45 +38,11 @@ ride from Sheffield to Wakefield which was uploaded Open Street Map.
 
 
 ```r
-# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
-# = 'data/gps-trace.gpx')
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal)  # load the gdal package
-```
-
-```
-## Loading required package: sp
-## rgdal: version: 0.8-10, (SVN revision 478)
-## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.10.0, released 2013/04/24
-## Path to GDAL shared files: /usr/share/gdal/1.10
-## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-## Path to PROJ.4 shared files: (autodetected)
-```
-
-```r
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
-```
-
-```
-## OGR data source with driver: GPX 
-## Source: "data/gps-trace.gpx", layer: "tracks"
-## with 1 features and 12 fields
-## Feature type: wkbMultiLineString with 2 dimensions
-```
-
-```r
 plot(shf2lds)
 shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load points
-```
-
-```
-## OGR data source with driver: GPX 
-## Source: "data/gps-trace.gpx", layer: "track_points"
-## with 6085 features and 26 fields
-## Feature type: wkbPoint with 2 dimensions
-```
-
-```r
 points(shf2lds.p[seq(1, 3000, 100), ])
 ```
 

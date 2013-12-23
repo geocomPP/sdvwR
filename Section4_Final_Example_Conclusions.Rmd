@@ -1,6 +1,10 @@
-
 A Final Example
 ===============
+
+```{r, echo=FALSE, message=FALSE}
+library(rgdal)
+```
+
   
   Here we present a final example that draws upon the many advanced concepts discussed in this chapter to produce a map of 18th Century Shipping flows. 
 
@@ -8,10 +12,10 @@ A Final Example
 library(ggplot2)
 library(png)
 wrld <- readOGR(".", "ne_110m_admin_0_countries")
-btitle<-readPNG("brit_titles.png")
-compass<-readPNG("windrose.png")
-earth<-readPNG("earth_raster.png")
-bdata<-read.csv("british_shipping_example.csv")
+btitle<-readPNG("figure/brit_titles.png")
+compass<-readPNG("figure/windrose.png")
+earth<-readPNG("figure/earth_raster.png")
+bdata<-read.csv("data/british_shipping_example.csv")
 
 ```
 

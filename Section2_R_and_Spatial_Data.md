@@ -36,14 +36,52 @@ type. Let's start with a `.gpx` file, a tracklog recording a bicycle
 ride from Sheffield to Wakefield which was uploaded Open Street Map.
 [!!! more detail?]
 
-```{r Leeds to Sheffield GPS data}
-# download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
-library(rgdal) # load the gdal package
-shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
-plot(shf2lds)
-shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points") # load points
-points(shf2lds.p[seq(1, 3000, 100),])
+
+```r
+# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
+# = 'data/gps-trace.gpx')
+library(rgdal)  # load the gdal package
 ```
+
+```
+## Loading required package: sp
+## rgdal: version: 0.8-10, (SVN revision 478)
+## Geospatial Data Abstraction Library extensions to R successfully loaded
+## Loaded GDAL runtime: GDAL 1.10.0, released 2013/04/24
+## Path to GDAL shared files: /usr/share/gdal/1.10
+## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+## Path to PROJ.4 shared files: (autodetected)
+```
+
+```r
+shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
+```
+
+```
+## OGR data source with driver: GPX 
+## Source: "data/gps-trace.gpx", layer: "tracks"
+## with 1 features and 12 fields
+## Feature type: wkbMultiLineString with 2 dimensions
+```
+
+```r
+plot(shf2lds)
+shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load points
+```
+
+```
+## OGR data source with driver: GPX 
+## Source: "data/gps-trace.gpx", layer: "track_points"
+## with 6085 features and 26 fields
+## Feature type: wkbPoint with 2 dimensions
+```
+
+```r
+points(shf2lds.p[seq(1, 3000, 100), ])
+```
+
+![plot of chunk Leeds to Sheffield GPS data](figure/Leeds_to_Sheffield_GPS_data.png) 
+
 
 There is a lot going on in the preceding 7 lines of code, including
 functions that you are unlikely to have encountered before. Let us think
@@ -70,9 +108,11 @@ file used. In the above example, the filename was the data source name.
 To load Shapefiles, by contrast, the *folder* containing the data is
 used:
 
-```{r Plot of London, fig.keep='none', results='hide'}
+
+```r
 lnd <- readOGR(dsn = "data/", "london_sport")
 ```
+
 
 Here, the data is assumed to reside in a folder entitled `data` which in
 R's current working directory (remember to check this using `getwd()`).
@@ -100,23 +140,63 @@ would be larger, but how much larger? We could simply look at the size
 of the associated files, but R also provides a function (`object.size`)
 for discovering how large objects loaded into its workspace are:
 
-```{r}
+
+```r
 object.size(shf2lds)
+```
+
+```
+## 103168 bytes
+```
+
+```r
 object.size(lnd)
 ```
+
+```
+## 79168 bytes
+```
+
 
 Surprisingly, the GPS data is larger. To see why, we can find out how
 many *vertices* (points connected by lines) are contained in each
 dataset:
 
-```{r}
+
+```r
 sapply(lnd@polygons, function(x) length(x))
+```
+
+```
+##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+```
+
+```r
 x <- sapply(lnd@polygons, function(x) nrow(x@Polygons[[1]]@coords))
 sum(x)
+```
+
+```
+## [1] 1102
+```
+
+```r
 
 sapply(shf2lds@lines, function(x) length(x))
+```
+
+```
+## [1] 1
+```
+
+```r
 sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords))
 ```
+
+```
+## [1] 6085
+```
+
 
 It is quite likely that the above code little sense at first; the
 important thing to remember is that for each object we performed two
@@ -144,13 +224,31 @@ yes. In the code below, we harness the power of the `rgeos` package and
 its `gSimplify` function to simplify spatial R objects (the code can
 also be used to simplify polygon geometries):
 
-```{r fig.keep='none'}
+
+```r
 library(rgeos)
+```
+
+```
+## rgeos version: 0.2-19, (SVN revision 394)
+##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
+##  Polygon checking: TRUE
+```
+
+```r
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
-(object.size(shf2lds.simple) / object.size(shf2lds))[1]
-plot(shf2lds.simple) 
+(object.size(shf2lds.simple)/object.size(shf2lds))[1]
+```
+
+```
+## [1] 0.03047
+```
+
+```r
+plot(shf2lds.simple)
 plot(shf2lds, col = "red", add = T)
 ```
+
 
 In the above block of code, `gSimplify` is given the object `shf2lds`
 and the `tol` argument, short for "tolerance", is set at 0.001 (much
@@ -227,11 +325,26 @@ many-to-one spatial join is the allocation of data collected at many
 point sources unevenly scattered over space to polygons representing
 administrative boundaries, as represented in Fig. x.
 
-```{r Input data for a spatial join}
-lnd.stations <- readOGR("data/", "lnd-stns", p4s="+init=epsg:27700")
-plot(lnd)
-plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),], add = T)
+
+```r
+lnd.stations <- readOGR("data/", "lnd-stns", p4s = "+init=epsg:27700")
 ```
+
+```
+## OGR data source with driver: ESRI Shapefile 
+## Source: "data/", layer: "lnd-stns"
+## with 2532 features and 6 fields
+## Feature type: wkbPoint with 2 dimensions
+```
+
+```r
+plot(lnd)
+plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))), 
+    ], add = T)
+```
+
+![plot of chunk Input data for a spatial join](figure/Input_data_for_a_spatial_join.png) 
+
 
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532
 transport nodes in and surrounding London and then plots a random sample
@@ -250,11 +363,15 @@ those that lie within London's administrative zones are selected. This
 in itself is a kind of spatial join, and can be accomplished with the
 following code.
 
-```{r A spatial subset of the points, message=FALSE, warning=FALSE}
+
+```r
 proj4string(lnd) <- proj4string(lnd.stations)
-lnd.stations <- lnd.stations[lnd, ] # select only points within lnd
-plot(lnd.stations) # check the result
+lnd.stations <- lnd.stations[lnd, ]  # select only points within lnd
+plot(lnd.stations)  # check the result
 ```
+
+![plot of chunk A spatial subset of the points](figure/A_spatial_subset_of_the_points.png) 
+
 
 The station points now clearly follow the form of the `lnd` shape,
 indicating that the procedure worked. Let's review the code that allowed
@@ -298,11 +415,13 @@ Continuing with the example of station points in London polygons, let us
 use the spatial extension of `aggregate` to count how many points are in
 each borough:
 
-```{r, fig.keep='none', results='hide'}
+
+```r
 lndStC <- aggregate(lnd.stations, by = lnd, FUN = length)
 summary(lndStC)
 plot(lndStC)
 ```
+
 
 As with the spatial subset function, the above code is extremely terse.
 The aggregate function here does three things: 1) identifies which
@@ -313,28 +432,29 @@ equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
 colours added, are presented in Fig !!! below.
 
-```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
-library(RColorBrewer)
-brewer.pal.info
-cols <- brewer.pal(4, "Greens")
-brks <- c(4, 12, 19, 29, 55)
-cut(lndStC$NUMBER, brks)
-gs <- cols[findInterval(lndStC$NUMBER, vec = brks)]
-png(filename="figure/nStations.png", width = 600, height= 550)
-plot(lndStC, col = gs)
-legend("topleft", legend = levels(cut(lndStC$NUMBER, brks)), 
-       fill = cols, title="N. stations")
-dev.off()
-```
+
+
 
 ![Number of stations in London boroughs](figure/nStations.png)
 
 As with any spatial attribute data stored as an `sp` object, we can look
 at the attributes of the point data using the `@` symbol:
 
-```{r}
+
+```r
 head(lnd.stations@data)
 ```
+
+```
+##    CODE          LEGEND FILE_NAME NUMBER                   NAME MICE
+## 91 5520 Railway Station  gb_south  17607        Belmont Station   19
+## 92 5520 Railway Station  gb_south  17608  Woodmansterne Station    5
+## 93 5520 Railway Station  gb_south  17609 Coulsdon South Station   11
+## 94 5520 Railway Station  gb_south  17610        Smitham Station   14
+## 95 5520 Railway Station  gb_south  17611         Kenley Station   11
+## 96 5520 Railway Station  gb_south  17612        Reedham Station    8
+```
+
 
 In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
@@ -343,15 +463,16 @@ fictional variable). To illustrate the power of the `aggregate`
 function, let us use it to find the average number of mices spotted in
 transport points in each London borough, and the standard deviation:
 
-```{r, results='hide'}
+
+```r
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
 summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
 summary(lndSdMice)
 ```
 
-```{r, echo=FALSE}
-lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
-```
+
+
+
 
 ### Clipping

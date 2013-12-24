@@ -3,4 +3,5 @@
 .RData
 *.html
 documentation/
+shf2*
 

@@ -15,7 +15,7 @@ unique.
 ### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is
-loading in pre-existing datasets. These may originate from government
+loading in datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
 information' (Goodchild 2007). The diversity of
 geographical data formats is large.

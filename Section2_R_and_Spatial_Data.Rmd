@@ -35,14 +35,26 @@ ride from Sheffield to Wakefield which was uploaded Open Street Map
 [3].
 
 
-```{r Leeds to Sheffield GPS data, message=FALSE, results='hide'}
-download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+```{r Leeds to Sheffield GPS data, message=FALSE, results='hide', fig.keep='none'}
+# download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
 plot(shf2lds)
 shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points") # load points
 points(shf2lds.p[seq(1, 3000, 100),])
 ```
+
+```{r, message=FALSE, results='hide', echo=FALSE}
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+library(rgdal) # load the gdal package
+shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
+plot(shf2lds)
+shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points") # load points
+points(shf2lds.p[seq(1, 3000, 100),])
+axis(side = 1)
+axis(side = 2)
+```
+
 
 There is a lot going on in the preceding 7 lines of code, including
 functions that you are unlikely to have encountered before. Let us think
@@ -63,7 +75,7 @@ that various layers are available, including `tracks` and
 Finally, the basic
 `plot` function is used to visualize the newly imported objects, ensuring
 they make sense. In the second `plot` function, we take a subset of the
-object (see section ... for more on this).
+object (see section ... for more on this). To see how to add axes, enter `?axis`
 
 As stated in the help documentation (accessed by entering `?readOGR`),
 the `dsn =` argument is interpreted differently depending on the type of
@@ -110,25 +122,20 @@ many *vertices* (points connected by lines) are contained in each
 dataset:
 
 ```{r}
-sapply(lnd@polygons, function(x) length(x))
-x <- sapply(lnd@polygons, function(x) nrow(x@Polygons[[1]]@coords))
-sum(x)
+shf2lds.f <- fortify(shf2lds)
+nrow(shf2lds.f)
 
-sapply(shf2lds@lines, function(x) length(x))
-(nverts <- sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords)))
+lnd.f <- fortify(lnd)
+nrow(lnd.f)
 ```
 
-It is quite likely that the above code little sense at first. The
-important thing to remember is that for each object we performed two
-functions: 1) a check that each line or polygon consists only of a
-single *part* (that can be joined to attribute data) and 2) the use of
-`nrow` to count the number of vertices. The use of the `@` symbol should
-seem strange - its meaning will become clear in the section !!!. (Note
-also that the function `fortify`, discussed in section !!!, can also be
-used to extract the vertice count of spatial objects in R.)
+In the above block of code we performed two
+functions for each object: 1) *flatten* the dataset so that 
+each vertice is allocated a unique row  2) use
+`nrow` to count the result. Note the use of the `<-` assignment
+operator to create new objects with a `.f` ending.
 
-Without worrying, for now, about how these vertice counts were
-performed, it is clear that the GPS data has almost 6 times the number
+It is clear that the GPS data has almost 6 times the number
 of vertices as does the London data, explaining its larger size. Yet
 when plotted, the GPS data does not seem more detailed, implying that
 some of the vertices in the object are not needed for visualisation at

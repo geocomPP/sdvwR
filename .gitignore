@@ -7,4 +7,5 @@ shf2*
 *.backup
 *.gz
 *.log
+S*.md
 

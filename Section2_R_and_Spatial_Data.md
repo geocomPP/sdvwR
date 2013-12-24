@@ -245,12 +245,12 @@ the following command:
 ```r
 shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data = data.frame(row.names = "0", 
     a = 1))
-writeOGR(shf2lds.simple, dsn = "data/", layer = "shf2lds", driver = "ESRI Shapefile")
+writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapefile")
 ```
 
-```
-## Error: layer exists, use a new layer name
-```
+
+
+
 
 
 In the above code, the object was first converted into a spatial dataframe class, before 
@@ -457,7 +457,7 @@ could equally be used (remember to type `library(plyr)` if needed).
 
 
 `join` requires all joining variables to have the 
-same name, but this work has already been done. Once 
+same name, but this work has already been done [7]. Once 
 this preparation has been done, the 
 join funtion is actually very simple:
 
@@ -650,4 +650,6 @@ summary(lndSdMice)
 
 
 
-### Clipping
+
+
+

@@ -154,70 +154,37 @@ Spatial Data in R
 
 In any data analysis project, spatial or otherwise, it is important to
 have a strong understanding of the dataset before progressing. This
-section will therefore begin with a description of the input data used
-in this section. We will see how data can be loaded into R and exported
-to other formats, before going into more detail about the underlying
-structure of spatial data in R: how it 'sees' spatial data is quite
-unique.
+section will therefore begin with a description of the input data. We
+will see how data can be loaded into R and exported to other formats,
+before going into more detail about the underlying structure of spatial
+data in R: how it 'sees' spatial data is quite unique.
 
 ### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is
 loading in pre-existing datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
-information' from GPS devices, online databases such as Open Street Map
-or geo-tagged social media (Goodchild 2007). The diversity of
-geographical data formats is large.
+information' (Goodchild 2007). The diversity of geographical data
+formats is large.
 
 R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
-is enabled by loading the package `rgdal` into R. Below we will load
-data from two spatial data formats: GPS eXchange (`.gpx`) and an ESRI
-Shapefile (consisting of at least files with `.shp`, `.shx` and `.dbf`
-extensions).
+is enabled by the package `rgdal`. Below we will load data from two
+spatial data formats: GPS eXchange (`.gpx`) and an ESRI Shapefile.
 
-`readOGR` is in fact cabable of loading dozens more file formats, so the
+`readOGR` is in fact capable of loading dozens more file formats, so the
 focus is on the *method* rather than the specific formats. The 'take
 home message' is that the `readOGR` function is capable of loading most
 common spatial file formats, but behaves differently depending on file
 type. Let's start with a `.gpx` file, a tracklog recording a bicycle
-ride from Sheffield to Wakefield which was uploaded Open Street Map.
-[!!! more detail?]
+ride from Sheffield to Wakefield which was uploaded Open Street Map [3].
 
 ~~~~ {.r}
-# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
-# = 'data/gps-trace.gpx')
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal)  # load the gdal package
-~~~~
-
-    ## Loading required package: sp
-    ## rgdal: version: 0.8-10, (SVN revision 478)
-    ## Geospatial Data Abstraction Library extensions to R successfully loaded
-    ## Loaded GDAL runtime: GDAL 1.10.0, released 2013/04/24
-    ## Path to GDAL shared files: /usr/share/gdal/1.10
-    ## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-    ## Path to PROJ.4 shared files: (autodetected)
-
-~~~~ {.r}
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
-~~~~
-
-    ## OGR data source with driver: GPX 
-    ## Source: "data/gps-trace.gpx", layer: "tracks"
-    ## with 1 features and 12 fields
-    ## Feature type: wkbMultiLineString with 2 dimensions
-
-~~~~ {.r}
 plot(shf2lds)
 shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load points
-~~~~
-
-    ## OGR data source with driver: GPX 
-    ## Source: "data/gps-trace.gpx", layer: "track_points"
-    ## with 6085 features and 26 fields
-    ## Feature type: wkbPoint with 2 dimensions
-
-~~~~ {.r}
 points(shf2lds.p[seq(1, 3000, 100), ])
 ~~~~
 
@@ -230,36 +197,37 @@ about what has happened, line-by-line.
 
 First, we used R to *download* a file from the internet, using the
 function `download.file`. The two essential arguments of this function
-are `url` (we could have typed`url =` before the link) and `destfile`
-(which means destination file). As with any function, more optional
-arguments can be viewed by typing `?download.file`.
+are `url` (we could have typed `url =` before the link) and `destfile`,
+the destination file. As with any function, more optional arguments can
+be viewed by by typing `?download.file`.
 
-When `rgdal` has succesfully loaded, the next task is not to import the
+When `rgdal` has successfully loaded, the next task is not to import the
 file directly, but to find out which *layers* are available to import,
-with the function `ogrListLayers`. The output from this command tells us
-that various layers are available, including `tracks` and
-`track_points`, which we subsequently load using `readOGR`. The basic
-`plot` function is used to plot the newly imported objects, ensuring
-they make sense. In the second `plot` function, we take a subset of the
-object (see section ... for more on this).
+with `ogrListLayers`. The output from this command tells us that various
+layers are available, including `tracks` and `track_points`: try it.
+These are imported into R's *workspace* using `readOGR`.
+
+Finally, the basic `plot` function is used to visualize the newly
+imported objects, ensuring they make sense. In the second `plot`
+function, we take a subset of the object (see section ... for more on
+this).
 
 As stated in the help documentation (accessed by entering `?readOGR`),
 the `dsn =` argument is interpreted differently depending on the type of
-file used. In the above example, the filename was the data source name.
-To load Shapefiles, by contrast, the *folder* containing the data is
-used:
+file used. In the above example, the file name was the file name. To
+load Shapefiles, by contrast, the *folder* containing the data is used:
 
 ~~~~ {.r}
 lnd <- readOGR(dsn = "data/", "london_sport")
 ~~~~
 
-Here, the data is assumed to reside in a folder entitled `data` which in
-R's current working directory (remember to check this using `getwd()`).
-If the files were stored in the working directory, one would use
-`dsn = "."` instead. Again, it may be wise to plot the data that
-results, to ensure that it has worked correctly. Now that the data has
-been loaded into R's own `sp` format, try interogating and plotting it,
-using functions such as `summary` and `plot`.
+Here, the files reside in a folder entitled `data` which in R's current
+working directory (remember to check this using `getwd()`). If the files
+were stored in the working directory, one would use `dsn = "."` instead.
+Again, it may be wise to plot the data that results, to ensure that it
+has worked correctly. Now that the data has been loaded into R's own
+`sp` format, try interrogating and plotting it, using functions such as
+`summary` and `plot`.
 
 ### The size of spatial datasets in R
 
@@ -267,17 +235,15 @@ Any data that has been read into R's *workspace*, which constitutes all
 objects that can be accessed by name and can be listed using the `ls()`
 function, can be saved in R's own data storage file type, `.RData`.
 Spatial datasets can get quite large and this can cause problems on
-computers by consuming all available random access memory (RAM) or hard
-disk space available to the computer. It is therefore wise to understand
-roughly how large spatial objects are; this will also provide insight
-into how long certain functions will take to run.
+computers by consuming all available memory (RAM) or hard disk space. It
+is wise to understand roughly how large spatial objects are, providing
+insight into how long certain functions will take to run.
 
 In the absence of prior knowledge, which of the two objects loaded in
-the previous section would be expected to take up more memory. One could
-hypothesise that the London boroughs represented by the object `lnd`
-would be larger, but how much larger? We could simply look at the size
-of the associated files, but R also provides a function (`object.size`)
-for discovering how large objects loaded into its workspace are:
+the previous section would one expect to be larger? One could
+hypothesize that the London boroughs represented by the object `lnd`
+would be larger based on its greater spatial extent, but how much
+larger? The answer in R is found in the function `object.size`:
 
 ~~~~ {.r}
 object.size(shf2lds)
@@ -316,15 +282,15 @@ sapply(shf2lds@lines, function(x) length(x))
     ## [1] 1
 
 ~~~~ {.r}
-sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords))
+(nverts <- sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords)))
 ~~~~
 
     ## [1] 6085
 
-It is quite likely that the above code little sense at first; the
+It is quite likely that the above code little sense at first. The
 important thing to remember is that for each object we performed two
 functions: 1) a check that each line or polygon consists only of a
-single *part* (that can be joined to attribut data) and 2) the use of
+single *part* (that can be joined to attribute data) and 2) the use of
 `nrow` to count the number of vertices. The use of the `@` symbol should
 seem strange - its meaning will become clear in the section !!!. (Note
 also that the function `fortify`, discussed in section !!!, can also be
@@ -344,8 +310,7 @@ be useful for other types of analysis) raises the question following
 question: can the object be simplified such that its key features
 features remain while substantially reducing its size? The answer is
 yes. In the code below, we harness the power of the `rgeos` package and
-its `gSimplify` function to simplify spatial R objects (the code can
-also be used to simplify polygon geometries):
+its `gSimplify` function to simplify spatial R objects:
 
 ~~~~ {.r}
 library(rgeos)
@@ -371,53 +336,219 @@ In the above block of code, `gSimplify` is given the object `shf2lds`
 and the `tol` argument, short for "tolerance", is set at 0.001 (much
 larger values may be needed, for data that use is *projected* - does not
 use latitude and longitude). Comparison between the sizes of the
-simplified object and the orginal shows that the new object is less than
-3% of its original size. Try plotting the orginal and simplified tracks
-on your computer: when visualised using the `plot` function, it becomes
-clear that the object `shf2lds.simple` retains the overall shape of the
-line and is virtually indistinguishable from the orginal object.
+simplified object and the original shows that the new object is less
+than 3% of its original size. Try plotting the original and simplified
+tracks on your computer: when visualized using the `plot` function, it
+becomes clear that the object `shf2lds.simple` retains the overall shape
+of the line and is virtually indistinguishable from the original object.
 
 This example is rather contrived because even the larger object
 `shf2lds` is only 0.107 Mb, negligible compared with the gigabytes of
 RAM available to modern computers. However, it underlines a wider point:
-for *visualisation* purposes at small spatial scales (i.e. covering a
-large area of the Earth on a small map), the *geometries* associated
-with spatial data can often be simplified to reduce processing time and
-usage of RAM. The other advantage of simplification is that it reduces
-the size occupied by spatial datasets when they are saved.
+for visualizing *small scale* maps, spatial data *geometries* can often
+be simplified to reduce processing time and use of computer memory.
 
 ### Saving and exporting spatial objects
+
+A typical R workflow involves loading the data, processing and finally
+exporting the data in a new form. `writeOGR`, the logical counterpart of
+`readOGR` is ideal for this task. Imagine that we want to view the
+simplified `gpx` data in software that can only read Shapefiles. This is
+performed using the following command:
+
+~~~~ {.r}
+shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data = data.frame(row.names = "0", 
+    a = 1))
+writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapefile")
+~~~~
+
+In the above code, the object was first converted into a spatial
+dataframe class, before being exported as a shapefile entitled shf2lds.
+Unlike with `readOGR`, the driver must be specified, in this case with
+"ESRI Shapefile" [4]. The simplified GPS data is now available to other
+GIS programs for further analysis.
 
 The structure of spatial data in R
 ----------------------------------
 
-### Spatial\* data
+Spatial datasets in R are saved in their own format, defined as
+`Spatial...` classes within the `sp` package. For this reason, `sp` is
+the basic spatial package in R, upon which the others depend. Spatial
+classes range from the simples class `Spatial` to the most complex,
+`SpatialPolygonsDataFrame`: the `Spatial` class contains only two
+required *slots*[5]:
 
-#### Points
+~~~~ {.r}
+getSlots("Spatial")
+~~~~
 
-#### Lines
+    ##        bbox proj4string 
+    ##    "matrix"       "CRS"
 
-#### Polygons
+Further details on these can be found by typing `?bbox` and
+`?proj4string`. All other spatial classes in R build on this foundation
+of a bounding box and a projection system (which is set automatically to
+`NA` if it is not known). However, more complex classes contain more
+slots, some of which are lists which contain additional lists. To find
+out the slots of `shf2lds.simple`, for example, we would first ascertain
+its class and then use the `getSlots` command:
 
-#### Grids and raster data
+~~~~ {.r}
+class(shf2lds.simple)  # identify the object's class
+~~~~
 
-The main spatial packages
--------------------------
+    ## [1] "SpatialLinesDataFrame"
+    ## attr(,"package")
+    ## [1] "sp"
 
-### sp
+~~~~ {.r}
+getSlots("SpatialLinesDataFrame")  # find the associated slots
+~~~~
 
-### rgdal
+    ##         data        lines         bbox  proj4string 
+    ## "data.frame"       "list"     "matrix"        "CRS"
 
-### rgeos
+The same principles apply to all spatial classes including
+`Spatial* Points`, `Polygons` `Grids` and `Pixels` as well as associated
+`*DataFrame` classes. For more information on this, see the `sp`
+documentation: `?Spatial`.
 
 Manipulating spatial data
 -------------------------
 
-### Coordinate reference systems and transformations
+### Coordinate reference systems
 
-### Attribute joins
+As mentioned in the previous section, all `Spatial` objects in R are
+allocated a coordinate reference system (CRS). The CRS of any spatial
+object can be found using the command `proj4string`. In some cases the
+CRS is not known: in this case the result will simply be `NA`. To
+discover the CRS of the `lnd` object for example, type the following:
 
-### Spatial joins
+~~~~ {.r}
+proj4string(lnd)
+~~~~
+
+    ## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs"
+
+The output may seem cryptic but is in fact highly informative: `lnd` has
+*projected* coordinates, based on the [*Transverse
+Mercator*](http://en.wikipedia.org/wiki/Transverse_Mercator_projection)
+system (hence `"+proj=tmerc"` in the output) and its origin is at
+latitude 49N, -2E. This point is
+
+If we *know* that the CRS is incorrectly specified, it can be re-set. In
+this case, for example we know that `lnd` actually has a CRS OSGB1936.
+Knowing also that the code for this is 27700, it can be updated as
+follows:
+
+~~~~ {.r}
+proj4string(lnd) <- CRS("+init=epsg:27700")
+proj4string(lnd)
+~~~~
+
+    ## [1] "+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs +ellps=airy +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894"
+
+The CRS has now been updated - note that the key details are all the
+same as before. Note: this method **should never** be used as an attempt
+to *reproject* data from one CRS to another.
+
+### Reprojecting data
+
+Transforming the coordinates of spatial data from one CRS to another
+(reprojection) is a common task in GIS. This is because data from
+national sources are generally provided in *projected* coordinates (the
+location on the cartesian coordinates of a map) whereas data from GPSs
+and the internet are generally provided in *geographic* coordinates,
+with latitude and longitude measured in degrees to locate points on the
+surface of the globe.
+
+Reprojecting data in R is quite simple: all you need is a spatial object
+with a known CRS and knowledge of the CRS you wish to transform it to.
+To illustrate why that is necessary, try to plot the objects `lnd` and
+`shf2lnd.simple` on the same map:
+
+~~~~ {.r}
+combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd)[, 1:2])
+~~~~
+
+    ## Regions defined for each Polygons
+
+~~~~ {.r}
+plot(combined)
+~~~~
+
+![plot of chunk Plot of spatial objects with different
+CRS](figure/Plot_of_spatial_objects_with_different_CRS.png)
+
+In the above code we first extracted the coordinates of each point using
+`fortify` and then plotted them using `plot`. The image shows why
+reprojection is necessary: the .gpx data are on a totally different
+scale than the shapefile of London. Hence the tiny dot at the bottom
+right of the graph. We will now reproject the data, allowing `lnd` and
+`shf2lds.simple` to be usefully plotted on the same graphic:
+
+~~~~ {.r}
+lnd.wgs84 <- spTransform(lnd, CRSobj = CRS("+init=epsg:4326"))
+~~~~
+
+The above code created a new object,`lnd.wgs84`, that contains the same
+geometries as the original but in a new CRS using the `spTransform`
+function. The `CRS` argument was set to `"+init=epsg:4326"`, which
+represents the WGS84 CRS via an EPSG code [6]. Now `lnd` has been
+reprojected we can plot it next to the GPS data:
+
+~~~~ {.r}
+combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd.wgs84)[, 1:2])
+~~~~
+
+    ## Regions defined for each Polygons
+
+~~~~ {.r}
+plot(combined)
+~~~~
+
+![plot of chunk Plot of spatial objects sharing the same
+CRS](figure/Plot_of_spatial_objects_sharing_the_same_CRS.png)
+
+Although the plot of the reprojected data is squashed because the axis
+scales are not fixed and distorted (*geographic* coordinates such as
+WGS84 should not usually be used for plotting), at least the relative
+position and shape of both objects can now be seen. The presence of the
+dotted line in the top left of the plot confirms our assumption that the
+GPS data is from around Sheffield, which is northwest of London.
+
+### Attribute join
+
+Because boroughs are official administrative zones, there is much data
+available at this level that we can link to the polygons in the `lnd`
+object. We will use the example of crime data to illustrate this data
+availability, which is stored in the `data` folder available from this
+project's github page.
+
+~~~~ {.r}
+load("data/crimeAg.Rdata")  # load the crime dataset from an R dataset
+~~~~
+
+After the dataset has been explored (e.g. using the `summary` and `head`
+functions) to ensure compatibility, it can be joined to `lnd`. We will
+use the the `join` function in the `plyr` package but the `merge`
+function could equally be used (remember to type `library(plyr)` if
+needed).
+
+`join` requires all joining variables to have the same name, but this
+work has already been done [7]. Once this preparation has been done, the
+join funtion is actually very simple:
+
+~~~~ {.r}
+lnd@data <- join(lnd@data, crimeAg)
+~~~~
+
+    ## Joining by: name
+
+Take a look at the `lnd@data` object. You should see new variables
+added, meaning the attribute join was successful.
+
+### Spatial join
 
 A spatial join, like attribute joins, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
@@ -462,10 +593,10 @@ join](figure/Input_data_for_a_spatial_join.png)
 
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532
 transport nodes in and surrounding London and then plots a random sample
-of 500 of these over the previously loaded borough level adminsitrative
-boundaries. The reason for ploting a sample of the points rather than
+of 500 of these over the previously loaded borough level administrative
+boundaries. The reason for piloting a sample of the points rather than
 all of them is that the boundary data becomes difficult to see if all of
-the points are ploted. It is also useful to see and practice sampling
+the points are piloted. It is also useful to see and practice sampling
 techniques in practice; try to plot only the first 500 points, rather
 than a random selection, and describe the difference.
 
@@ -479,14 +610,6 @@ following code.
 
 ~~~~ {.r}
 proj4string(lnd) <- proj4string(lnd.stations)
-~~~~
-
-    ## Warning: A new CRS was assigned to an object with an existing CRS:
-    ## +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
-    ## without reprojecting.
-    ## For reprojection, use function spTransform in package rgdal
-
-~~~~ {.r}
 lnd.stations <- lnd.stations[lnd, ]  # select only points within lnd
 plot(lnd.stations)  # check the result
 ~~~~
@@ -572,7 +695,7 @@ In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
 number of mice sightings reported by the public at that point (this is a
 fictional variable). To illustrate the power of the `aggregate`
-function, let us use it to find the average number of mices spotted in
+function, let us use it to find the average number of mice spotted in
 transport points in each London borough, and the standard deviation:
 
 ~~~~ {.r}
@@ -581,8 +704,6 @@ summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
 summary(lndSdMice)
 ~~~~
-
-### Clipping
 
 Fundamentals of Spatial Data Visualisation
 ==========================================
@@ -1078,3 +1199,110 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
 
 Recap and Conclusions
 =====================
+
+References
+==========
+
+Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial
+statistical analysis using the language. Journal of Geographical
+Systems, 2(3), 307–317.
+
+Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial
+data: analysis with R. Springer.
+
+Burrough, P. A. & McDonnell, R. A. (1998). Principals of Geographic
+Information Systems (revised edition). Clarendon Press, Oxford.
+
+Goodchild, M. F. (2007). Citizens as sensors: the world of volunteered
+geography. GeoJournal, 69(4), 211–221.
+
+Harris, R. (2012). A Short Introduction to R.
+[social-statistics.org](http://www.social-statistics.org/).
+
+Kabacoff, R. (2011). R in Action. Manning Publications Co.
+
+Krygier, J. Wood, D. 2011. Making Maps: A Visual Guide to Map Design for
+GIS (2nd Ed.). New York: The Guildford Press.
+
+Longley, P., Goodchild, M. F., Maguire, D. J., & Rhind, D. W. (2005).
+Geographic information systems and science. John Wiley & Sons.
+
+Monkhouse, F.J. and Wilkinson, H. R. 1973. Maps and Diagrams Their
+Compilation and Construction (3rd Edition, reprinted with revisions).
+London: Methuen & Co Ltd.
+
+Ramsey, P., & Dubovsky, D. (2013). Geospatial Software's Open Future.
+GeoInformatics, 16(4).
+
+Sherman, G. (2008). Desktop GIS: Mapping the Planet with Open Source
+Tools. Pragmatic Bookshelf.
+
+Torfs and Brauer (2012). A (very) short Introduction to R. The
+Comprehensive R Archive Network.
+
+Venables, W. N., Smith, D. M., & Team, R. D. C. (2013). An introduction
+to R. The Comprehensive R Archive Network (CRAN). Retrieved from
+http://cran.ma.imperial.ac.uk/doc/manuals/r-devel/R-intro.pdf .
+
+Wickham, H. (2009). ggplot2: elegant graphics for data analysis.
+Springer.
+
+Wickham, H. 2010. A Layered Grammar of Graphics. American Statistical
+Association, Institute of Mathematics Statistics and Interface
+Foundation of North America Journal of Computational and Graphical
+Statistics. 19, 1: 3-28
+
+Endnotes
+========
+
+1.  R's name originates from the creators of R, Ross Ihaka and Robert
+    Gentleman. R is an open source implementation of the statistical
+    programming language S, so its name is also a play on words that
+    makes implicit reference to this.
+
+2.  R is notoriously difficult to search for on major search engines, as
+    it is such a common letter with many other uses beyond the name of a
+    statistical programming language. This should not be a deterrent, as
+    R has a wealth of excellent online resources. To overcome the issue,
+    you can either be more specific with the search term (e.g. "R
+    spatial statistics") or use an R specific search engine such as
+    [rseek.org](http://www.rseek.org/). You can also search of online
+    help *from within R* using the command `RSiteSearch`. E.g.
+    `RSiteSearch("spatial statistics")`. Experiment and see which you
+    prefer!
+
+3.  For more information about this ride, please see
+    [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
+
+4.  A complete list of drivers for importing and exporting spatial data
+    can be displayed by typing `getGDALDriverNames()`.
+
+5.  Slots are elements found 'inside' classes of the [S4 object
+    system](http://adv-r.had.co.nz/S4.html). While the sub-elements of
+    S3 objects such as `data.frame` are referred to using the `$`
+    symbol, the slots of S4 objects are identified using `@`. Thus, the
+    variable `x` of dataframe `df` can be referred to with `df$x`. In
+    the same way, the data associated with a polygon layer such as `lnd`
+    can be accessed with `lnd@data`. Note that `lnd@data` is itself a
+    dataframe, so can be further specified, e.g. with `lnd@data$name`.
+    For more on spatial data classes, see Bivand et al. (2013).
+
+6.  EPSG stands for "European Petroleum Survey Group", but this is not
+    really worth knowing as the organisation is now defunct
+    ([www.epsg.org/](http://www.epsg.org/)). The important thing is that
+    EPSG codes provide a unified way to refer to a wide range of
+    coordinate systems, as each CRS has its own epsg code. These can be
+    found at the website
+    [spatialreference.org](http://spatialreference.org/). To see how
+    this website can be useful, try searching for "osgb", for example to
+    find the epsg code for the British National Grid.
+
+7.  To see how the `crimeAg` dataset was created, please refer to the
+    "Creating-maps-in-R" tutorial (Cheshire and Lovelace, 2014) hosted
+    on [GitHub](https://github.com/Robinlovelace/Creating-maps-in-R).
+    The file
+    "[intro-spatial-rl.pdf](https://github.com/Robinlovelace/Creating-maps-in-R/blob/master/intro-spatial-rl.pdf)"
+    contains this information, in the section on "Downloading addtional
+    data".
+
+

@@ -4,4 +4,7 @@
 *.html
 documentation/
 shf2*
+*.backup
+*.gz
+*.log
 

@@ -88,3 +88,15 @@ Endnotes
     These can be found at the website [spatialreference.org](http://spatialreference.org/).
     To see how this website can be useful, try searching for "osgb", for example to 
     find the epsg code for the British National Grid.
+    
+7. To see how the `crimeAg` dataset was created, please refer to the 
+    "Creating-maps-in-R" tutorial (Cheshire and Lovelace, 2014) hosted 
+    on [GitHub](https://github.com/Robinlovelace/Creating-maps-in-R). 
+    The file 
+    "[intro-spatial-rl.pdf](https://github.com/Robinlovelace/Creating-maps-in-R/blob/master/intro-spatial-rl.pdf)" 
+    contains this information, 
+    in the section on "Downloading addtional data". 
+    
+```{r}
+source("chapter.R") # convert chapter to tex
+```

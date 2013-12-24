@@ -49,12 +49,12 @@ Wickham, H. 2010. A Layered Grammar of Graphics. American Statistical Associatio
 Endnotes
 =======
 
-1.  R's name originates from the creators of R, Ross Ihaka and Robert
+1. R's name originates from the creators of R, Ross Ihaka and Robert
     Gentleman. R is an open source implementation of the statistical
     programming language S, so its name is also a play on words that
     makes implicit reference to this.
 
-2.  R is notoriously difficult to search for on major search engines, as
+2. R is notoriously difficult to search for on major search engines, as
     it is such a common letter with many other uses beyond the name of a
     statistical programming language. This should not be a deterrent, as
     R has a wealth of excellent online resources. To overcome the issue,
@@ -66,9 +66,9 @@ Endnotes
     prefer!
     
 3. For more information about this ride, please see 
-    http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html .
+    [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
     
-4.  A complete list of drivers for importing and exporting spatial data can 
+4. A complete list of drivers for importing and exporting spatial data can 
     be displayed by typing `getGDALDriverNames()`.
     
 5. Slots are elements found 'inside' classes of the 
@@ -80,3 +80,19 @@ Endnotes
     be accessed with `lnd@data`. Note that `lnd@data` is itself a dataframe, 
     so can be further specified, e.g. with `lnd@data$name`. For more on spatial 
     data classes, see Bivand et al. (2013).
+    
+6. EPSG stands for "European Petroleum Survey Group", but this is not really worth 
+    knowing as the organisation is now defunct ([www.epsg.org/](http://www.epsg.org/)).
+    The important thing is that EPSG codes provide a unified way to refer to a 
+    wide range of coordinate systems, as each CRS has its own epsg code. 
+    These can be found at the website [spatialreference.org](http://spatialreference.org/).
+    To see how this website can be useful, try searching for "osgb", for example to 
+    find the epsg code for the British National Grid.
+    
+7. To see how the `crimeAg` dataset was created, please refer to the 
+    "Creating-maps-in-R" tutorial (Cheshire and Lovelace, 2014) hosted 
+    on [GitHub](https://github.com/Robinlovelace/Creating-maps-in-R). 
+    The file 
+    "[intro-spatial-rl.pdf](https://github.com/Robinlovelace/Creating-maps-in-R/blob/master/intro-spatial-rl.pdf)" 
+    contains this information, 
+    in the section on "Downloading addtional data". 

@@ -162,10 +162,9 @@ data in R: how it 'sees' spatial data is quite unique.
 ### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is
-loading in pre-existing datasets. These may originate from government
-agencies, remote sensing devices or 'volunteered geographical
-information' (Goodchild 2007). The diversity of geographical data
-formats is large.
+loading in datasets. These may originate from government agencies,
+remote sensing devices or 'volunteered geographical information'
+(Goodchild 2007). The diversity of geographical data formats is large.
 
 R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
@@ -180,7 +179,8 @@ type. Let's start with a `.gpx` file, a tracklog recording a bicycle
 ride from Sheffield to Wakefield which was uploaded Open Street Map [3].
 
 ~~~~ {.r}
-download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
+# = 'data/gps-trace.gpx')
 library(rgdal)  # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
 plot(shf2lds)
@@ -188,8 +188,7 @@ shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load
 points(shf2lds.p[seq(1, 3000, 100), ])
 ~~~~
 
-![plot of chunk Leeds to Sheffield GPS
-data](figure/Leeds_to_Sheffield_GPS_data.png)
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png)
 
 There is a lot going on in the preceding 7 lines of code, including
 functions that you are unlikely to have encountered before. Let us think
@@ -210,7 +209,7 @@ These are imported into R's *workspace* using `readOGR`.
 Finally, the basic `plot` function is used to visualize the newly
 imported objects, ensuring they make sense. In the second `plot`
 function, we take a subset of the object (see section ... for more on
-this).
+this). To see how to add axes, enter `?axis`
 
 As stated in the help documentation (accessed by entering `?readOGR`),
 the `dsn =` argument is interpreted differently depending on the type of
@@ -262,46 +261,35 @@ many *vertices* (points connected by lines) are contained in each
 dataset:
 
 ~~~~ {.r}
-sapply(lnd@polygons, function(x) length(x))
-~~~~
-
-    ##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-
-~~~~ {.r}
-x <- sapply(lnd@polygons, function(x) nrow(x@Polygons[[1]]@coords))
-sum(x)
-~~~~
-
-    ## [1] 1102
-
-~~~~ {.r}
-
-sapply(shf2lds@lines, function(x) length(x))
-~~~~
-
-    ## [1] 1
-
-~~~~ {.r}
-(nverts <- sapply(shf2lds@lines, function(x) nrow(x@Lines[[1]]@coords)))
+shf2lds.f <- fortify(shf2lds)
+nrow(shf2lds.f)
 ~~~~
 
     ## [1] 6085
 
-It is quite likely that the above code little sense at first. The
-important thing to remember is that for each object we performed two
-functions: 1) a check that each line or polygon consists only of a
-single *part* (that can be joined to attribute data) and 2) the use of
-`nrow` to count the number of vertices. The use of the `@` symbol should
-seem strange - its meaning will become clear in the section !!!. (Note
-also that the function `fortify`, discussed in section !!!, can also be
-used to extract the vertice count of spatial objects in R.)
+~~~~ {.r}
 
-Without worrying, for now, about how these vertice counts were
-performed, it is clear that the GPS data has almost 6 times the number
-of vertices as does the London data, explaining its larger size. Yet
-when plotted, the GPS data does not seem more detailed, implying that
-some of the vertices in the object are not needed for visualisation at
-the scale of the objects *bounding box*.
+lnd.f <- fortify(lnd)
+~~~~
+
+    ## Regions defined for each Polygons
+
+~~~~ {.r}
+nrow(lnd.f)
+~~~~
+
+    ## [1] 1102
+
+In the above block of code we performed two functions for each object:
+1) *flatten* the dataset so that each vertice is allocated a unique row
+2) use `nrow` to count the result. Note the use of the `<-` assignment
+operator to create new objects with a `.f` ending.
+
+It is clear that the GPS data has almost 6 times the number of vertices
+as does the London data, explaining its larger size. Yet when plotted,
+the GPS data does not seem more detailed, implying that some of the
+vertices in the object are not needed for visualisation at the scale of
+the objects *bounding box*.
 
 ### Simplifying geometries
 
@@ -788,7 +776,7 @@ may already be on your system. Uncomment each new line (by deleting the
 ~~~~ {.r}
 download.file(url = "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip", 
     "ne_110m_admin_0_countries.zip", "auto")  # download file
-unzip("ne_110m_admin_0_countries.zip")  # unzip to data folder
+unzip("ne_110m_admin_0_countries.zip", exdir = "data/")  # unzip to data folder
 file.remove("ne_110m_admin_0_countries.zip")  # remove zip file
 ~~~~
 
@@ -1134,10 +1122,7 @@ library(png)
 wrld <- readOGR(".", "ne_110m_admin_0_countries")
 ~~~~
 
-    ## OGR data source with driver: ESRI Shapefile 
-    ## Source: ".", layer: "ne_110m_admin_0_countries"
-    ## with 177 features and 63 fields
-    ## Feature type: wkbPolygon with 2 dimensions
+    ## Error: Cannot open file
 
 ~~~~ {.r}
 btitle <- readPNG("figure/brit_titles.png")
@@ -1156,14 +1141,13 @@ quiet <- list(xquiet, yquiet)
 wrld.pop.f <- fortify(wrld, region = "sov_a3")
 ~~~~
 
-    ## Loading required package: rgeos
-    ## rgeos version: 0.2-19, (SVN revision 394)
-    ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
-    ##  Polygon checking: TRUE
+    ## Error: object 'wrld' not found
 
 ~~~~ {.r}
 base <- ggplot(wrld.pop.f, aes(x = long, y = lat))
 ~~~~
+
+    ## Error: object 'wrld.pop.f' not found
 
 ~~~~ {.r}
 route <- c(geom_path(aes(long, lat, group = paste(bdata$trp, bdata$group.regroup, 
@@ -1176,6 +1160,8 @@ wrld <- c(geom_polygon(aes(group = group), size = 0.1, colour = "black", fill = 
     data = wrld.pop.f, alpha = 1))
 ~~~~
 
+    ## Error: object 'wrld.pop.f' not found
+
 ~~~~ {.r}
 base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9", 
     colour = "black")) + annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, 
@@ -1183,7 +1169,7 @@ base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9",
     ymax = 65) + coord_equal() + quiet
 ~~~~
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png)
+    ## Error: object 'base' not found
 
 ~~~~ {.r}
 base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) + 
@@ -1193,7 +1179,7 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
     coord_equal() + quiet
 ~~~~
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png)
+    ## Error: object 'base' not found
 
 !!!change the colour of the routes to make them stand out more.
 
@@ -1305,4 +1291,6 @@ Endnotes
     contains this information, in the section on "Downloading addtional
     data".
 
-
+~~~~ {.r}
+source("chapter.R")  # convert chapter to tex
+~~~~

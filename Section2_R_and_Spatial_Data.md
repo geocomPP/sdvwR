@@ -15,7 +15,7 @@ unique.
 ### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is
-loading in pre-existing datasets. These may originate from government
+loading in datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
 information' (Goodchild 2007). The diversity of
 geographical data formats is large.
@@ -37,7 +37,8 @@ ride from Sheffield to Wakefield which was uploaded Open Street Map
 
 
 ```r
-download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
+# = 'data/gps-trace.gpx')
 library(rgdal)  # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
 plot(shf2lds)

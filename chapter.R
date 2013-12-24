@@ -1,8 +1,8 @@
 # Compiling the chapter
 # The following can be used to compile the chapter into a single document:
 
-system("pandoc -f markdown -t markdown S*.md >  chapter.md")
-mess <- paste('pandoc -f markdown -t latex -s -o', "chapter.tex", 
+system("pandoc -f markdown -t markdown S*.md > chapter.md")
+mess <- paste('pandoc -f markdown -t latex -s -o', "chapter.tex",
               "chapter.md")
 system(mess) # create latex file
 
@@ -22,7 +22,7 @@ mess <- "sed -i -e '68i\\\\\\usepackage[margin=2cm]{geometry}' chapter.tex"
 system(mess) # shrink margins
 
 idx <- 69
-# open the file and read in all the lines 
+# open the file and read in all the lines
 conn <- file("chapter.tex")
 text <- readLines(conn)
 block <- "\\author{
@@ -35,6 +35,6 @@ Lovelace, Robin\\\\
 \\title{Spatial data visualisation with R}"
 text_block <- unlist(strsplit(block, split='\n'))
 # concatenate the old file with the new text
-mytext <- c(text[1:idx],text_block,text[(idx+1):length(text)]) 
+mytext <- c(text[1:idx],text_block,text[(idx+1):length(text)])
 writeLines(mytext, conn, sep="\n")
 close(conn)

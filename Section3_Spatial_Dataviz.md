@@ -15,25 +15,8 @@ First load the libraries required for this section:
 
 ```r
 library(rgdal)
-```
-
-```
-## Loading required package: sp
-## rgdal: version: 0.8-10, (SVN revision 478)
-## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.10.0, released 2013/04/24
-## Path to GDAL shared files: /usr/share/gdal/1.10
-## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-## Path to PROJ.4 shared files: (autodetected)
-```
-
-```r
 library(ggplot2)
 library(gridExtra)
-```
-
-```
-## Loading required package: grid
 ```
 
 
@@ -43,7 +26,7 @@ saved as `sdvwR` in the Desktop in Windows, use the following.
 
 
 ```r
-setwd("c:/Users/Uname/Desktop/sdvwR")
+setwd("C:/Users/Uname/Desktop/sdvwR")
 ```
 
 
@@ -51,13 +34,13 @@ For this section we are going to use a map of the world to demonstrate some of t
 
 
 ```r
-download.file(url = "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip", 
-    "ne_110m_admin_0_countries.zip", "auto")  # download file
-unzip("ne_110m_admin_0_countries.zip", exdir = "data/")  # unzip to data folder
-file.remove("ne_110m_admin_0_countries.zip")  # remove zip file
+# download.file(url='http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip',
+# 'ne_110m_admin_0_countries.zip', 'auto') # download file
+# unzip('ne_110m_admin_0_countries.zip', exdir = 'data/') # unzip to data
+# folder file.remove('ne_110m_admin_0_countries.zip') # remove zip file
 ```
 
-Once downloaded we can then load the data into the R console. We have just downloaded a shapefile, which as Section XX explains, is not handled as a "standard" data object in R. 
+Once downloaded we can then load the data into the R console. 
 
 
 ```r
@@ -96,7 +79,7 @@ head(wrld@data)[, 1:5]
 ```
 
 
-You can see there are a lot of columns associated with this file. Although we will keep all of the them, we are only really interested in the population estimate ("pop_est") field. Before progressing it is is worth reprojecting the data in order that the population data can be seen better. The coordinate reference system of the wrld shapefile is currently WGS84. This the common latitude and longitude format that all spatial software packages understand. From a cartographic perspective the standard plots of this projection, of the kind produced above, are not suitable since they distort the shapes of those countries further from the equator. Instead the Robinson projection provides a good compromise between areal distortion and shape preservation. We therefore project it as follows.
+You can see there are a lot of columns associated with this file. Although we will keep all of the them, we are only really interested in the population estimate ("pop_est") field. Before progressing it is is worth reprojecting the data in order that the population data can be seen better. The coordinate reference system of the wrld shapefile is currently WGS84. This is the common latitude and longitude format that all spatial software packages understand. From a cartographic perspective the standard plots of this projection, of the kind produced above, are not suitable since they heavily distort the shapes of those countries further from the equator. Instead the Robinson projection provides a good compromise between areal distortion and shape preservation. We therefore project it as follows.
 
 
 ```r
@@ -155,7 +138,7 @@ map + scale_fill_continuous(breaks = )
  
 # Conforming to colour conventions
 
-Colour has an enormous impact on how people will percieve your graphic. "Readers" of a map come to it with a range of pre-conceptions about how the world looks. If the map's purpose is to clearly communicate data then it is often advisable to conform to conventions so as not to disorientate readers to ensure they can focus on the key messages contained in the data. A good example of this is the use of blue for bodies of water and green for landmass. The code example below generates two plots with our wrld.pop.f object. The first colours the land blue and the sea (in this case the background to the map) green and the second is more conventional. We use the "grid.arrange" function from the "gridExtra" package to display the maps side by side.
+Colour has an enormous impact on how people will percieve your graphic. "Readers" of a map come to it with a range of pre-conceptions about how the world looks. If the map's purpose is to clearly communicate data then it is often advisable to conform to conventions so as not to disorientate readers to ensure they can focus on the key messages contained in the data. A good example of this is the use of blue for bodies of water and green for landmasses. The code example below generates two plots with our wrld.pop.f object. The first colours the land blue and the sea (in this case the background to the map) green and the second is more conventional. We use the "grid.arrange" function from the "gridExtra" package to display the maps side by side.
 
 
 ```r
@@ -171,7 +154,7 @@ grid.arrange(blue, green, ncol = 2)
 ![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
-#Experimenting with line colour and line widths
+## Experimenting with line colour and line widths
 
 In addition to conforming to colour conventions, line colour and width offer important parameters, which are often overlooked tools for increasing the legibility of a graphic. As the code below demonstrates, it is possible to adjust line colour through using the "colour" parameter and the line width using the "lwd" parameter. The impact of different line widths will vary depending on your screen size and resolution. If you save the plot to pdf (or an image) then the size at which you do this will also affect the line widths.
 
@@ -223,16 +206,18 @@ Here we create an empty plot, meaning that each new layer must be given
 its own dataset. While more code is needed in this example, it enables
 much greater flexibility with regards to what can be included in new
 layer contents. Another possibility is to use the `segment` geom to add
-a pre-made arrow:
-!!! This needs to sorted - doesn't compile Robin
+a rudimentary arrow (see `?geom_segment` for refinements):
 
-~~~~ {.r}
+
+```r
+library(grid)  # needed for arrow
 ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
-    geom_line(aes(x = c(-160, -160), y = c(0, 25)), arrow = arrow())
-~~~~
+    geom_line(aes(x = c(-1.3e+07, -1.3e+07), y = c(0, 5e+06)), arrow = arrow()) + 
+    coord_fixed()  # correct aspect ratio
+```
 
-![plot of chunk World map with a North
-arrow](figure/World_map_with_a_North_arrow.png)
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+
 
 Scale bar
 ==============================
@@ -259,38 +244,21 @@ library(ggmap)
 !!! adapt to the lnd.stations object.
 
 The sport object is in British National Grid but the ggmap 
-image tiles are in WGS84. We therefore need to use the sport.wgs84 
+image tiles are in WGS84. We therefore need to use the lnd.wgs84 
 object created in the reprojection operation earlier. 
 
 The first job is to calculate the bounding box (bb for short) of the 
-sport.wgs84 object to identify the geographic extent of the image tiles that we need. 
+lnd.wgs84 object to identify the geographic extent of the image tiles that we need. 
+
+
+
+
 
 
 ```r
-b <- bbox(sport.wgs84)
-```
-
-```
-## Error: error in evaluating the argument 'obj' in selecting a method for function 'bbox': Error: object 'sport.wgs84' not found
-```
-
-```r
+b <- bbox(lnd.wgs84)
 b[1, ] <- (b[1, ] - mean(b[1, ])) * 1.05 + mean(b[1, ])
-```
-
-```
-## Error: object 'b' not found
-```
-
-```r
 b[2, ] <- (b[2, ] - mean(b[2, ])) * 1.05 + mean(b[2, ])
-```
-
-```
-## Error: object 'b' not found
-```
-
-```r
 # scale longitude and latitude (increase bb by 5% for plot) replace 1.05
 # with 1.xx for an xx% increase in the plot size
 ```
@@ -300,34 +268,30 @@ This is then fed into the `get_map` function as the location parameter. The synt
 
 
 ```r
+library(ggmap)
 lnd.b1 <- ggmap(get_map(location = b))
 ```
 
 ```
-## Error: object 'b' not found
+## Warning: bounding box given to google - spatial extent only approximate.
+## Warning: cannot open: HTTP status was '403 Forbidden'
+```
+
+```
+## Error: cannot open URL
+## 'http://maps.googleapis.com/maps/api/staticmap?center=51.489304,-0.088233&zoom=10&size=%20640x640&scale=%202&maptype=terrain&sensor=false'
 ```
 
 
 In much the same way as we did above we can then layer the plot with different geoms. 
 
-First fortify the sport.wgs84 object and then merge with the required attribute
+First fortify the lnd.wgs84 object and then merge with the required attribute
 data (we already did this step to create the sport.f object).
 
 
 ```r
-sport.wgs84.f <- fortify(sport.wgs84, region = "ons_label")
-```
-
-```
-## Error: object 'sport.wgs84' not found
-```
-
-```r
-sport.wgs84.f <- merge(sport.wgs84.f, sport.wgs84@data, by.x = "id", by.y = "ons_label")
-```
-
-```
-## Error: object 'sport.wgs84.f' not found
+lnd.wgs84.f <- fortify(lnd.wgs84, region = "ons_label")
+lnd.wgs84.f <- merge(lnd.wgs84.f, lnd.wgs84@data, by.x = "id", by.y = "ons_label")
 ```
 
 
@@ -336,7 +300,7 @@ We can now overlay this on our base map.
 
 
 ```r
-lnd.b1 + geom_polygon(data = sport.wgs84.f, aes(x = long, y = lat, group = group, 
+lnd.b1 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group, 
     fill = Partic_Per), alpha = 0.5)
 ```
 
@@ -352,16 +316,12 @@ lnd.b2 <- ggmap(get_map(location = b, source = "stamen", maptype = "toner",
     crop = T))
 ```
 
-```
-## Error: object 'b' not found
-```
-
 
 We can then produce the plot as before.
 
 
 ```r
-lnd.b2 + geom_polygon(data = sport.wgs84.f, aes(x = long, y = lat, group = group, 
+lnd.b2 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group, 
     fill = Partic_Per), alpha = 0.5)
 ```
 
@@ -372,19 +332,10 @@ Finally, if we want to increase the detail of the base map, get_map has a zoom p
 ```r
 lnd.b3 <- ggmap(get_map(location = b, source = "stamen", maptype = "toner", 
     crop = T, zoom = 11))
-```
 
-```
-## Error: object 'b' not found
-```
-
-```r
-
-lnd.b3 + geom_polygon(data = sport.wgs84.f, aes(x = long, y = lat, group = group, 
+lnd.b3 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group, 
     fill = Partic_Per), alpha = 0.5)
 ```
 
-```
-## Error: object 'lnd.b3' not found
-```
+![plot of chunk Basemap 3](figure/Basemap_3.png) 
 

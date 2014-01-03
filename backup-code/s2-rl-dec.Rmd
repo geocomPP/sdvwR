@@ -1,31 +1,8 @@
 R and Spatial Data
 ==================
-
-## Preliminaries
-
-R has a unique syntax that is worth learning in basic terms before 
-loading spatial data: to R spatial and non-spatial data are 
-treated in the same way, although they have different underlying data structures. 
-Try typing and running (by pressing `ctl-Enter` in a an RStudio script)
-the following calculations to see how R works and plot the result.
-
-```{r}
-t <- seq(from = 0, to = 20, by = 0.1)
-x <- sin(t) * exp(-0.2 * t)
-plot(x)
-```
-
-R code consists of *functions*, usually proceeded by brackets (e.g. `seq`)
-and *objects* (`d`, `t` and `x`). Each function contains *arguments*,
-the names of which often do not need to be states: the function `seq(0, 20, 0.1)`, for example,
-would also work, `from`, `to` and `by` are the *default* arguments.
-Knowing this is important as it can save typing. In this tutorial, however, 
-we generally spell out each of the argument names, for clarity. 
-
-Note the use of the `<-` assignment to create new objects. 
-Objects are entities that can be called to by name in R 
-and can be renamed through additional assignements (e.g `y <- x` if y seems 
-a more appropriate name). 
+!!elements of R syntax
+Note the use of the `<-` assignment
+operator to create new objects with a `.f` ending.
 
 Spatial Data in R
 -----------------
@@ -65,7 +42,7 @@ points(shf2lds.p[seq(1, 3000, 100),])
 ```
 
 ```{r, message=FALSE, results='hide', echo=FALSE}
-# download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
+download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
 plot(shf2lds)
@@ -92,10 +69,10 @@ Finally, the basic
 they make sense. In the second `plot` function, we take a subset of the
 object (see section ... for more on this). To see how to add axes, enter `?axis`
 
-Try discovering more about the function by typing `?readOGR`.
-The documentation explains that the `dsn =` argument is 
-interpreted differently depending on the type of
-file used. In the above example, the `dsn` was set to as the name of the file.
+!!!too dense?
+As stated in the help documentation (accessed by entering `?readOGR`),
+the `dsn =` argument is interpreted differently depending on the type of
+file used. In the above example, the file name was the file name.
 To load Shapefiles, by contrast, the *folder* containing the data is
 used:
 
@@ -352,8 +329,7 @@ plot(combined)
 
 Although the plot of the reprojected data is squashed because the axis scales are not fixed
 and distorted (*geographic* coordinates such as WGS84 should not usually be used for plotting), 
-at least the relative position and shape of both objects can now be seen
-(making visualisations attractive is covered in the next section). The presence of the 
+at least the relative position and shape of both objects can now be seen. The presence of the 
 dotted line in the top left of the plot confirms our assumption that the GPS data is 
 from around Sheffield, which is northwest of London.
 
@@ -406,7 +382,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure 5 below, and can performed using the same technique 
+figure x below, and can performed using the same technique 
 as described in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
@@ -504,7 +480,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in figure 8 below.
+colours added, are presented in Fig !!! below.
 
 ```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
 library(RColorBrewer)

@@ -1,0 +1,171 @@
+Introduction
+============
+
+What is R?
+----------
+
+R is a free and open source computer program that runs on all major
+operating systems. R relies primarily on the *command line* for data
+input: instead of interacting with the program by moving your mouse
+around clicking on different parts of the screen, users enter commands
+via the keyboard. This will seem to strange to people accustomed to
+relying on a graphical user interface (GUI) for most of their computing, yet the
+approach has a number of benefits, as highlighted by Gary Sherman (2008,
+p. 283), developer of the popular Geographical Informations System QGIS:
+
+> With the advent of “modern” GIS software, most people want to point
+> and click their way through life. That’s good, but there is a
+> tremendous amount of flexibility and power waiting for you with the
+> command line. Many times you can do something on the command line in a
+> fraction of the time you can do it with a GUI.
+
+The joy of this, when you get accustomed to it, is that any command is
+only ever a few keystrokes away, and the order of the commands sent to R
+can be stored and repeated in scripts, saving even more time in the
+long-term (more on this in section ...).
+
+Another important attribute of R, related to its command line interface,
+is that it is a fully fledged *programming language*. Other GIS programs
+are written in lower level languages such as C++ which are kept at a
+safe distance from the users by the GUI. In R, by contrast, the user is
+'close to the metal' in the sense that what he or she inputs is the same
+as what R sees when it processes the request. This 'openness' can seem
+raw and daunting to beginners, but it is vital to R's success. Access to
+R's source code and openness about how it works has enabled a veritable
+army of programmers to improve R over time and add an incredible number
+of extensions to its capabilities. There
+are now more than 4000 official packages for R, allowing it to tackle
+almost any computational or numerical problem one could imagine.
+
+Although writing R source code and creating new packages will not appeal
+to most R users, it inspires confidence to know that there is a strong
+and highly skilled community of R developers. If there is a useful
+spatial function that R cannot currently perform, there is a reasonable
+chance that someone is working on a solution that will become available
+at a later date. This constant evolution and improvement is a feature of
+open source software projects not limited to R, but the range and
+diversity of extensions is certainly one of its strong points. One area
+where extension of R's basic capabilities has been particularly
+successful is the addition of a wide variety of spatial tools.
+
+
+Why R for spatial data visualisation?
+-------------------------------------
+
+R was conceived - and is
+still primarily known - for its capabilities as a "statistical programming language" (Bivand
+and Gebhardt 2000). 
+Statistical analysis functions remain core to the package but there is a
+broadening of functionality to reflect a growing user base across disciplines.
+R has become "an integrated suite of software facilities for data manipulation,
+calculation and graphical display" (Venables et al. 2013). 
+Spatial data analysis and visualisation is an important growth area within this 
+increased functionality to the extent that R can almost entirely replace major 
+GIS packages for a whole host of spatial analysis workflows. 
+That said, it will never be a complete replacement for those seeking a user interface 
+that enables panning and zooming, or for those seeking to manually digitise spatial data. 
+We therefore suggest using R *in addition to* GIS packages where required.
+In fact, R's spatial capabilities have already been integrated in conventional GIS packages
+ArcGIS (via its R [toolbox](http://www.arcgis.com/home/item.html?id=a5736544d97a4544aa47d06baf910f6d)
+and the [Geospatial Modelling Environment](http://www.spatialecology.com/gme/)) and QGIS
+(via the [*Processing* framework](http://qgis.org/en/docs/user_manual/processing/3rdParty.html)).
+
+Finally, there continues to be a drive towards open and transparent datasets, which cooincides 
+with the open access agenda gaining momentum in academic publishing. 
+R encourages truly transparent and reproducable academic research by enabling anyone with an R installation to reproduce results described in a paper. This process is aided by the
+RStudio integrated development environment (IDE) allows R code to be run 'live' in documents.
+RStudio also eases sharing, tracking and documenting code via its integration with the `Git` 
+versioning system. In fact, this chapter was written in RStudio using the RMarkdown (`.Rmd`)
+markup language. A preprint can be found at [github.com/geocomPP/sdvwR](https://github.com/geocomPP/sdvwR).
+
+## R in the wild
+
+!!! Add a bit about GIS and also the rise of information graphics- arguably GIS has been caught out. 
+
+Aside from confusion surrounding its one character name [1] and 
+uncertainty about how to search for help [2],
+R may also seem a strange choice for a chapter on
+*spatial* data visualisation specifically. "I thought R was just for
+statistics?" and "Why not use a proper GIS package like ArcGIS?" are valid
+questions.
+
+The second question is based on the premise that all 'proper' GISs need 
+to operate in the same way, with primacy
+allocated to a mapping window and a mouse-driven GUI interface. But when
+we look back at the history of GIS and its definitions, it becomes clear
+that R *is* fully fledged GIS, when it is set up correctly. All early
+GIS programs used a command-line interface; GUIs were only developed
+later as a way to run commands without needing to remember all the
+command names (although this is largely overcome by good 'help' options
+and auto-completion). A concise definition of a GIS is "a computerized tool for solving geographic problems" (Longley et al. 2005, p. 16) and R
+certainly enables this. A more expansive definition of GIS is "a
+powerful set of tools for collecting, storing, retrieving at will,
+transforming, and displaying spatial data from the real world for a
+particular set of purposes" (Burrough and McDonnell, 1998, from Bivand
+et al. 2013, p. 5); R excels at each of these tasks.
+
+That being said, there are a few major differences between R and
+conventional GIS programs in terms of spatial data visualisation: R is
+more suited to creating one-off graphics than exploring spatial data
+through repeated zooming, panning and spatial sub-setting using
+custom-drawn polygons, compared with conventional GIS programs. Although
+interactive maps in R can be created (e.g. using the web interface
+`shiny`), it is recommended that R is used *in addition to* rather than
+as a direct replacement of dedicated GIS programs, especially now that
+there are myriad free options to try (Sherman 2008). An additional point
+is that while dedicated GIS programs handle spatial data by default and
+display the results in a single way, there are various options in R that
+must be decided by the user, for example whether to use R's base
+graphics or a dedicated graphics package such as ggplot2. On the other
+hand, the main benefits of R for spatial data visualisation lie in the
+*reproducibility* of its outputs, a feature that we will be using to
+great effect in this chapter.
+
+Finally, there continues to be a clear drive towards open and transparent datasets and this chimes well with the open access agenda gaining momentum in academic publishing. R encourages truly transparent and reproducable academic research by enabling anyone with an R installation to re-run the code written to produce the results described in a paper. This process is facilitated by the encouragement of more consistent syntax structures and also developments in the RStudio integrated development environment (IDE) that offers formats such as .rmd that are executable R files in addtion to the means of sharing and documenting code widely through Git and Subversion systems.
+
+R in the wild
+-------------
+
+Examples of where R has had an important visual impact.
+
+Might be good to mention New York Times etc here as key users of R.
+
+
+Chapter overview
+----------------
+
+The remainder of this chapter will introduce a series of important concepts associated with sound spatial data visualisation. It will provide examples of R code to illustrate each concept and offer inspiration for work with your own data.
+
+#############
+!!!! To add back into chapter intro (taken out for tutorial)
+
+Finally, there continues to be a drive towards open and transparent datasets, which cooincides 
+with the open access agenda gaining momentum in academic publishing. 
+R encourages truly transparent and reproducable academic research by enabling anyone with an R installation to reproduce results described in a paper. This process is aided by the
+RStudio integrated development environment (IDE) allows R code to be run 'live' in documents.
+RStudio also eases sharing, tracking and documenting code via its integration with the `Git` 
+versioning system. In fact, this chapter was written in RStudio using the RMarkdown (`.Rmd`)
+markup language. A preprint can be found at [github.com/geocomPP/sdvwR](https://github.com/geocomPP/sdvwR).
+
+
+The second question is based on the premise that all 'proper' GISs need 
+to operate in the same way, with primacy
+allocated to a mapping window and a mouse-driven GUI interface. But when
+we look back at the history of GIS and its definitions, it becomes clear
+that R *is* fully fledged GIS, when it is set up correctly. All early
+GIS programs used a command-line interface; GUIs were only developed
+later as a way to run commands without needing to remember all the
+command names (although this is largely overcome by good 'help' options
+and auto-completion). A concise definition of a GIS is "a computerized tool for solving geographic problems" (Longley et al. 2005, p. 16) and R
+certainly enables this. A more expansive definition of GIS is "a
+powerful set of tools for collecting, storing, retrieving at will,
+transforming, and displaying spatial data from the real world for a
+particular set of purposes" (Burrough and McDonnell, 1998, from Bivand
+et al. 2013, p. 5); R excels at each of these tasks.
+
+Aside from confusion surrounding its one character name [1] and 
+uncertainty about how to search for help [2],
+R may also seem a strange choice for a chapter on
+*spatial* data visualisation specifically. "I thought R was just for
+statistics?" and "Why not use a proper GIS package like ArcGIS?" are valid
+questions.

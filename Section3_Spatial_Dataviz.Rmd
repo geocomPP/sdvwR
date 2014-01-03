@@ -12,7 +12,7 @@ We have selected ggplot2 as our package of choice for the bulk of our maps and s
 !!!!Adding base maps with ggmap
 
 First load the libraries required for this section:
-```{r}
+```{r, message=FALSE}
 library(rgdal)
 library(ggplot2)
 library(gridExtra)
@@ -85,16 +85,16 @@ map+ scale_fill_continuous(breaks=)
 Colour has an enormous impact on how people will percieve your graphic. "Readers" of a map come to it with a range of pre-conceptions about how the world looks. If the map's purpose is to clearly communicate data then it is often advisable to conform to conventions so as not to disorientate readers to ensure they can focus on the key messages contained in the data. A good example of this is the use of blue for bodies of water and green for landmasses. The code example below generates two plots with our wrld.pop.f object. The first colours the land blue and the sea (in this case the background to the map) green and the second is more conventional. We use the "grid.arrange" function from the "gridExtra" package to display the maps side by side.
 
 ```{r}
-map2<- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
+map2 <- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
   
-blue<-map2+ geom_polygon(fill="light blue") + theme(panel.background = element_rect(fill = "dark green"))
+blue <- map2+ geom_polygon(fill="light blue") + theme(panel.background = element_rect(fill = "dark green"))
   
-green<-map2 + geom_polygon(fill="dark green") + theme(panel.background = element_rect(fill = "light blue"))
+green <- map2 + geom_polygon(fill="dark green") + theme(panel.background = element_rect(fill = "light blue"))
 
 grid.arrange(blue, green, ncol=2)
 ```
 
-#Experimenting with line colour and line widths
+## Experimenting with line colour and line widths
 
 In addition to conforming to colour conventions, line colour and width offer important parameters, which are often overlooked tools for increasing the legibility of a graphic. As the code below demonstrates, it is possible to adjust line colour through using the "colour" parameter and the line width using the "lwd" parameter. The impact of different line widths will vary depending on your screen size and resolution. If you save the plot to pdf (or an image) then the size at which you do this will also affect the line widths.
 
@@ -142,16 +142,14 @@ Here we create an empty plot, meaning that each new layer must be given
 its own dataset. While more code is needed in this example, it enables
 much greater flexibility with regards to what can be included in new
 layer contents. Another possibility is to use the `segment` geom to add
-a pre-made arrow:
-!!! This needs to sorted - doesn't compile Robin
+a rudimentary arrow (see `?geom_segment` for refinements):
 
-~~~~ {.r}
+```{r}
+library(grid) # needed for arrow
 ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
-    geom_line(aes(x = c(-160, -160), y = c(0, 25)), arrow = arrow())
-~~~~
-
-![plot of chunk World map with a North
-arrow](figure/World_map_with_a_North_arrow.png)
+  geom_line(aes(x = c(-1.3e+07, -1.3e+07), y = c(0, 5e+06)), arrow = arrow()) + 
+  coord_fixed() # correct aspect ratio
+```
 
 Scale bar
 ==============================
@@ -176,14 +174,19 @@ library(ggmap)
 !!! adapt to the lnd.stations object.
 
 The sport object is in British National Grid but the ggmap 
-image tiles are in WGS84. We therefore need to use the sport.wgs84 
+image tiles are in WGS84. We therefore need to use the lnd.wgs84 
 object created in the reprojection operation earlier. 
 
 The first job is to calculate the bounding box (bb for short) of the 
-sport.wgs84 object to identify the geographic extent of the image tiles that we need. 
+lnd.wgs84 object to identify the geographic extent of the image tiles that we need. 
+
+```{r, echo=FALSE}
+load("data/lnd.wgs84.RData")
+```
+
 
 ```{r}
-b <- bbox(sport.wgs84) 
+b <- bbox(lnd.wgs84) 
 b[1, ] <- (b[1, ] - mean(b[1, ])) * 1.05 + mean(b[1, ]) 
 b[2, ] <- (b[2, ] - mean(b[2, ])) * 1.05 + mean(b[2, ]) 
 # scale longitude and latitude (increase bb by 5% for plot)
@@ -193,17 +196,18 @@ b[2, ] <- (b[2, ] - mean(b[2, ])) * 1.05 + mean(b[2, ])
 This is then fed into the `get_map` function as the location parameter. The syntax below contains 2 functions. `ggmap` is required to produce the plot and provides the base map data.
 
 ```{r, message=FALSE}
+library(ggmap)
 lnd.b1 <- ggmap(get_map(location = b))
 ```
 
 In much the same way as we did above we can then layer the plot with different geoms. 
 
-First fortify the sport.wgs84 object and then merge with the required attribute
+First fortify the lnd.wgs84 object and then merge with the required attribute
 data (we already did this step to create the sport.f object).
 
 ```{r}
-sport.wgs84.f <- fortify(sport.wgs84, region = "ons_label")
-sport.wgs84.f <- merge(sport.wgs84.f, sport.wgs84@data, 
+lnd.wgs84.f <- fortify(lnd.wgs84, region = "ons_label")
+lnd.wgs84.f <- merge(lnd.wgs84.f, lnd.wgs84@data, 
                       by.x = "id", by.y = "ons_label")
 ```
 
@@ -212,7 +216,7 @@ We can now overlay this on our base map.
 
 ```{r, eval=FALSE}
 lnd.b1 + 
-  geom_polygon(data = sport.wgs84.f, 
+  geom_polygon(data = lnd.wgs84.f, 
                aes(x = long, y = lat, group = group, fill = Partic_Per), 
                alpha = 0.5)
 ```
@@ -231,7 +235,7 @@ We can then produce the plot as before.
 
 ```{r, Basemap 2, eval=FALSE}
 lnd.b2 + 
-  geom_polygon(data = sport.wgs84.f, 
+  geom_polygon(data = lnd.wgs84.f, 
                aes(x = long, y = lat, group = group, fill = Partic_Per),
                alpha = 0.5)
 ```
@@ -242,7 +246,7 @@ Finally, if we want to increase the detail of the base map, get_map has a zoom p
 lnd.b3 <- ggmap(get_map(location = b, source = "stamen", maptype = "toner", crop = T, zoom = 11))
 
 lnd.b3 + 
-  geom_polygon(data = sport.wgs84.f, 
+  geom_polygon(data = lnd.wgs84.f, 
                aes(x = long, y = lat, group = group, fill = Partic_Per), 
                alpha = 0.5)
 ```

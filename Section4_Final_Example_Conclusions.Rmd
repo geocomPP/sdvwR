@@ -2,15 +2,14 @@ A Final Example
 ===============
 Here we present a final example that draws upon the many advanced concepts discussed in this chapter to produce a map of 18th Century Shipping flows. 
 
-```{r}
+```{r, message=FALSE}
 library(rgdal)
 library(ggplot2)
 library(png)
-wrld <- readOGR("data", "data/ne_110m_admin_0_countries")
+wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 btitle<-readPNG("figure/brit_titles.png")
 compass<-readPNG("figure/windrose.png")
 bdata<-read.csv("data/british_shipping_example.csv")
-
 ```
 
 ```{r}
@@ -60,7 +59,7 @@ ani.record(reset = TRUE)
 ```
 We then initiate the "for loop". In this case we are using the unique() function to list the unique years within the bdata object. The loop will take the first year, in this case 1791, and assign it to the object i. The code inside the {} brackets will then run with i=1791. You will spot that i is used in a number of places- first to subset the data when creating the route plot and then as the title in the ggtitle() function. We need to force ggplot to create the graphic within the loop so the entire plot call is wrapped in the print() function. Once the plot is called anin.record() is used to save the plot still and dev.off() used to clear the plot window ready for the next iteration. i is then assigned the next year in the list and the code runs again until all years are plotted.
 
-```{r}
+```{r, eval=FALSE}
   for (i in order(unique(bdata$year))
     {
     route<-c(geom_path(aes(long,lat,group=paste(trp, group.regroup, sep=".")), colour="#0F3B5F", size=0.2, data= bdata[which(bdata$year==i),], alpha=0.5, lineend="round"))

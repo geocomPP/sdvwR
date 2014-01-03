@@ -1,31 +1,8 @@
 R and Spatial Data
 ==================
-
-## Preliminaries
-
-R has a unique syntax that is worth learning in basic terms before 
-loading spatial data: to R spatial and non-spatial data are 
-treated in the same way, although they have different underlying data structures. 
-Try typing and running (by pressing `ctl-Enter` in a an RStudio script)
-the following calculations to see how R works and plot the result.
-
-```{r}
-t <- seq(from = 0, to = 20, by = 0.1)
-x <- sin(t) * exp(-0.2 * t)
-plot(x)
-```
-
-R code consists of *functions*, usually proceeded by brackets (e.g. `seq`)
-and *objects* (`d`, `t` and `x`). Each function contains *arguments*,
-the names of which often do not need to be states: the function `seq(0, 20, 0.1)`, for example,
-would also work, `from`, `to` and `by` are the *default* arguments.
-Knowing this is important as it can save typing. In this tutorial, however, 
-we generally spell out each of the argument names, for clarity. 
-
-Note the use of the `<-` assignment to create new objects. 
-Objects are entities that can be called to by name in R 
-and can be renamed through additional assignements (e.g `y <- x` if y seems 
-a more appropriate name). 
+!!elements of R syntax
+Note the use of the `<-` assignment
+operator to create new objects with a `.f` ending.
 
 Spatial Data in R
 -----------------
@@ -54,7 +31,6 @@ common spatial file formats. Let's start with a `.gpx` file, a tracklog recordin
 ride from Sheffield to Wakefield which was uploaded OpenStreetMap
 [3].
 
-
 ```{r Leeds to Sheffield GPS data, message=FALSE, results='hide', fig.keep='none'}
 # download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
@@ -64,7 +40,7 @@ shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points") # load 
 points(shf2lds.p[seq(1, 3000, 100),])
 ```
 
-```{r, message=FALSE, results='hide', echo=FALSE}
+```{r Leeds to Sheffield GPS data with latitude and longitude axes, message=FALSE, results='hide', echo=FALSE}
 # download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
@@ -75,7 +51,15 @@ axis(side = 1)
 axis(side = 2)
 ```
 
+<<<<<<< HEAD
+There is a lot going on in the preceding 7 lines of code, including
+functions that you are unlikely to have encountered before. Let us think
+about what has happened, line-by-line.
+
+First, we used R to *download* a file from the internet, using the
+=======
 In the code above we first used R to *download* a file from the internet, using the
+>>>>>>> 3ef36027106b01da94bb0b15793926370ba8d892
 function `download.file`. The two essential arguments of this function
 are `url` (we could have typed `url =` before the link) and `destfile`,
 the destination file. As with any function, more optional
@@ -92,14 +76,14 @@ Finally, the basic
 they make sense. In the second `plot` function, we take a subset of the
 object (see section ... for more on this). To see how to add axes, enter `?axis`
 
-Try discovering more about the function by typing `?readOGR`.
-The documentation explains that the `dsn =` argument is 
-interpreted differently depending on the type of
-file used. In the above example, the `dsn` was set to as the name of the file.
+!!!too dense?
+As stated in the help documentation (accessed by entering `?readOGR`),
+the `dsn =` argument is interpreted differently depending on the type of
+file used. In the above example, the file name was the file name.
 To load Shapefiles, by contrast, the *folder* containing the data is
 used:
 
-```{r Plot of London, fig.keep='none', results='hide'}
+```{r Plot of London, results='hide', message=FALSE}
 lnd <- readOGR(dsn = "data/", "london_sport")
 ```
 
@@ -113,7 +97,7 @@ using functions such as `summary` and `plot`.
 
 ### The size of spatial datasets in R
 
-Any datasets that have been read into R's *workspace*, which constitutes all
+Any data that have been read into R's *workspace*, which constitutes all
 objects that can be accessed by name and can be listed using the `ls()`
 function, can be saved in R's own data storage file type, `.RData`.
 Spatial datasets can get quite large and this can cause problems on
@@ -137,7 +121,7 @@ Surprisingly, the GPS data is larger. To see why, we can find out how
 many *vertices* (points connected by lines) are contained in each
 dataset:
 
-```{r}
+```{r, message=FALSE}
 shf2lds.f <- fortify(shf2lds)
 nrow(shf2lds.f)
 
@@ -216,6 +200,7 @@ writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapef
 ```{r, echo=FALSE}
 # delete shf2lds file to prevent it causing errors later on
 system("rm data/shf2lds*")
+
 ```
 
 In the above code, the object was first converted into a spatial dataframe class required
@@ -294,15 +279,12 @@ The output may seem cryptic but is in fact highly informative: `lnd` has *projec
 coordinates, based on the 
 [*Transverse Mercator*](http://en.wikipedia.org/wiki/Transverse_Mercator_projection)
 system (hence `"+proj=tmerc"` in the output) and its origin is at latitude 49N, -2E.
-This point is 
-
 If we *know* that the CRS is incorrectly specified, it can be re-set.
 In this case, for example we know that `lnd` actually has a CRS OSGB1936.
 Knowing also that the code for this is 27700, it can be updated as follows:
 
 ```{r, warning=FALSE}
 proj4string(lnd) <- CRS("+init=epsg:27700")
-proj4string(lnd)
 ```
 
 The CRS has now been updated - note that the key details are all the same as before. 
@@ -352,8 +334,7 @@ plot(combined)
 
 Although the plot of the reprojected data is squashed because the axis scales are not fixed
 and distorted (*geographic* coordinates such as WGS84 should not usually be used for plotting), 
-at least the relative position and shape of both objects can now be seen
-(making visualisations attractive is covered in the next section). The presence of the 
+at least the relative position and shape of both objects can now be seen. The presence of the 
 dotted line in the top left of the plot confirms our assumption that the GPS data is 
 from around Sheffield, which is northwest of London.
 
@@ -406,8 +387,12 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure 5 below, and can performed using the same technique 
+<<<<<<< HEAD
+figure x below, and can performed using the same technique 
 as described in the section on spatial aggregation.
+=======
+Figure x below.
+>>>>>>> 3ef36027106b01da94bb0b15793926370ba8d892
 
 ![plot of chunk Illustration of a one-to-one spatial
 join](figure/Illustration_of_a_one-to-one_spatial_join_.png)
@@ -461,7 +446,7 @@ discussed in section !!!. In this case, only the name was slightly
 different hence direct alteration of the CRS name via the function
 `proj4string`.
 
-The second line of code is where the magic happens and the brilliance of
+The second line of code is where the power of
 R's sp package becomes clear: all that was needed was to place another
 spatial object in the row index of the points (`[lnd, ]`) and R
 automatically understood that a subset based on location should be
@@ -504,7 +489,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in figure 8 below.
+colours added, are presented in Fig !!! below.
 
 ```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
 library(RColorBrewer)
@@ -538,9 +523,7 @@ transport points in each London borough, and the standard deviation:
 
 ```{r, results='hide'}
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
-summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
-summary(lndSdMice)
 ```
 
 In the above code, `aggregate` was used to create entirely new spatial objects 

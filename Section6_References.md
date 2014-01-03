@@ -49,7 +49,8 @@ Wickham, H. 2010. A Layered Grammar of Graphics. American Statistical Associatio
 Endnotes
 =======
 
-1. R's name originates from the creators of R, Ross Ihaka and Robert
+1. "What kind of a name is R?" common question. R's
+    name originates from the creators of R, Ross Ihaka and Robert
     Gentleman. R is an open source implementation of the statistical
     programming language S, so its name is also a play on words that
     makes implicit reference to this.

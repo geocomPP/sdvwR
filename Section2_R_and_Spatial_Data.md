@@ -1,6 +1,36 @@
 R and Spatial Data
 ==================
 
+## Preliminaries
+
+R has a unique syntax that is worth learning in basic terms before 
+loading spatial data: to R spatial and non-spatial data are 
+treated in the same way, although they have different underlying data structures. 
+Try typing and running (by pressing `ctl-Enter` in a an RStudio script)
+the following calculations to see how R works and plot the result.
+
+
+```r
+t <- seq(from = 0, to = 20, by = 0.1)
+x <- sin(t) * exp(-0.2 * t)
+plot(x)
+```
+
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+
+
+R code consists of *functions*, usually proceeded by brackets (e.g. `seq`)
+and *objects* (`d`, `t` and `x`). Each function contains *arguments*,
+the names of which often do not need to be states: the function `seq(0, 20, 0.1)`, for example,
+would also work, `from`, `to` and `by` are the *default* arguments.
+Knowing this is important as it can save typing. In this tutorial, however, 
+we generally spell out each of the argument names, for clarity. 
+
+Note the use of the `<-` assignment to create new objects. 
+Objects are entities that can be called to by name in R 
+and can be renamed through additional assignements (e.g `y <- x` if y seems 
+a more appropriate name). 
+
 Spatial Data in R
 -----------------
 
@@ -9,30 +39,25 @@ have a strong understanding of the dataset before progressing. This
 section will therefore begin with a description of the input data. 
 We will see how data can be loaded into R and exported
 to other formats, before going into more detail about the underlying
-structure of spatial data in R: how it 'sees' spatial data is quite
-unique.
+structure of spatial data in R.
 
 ### Loading spatial data in R
 
 In most situations, the starting point of spatial analysis tasks is
 loading in datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
-information' (Goodchild 2007). The diversity of
-geographical data formats is large.
-
-R is able to import a very wide range of spatial data formats thanks to
+information' (Goodchild 2007). R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
 is enabled by the package `rgdal`. Below we will load
 data from two spatial data formats: GPS eXchange (`.gpx`) and an ESRI
 Shapefile.
 
 `readOGR` is in fact capable of loading dozens more file formats, so the
-focus is on the *method* rather than the specific formats. The 'take
-home message' is that the `readOGR` function is capable of loading most
-common spatial file formats, but behaves differently depending on file
-type. Let's start with a `.gpx` file, a tracklog recording a bicycle
-ride from Sheffield to Wakefield which was uploaded Open Street Map
+focus is on the *method* rather than the specific formats. The `readOGR` function is therefore capable of loading most
+common spatial file formats. Let's start with a `.gpx` file, a tracklog recording a bicycle
+ride from Sheffield to Wakefield which was uploaded OpenStreetMap
 [3].
+
 
 
 ```r
@@ -46,14 +71,10 @@ points(shf2lds.p[seq(1, 3000, 100), ])
 ```
 
 
-![plot of chunk Leeds to Sheffield GPS data with latitude and longitude axes](figure/Leeds_to_Sheffield_GPS_data_with_latitude_and_longitude_axes.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 
-There is a lot going on in the preceding 7 lines of code, including
-functions that you are unlikely to have encountered before. Let us think
-about what has happened, line-by-line.
-
-First, we used R to *download* a file from the internet, using the
+In the code above we first used R to *download* a file from the internet, using the
 function `download.file`. The two essential arguments of this function
 are `url` (we could have typed `url =` before the link) and `destfile`,
 the destination file. As with any function, more optional
@@ -63,16 +84,17 @@ When `rgdal` has successfully loaded, the next task is not to import the
 file directly, but to find out which *layers* are available to import, 
 with `ogrListLayers`. The output from this command tells us
 that various layers are available, including `tracks` and
-`track_points`: try it. These are imported into R's *workspace* using `readOGR`. 
+`track_points`. These are imported into R's *workspace* using `readOGR`. 
 
 Finally, the basic
 `plot` function is used to visualize the newly imported objects, ensuring
 they make sense. In the second `plot` function, we take a subset of the
 object (see section ... for more on this). To see how to add axes, enter `?axis`
 
-As stated in the help documentation (accessed by entering `?readOGR`),
-the `dsn =` argument is interpreted differently depending on the type of
-file used. In the above example, the file name was the file name.
+Try discovering more about the function by typing `?readOGR`.
+The documentation explains that the `dsn =` argument is 
+interpreted differently depending on the type of
+file used. In the above example, the `dsn` was set to as the name of the file.
 To load Shapefiles, by contrast, the *folder* containing the data is
 used:
 
@@ -92,12 +114,12 @@ using functions such as `summary` and `plot`.
 
 ### The size of spatial datasets in R
 
-Any data that has been read into R's *workspace*, which constitutes all
+Any datasets that have been read into R's *workspace*, which constitutes all
 objects that can be accessed by name and can be listed using the `ls()`
 function, can be saved in R's own data storage file type, `.RData`.
 Spatial datasets can get quite large and this can cause problems on
 computers by consuming all available memory (RAM) or hard
-disk space. It is wise to understand
+disk space. It is therefore wise to understand
 roughly how large spatial objects are, providing insight
 into how long certain functions will take to run.
 
@@ -142,6 +164,13 @@ nrow(shf2lds.f)
 ```r
 
 lnd.f <- fortify(lnd)
+```
+
+```
+## Regions defined for each Polygons
+```
+
+```r
 nrow(lnd.f)
 ```
 
@@ -153,8 +182,7 @@ nrow(lnd.f)
 In the above block of code we performed two
 functions for each object: 1) *flatten* the dataset so that 
 each vertice is allocated a unique row  2) use
-`nrow` to count the result. Note the use of the `<-` assignment
-operator to create new objects with a `.f` ending.
+`nrow` to count the result. 
 
 It is clear that the GPS data has almost 6 times the number
 of vertices as does the London data, explaining its larger size. Yet
@@ -164,12 +192,7 @@ the scale of the objects *bounding box*.
 
 ### Simplifying geometries
 
-The wastefulness of the GPS data for visualisation (the full dataset may
-be useful for other types of analysis) raises the question following
-question: can the object be simplified such that its key features
-features remain while substantially reducing its size? The answer is
-yes. In the code below, we harness the power of the `rgeos` package and
-its `gSimplify` function to simplify spatial R objects:
+In many cases the spatial data we have are too detailed for effective data visualisation. Simplifcation can help to make a graphic more readable and less cluttered. Within the 'rgeos' package it is possible to use the `gSimplify` function to simplify spatial R objects:
 
 
 ```r
@@ -348,6 +371,11 @@ Knowing also that the code for this is 27700, it can be updated as follows:
 
 ```r
 proj4string(lnd) <- CRS("+init=epsg:27700")
+proj4string(lnd)
+```
+
+```
+## [1] "+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs +ellps=airy +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894"
 ```
 
 
@@ -408,7 +436,8 @@ plot(combined)
 
 Although the plot of the reprojected data is squashed because the axis scales are not fixed
 and distorted (*geographic* coordinates such as WGS84 should not usually be used for plotting), 
-at least the relative position and shape of both objects can now be seen. The presence of the 
+at least the relative position and shape of both objects can now be seen
+(making visualisations attractive is covered in the next section). The presence of the 
 dotted line in the top left of the plot confirms our assumption that the GPS data is 
 from around Sheffield, which is northwest of London.
 
@@ -464,7 +493,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure x below, and can performed using the same technique 
+figure 5 below, and can performed using the same technique 
 as described in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
@@ -582,7 +611,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in Fig !!! below.
+colours added, are presented in figure 8 below.
 
 
 
@@ -614,7 +643,9 @@ transport points in each London borough, and the standard deviation:
 
 ```r
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
+summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
+summary(lndSdMice)
 ```
 
 

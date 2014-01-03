@@ -1309,7 +1309,21 @@ a zoom parameter.
 
 Here we present a final example that draws upon the many advanced
 concepts discussed in this chapter to produce a map of 18th Century
-Shipping flows.
+Shipping flows. The data have been obtained from the CLIWOC project and
+they represent a sample of digitised ships' logs from the 18th Century.
+We are using a very small sample of the the full dataset, which is
+available from here: http://pendientedemigracion.ucm.es/info/cliwoc/.
+The example has been chosen to demonstrate a range of capabilities
+within ggplot2 and the ways in which they can be applied to produce
+high-quality maps with only a few lines of code. We end by showing how
+the maps can be animated to show the routes over time and the power of R
+to produce many maps very quickly.
+
+As always, the first step is to load in the required packages and
+datasets. Here we are using the png package to load in a series of map
+annotations. These have been created in image editing software and will
+add a historic feel to the map. We are also loading in a World boundary
+shapefile and the shipping data itself.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1332,6 +1346,15 @@ Shipping flows.
 \NormalTok{bdata <- }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"data/british_shipping_example.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+If you look at the first few lines in the bdata object you will see
+there are 7 columns with each row representing a single point on the
+ships course. The year of the journey and the nationality of the ship
+are also included. The final 3 columns are identifiers that are used
+later to group the coordinate points together into the paths that
+ggplot2 plots.
+
+We first specify some plot parameters that remove the axis labels.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{xquiet <- }\KeywordTok{scale_x_continuous}\NormalTok{(}\StringTok{""}\NormalTok{, }\DataTypeTok{breaks =} \OtherTok{NULL}\NormalTok{)}
@@ -1339,6 +1362,12 @@ Shipping flows.
 \NormalTok{quiet <- }\KeywordTok{list}\NormalTok{(xquiet, yquiet)}
 \end{Highlighting}
 \end{Shaded}
+The next step is to ``fortify'' the World coastlines and create the base
+plot. This sets the extents of the plot window and provides the blank
+canvas on which we will build up the layers. The first layer created is
+the wrld object; the code is wrapped in c() to prevent it from executing
+by simply storing it as the plot's parameters.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{wrld.f <- }\KeywordTok{fortify}\NormalTok{(wrld, }\DataTypeTok{region =} \StringTok{"sov_a3"}\NormalTok{)}
@@ -1353,8 +1382,29 @@ Shipping flows.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{base <- }\KeywordTok{ggplot}\NormalTok{(wrld.f, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{long, }\DataTypeTok{y =} \NormalTok{lat))}
+\NormalTok{wrld <- }\KeywordTok{c}\NormalTok{(}\KeywordTok{geom_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{group =} \NormalTok{group), }\DataTypeTok{size =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{colour =} \StringTok{"black"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#D6BF86"}\NormalTok{, }
+    \DataTypeTok{data =} \NormalTok{wrld.f, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
+To see the result of this simply type:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{base + wrld}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-4.png}
+\caption{unnamed-chunk-4}
+\end{figure}
+
+The code snipped below creates the plot layer containing the the
+shipping routes. The geom\_path() function is used to string together
+the coordinates into the routes. You can see within the aes() component
+we have specified long and lat plus pasted together the trp and
+group.regroup variables to identify the unique paths.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{route <- }\KeywordTok{c}\NormalTok{(}\KeywordTok{geom_path}\NormalTok{(}\KeywordTok{aes}\NormalTok{(long, lat, }\DataTypeTok{group =} \KeywordTok{paste}\NormalTok{(bdata$trp, bdata$group.regroup, }
@@ -1362,12 +1412,16 @@ Shipping flows.
     \DataTypeTok{lineend =} \StringTok{"round"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{wrld <- }\KeywordTok{c}\NormalTok{(}\KeywordTok{geom_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{group =} \NormalTok{group), }\DataTypeTok{size =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{colour =} \StringTok{"black"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#D6BF86"}\NormalTok{, }
-    \DataTypeTok{data =} \NormalTok{wrld.f, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
+We now have all we need to generate the final plot by building the
+layers together with the + sign. The first 3 arguments are the plot
+layers and the parameters within theme() are changing the background
+colour to sea blue. annotation\_raster() plots the png map adornments
+loaded in earlier- this requires the bounding box of each image to be
+specified. In this case we use latitude and longitude (the plot's
+coordinate system) and we can use these paramrters to change the png's
+position and also its size. The final two arguments fix the aspect ratio
+of the plot and remove the axis labels.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{base + route + wrld + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"#BAC4B9"}\NormalTok{, }
@@ -1382,17 +1436,19 @@ Shipping flows.
 \caption{unnamed-chunk-6}
 \end{figure}
 
-It is possible to use the readPNG function to import NASA's ``Blue
-Marble'' image for use as a basemap in your plot. Given that the route
-information is the same projection as the image - latitude and longitude
-(WGS84) - it is very straightforward to set the image extent to span
--180 to 180 degrees and -90 to 90 degrees and have it align with the
-shipping data. Producing the plot is accomplished using the code below.
-This offers a good example of where functionality designed without
-spatial data in mind can be harnessed for the purposes of producing
-interesting maps. Once you have produced the plot, alter the code to
-recolour the shipping routes to make them appear more clearly against
-the blue marble background.
+In the plot example we have chosen the colours carefully to give the
+appearance of a historic map. An alternative approach could be to use a
+satellite image as a base map. It is possible to use the readPNG
+function to import NASA's ``Blue Marble'' image for this purpose. Given
+that the route information is the same projection as the image -
+latitude and longitude (WGS84) - it is very straightforward to set the
+image extent to span -180 to 180 degrees and -90 to 90 degrees and have
+it align with the shipping data. Producing the plot is accomplished
+using the code below. This offers a good example of where functionality
+designed without spatial data in mind can be harnessed for the purposes
+of producing interesting maps. Once you have produced the plot, alter
+the code to recolour the shipping routes to make them appear more
+clearly against the blue marble background.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1483,8 +1539,9 @@ stored in your working directory.
 \end{verbatim}
 You will note that there is something a little odd about the order in
 which the years appear. This can be solved by an additional step before
-the loop code above. Add this in and then regenerate the
-animation.\\Recap and Conclusions =====================
+the loop code above. Add this in and then regenerate the animation.
+
+\section{Recap and Conclusions}
 
 \newpage \section{References}
 

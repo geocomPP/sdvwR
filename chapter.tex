@@ -268,8 +268,9 @@ uploaded Open Street Map {[}3{]}.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-1.png}
-\caption{unnamed-chunk-1}
+\includegraphics{figure/Leeds_to_Sheffield_GPS_data_with_latitude_and_longitude_axes.png}
+\caption{Leeds to Sheffield GPS data with latitude and
+longitude axes}
 \end{figure}
 
 There is a lot going on in the preceding 7 lines of code, including
@@ -365,13 +366,6 @@ dataset:
 \begin{Highlighting}[]
 
 \NormalTok{lnd.f <- }\KeywordTok{fortify}\NormalTok{(lnd)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-## Regions defined for each Polygons
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{nrow}\NormalTok{(lnd.f)}
 \end{Highlighting}
 \end{Shaded}
@@ -403,15 +397,6 @@ objects:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(rgeos)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-## rgeos version: 0.2-19, (SVN revision 394)
-##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
-##  Polygon checking: TRUE
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{shf2lds.simple <- }\KeywordTok{gSimplify}\NormalTok{(shf2lds, }\DataTypeTok{tol =} \FloatTok{0.001}\NormalTok{)}
 \NormalTok{(}\KeywordTok{object.size}\NormalTok{(shf2lds.simple)/}\KeywordTok{object.size}\NormalTok{(shf2lds))[}\DecValTok{1}\NormalTok{]}
 \end{Highlighting}
@@ -426,15 +411,31 @@ objects:
 \end{Highlighting}
 \end{Shaded}
 In the above block of code, \texttt{gSimplify} is given the object
-\texttt{shf2lds} and the \texttt{tol} argument, short for ``tolerance'',
-is set at 0.001 (much larger values may be needed, for data that use is
-\emph{projected} - does not use latitude and longitude). Comparison
-between the sizes of the simplified object and the original shows that
-the new object is less than 3\% of its original size. Try plotting the
-original and simplified tracks on your computer: when visualized using
-the \texttt{plot} function, it becomes clear that the object
-\texttt{shf2lds.simple} retains the overall shape of the line and is
-virtually indistinguishable from the original object.
+\texttt{shf2lds} and the \texttt{tol} argument of 0.001 (much larger
+tolerance values may be needed, for data that is \emph{projected}).
+Next, we divide the size of the simplified object by the original (note
+the use of the \texttt{/} symbol). The output of \texttt{0.03...} tells
+us that the new object is only 3\% of its original size. We can see how
+this has happened by again counting the number of vertices. This time we
+use the \texttt{coordinates} and \texttt{nrow} functions together:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{nrow}\NormalTok{(}\KeywordTok{coordinates}\NormalTok{(shf2lds.simple)[[}\DecValTok{1}\NormalTok{]][[}\DecValTok{1}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+\begin{verbatim}
+## [1] 44
+\end{verbatim}
+The syntax of the double square brackets will seem strange, providing a
+taster of how R `sees' spatial data (see section x). Do not worry about
+this for now. Of interest here is that the number of vertices has
+shrunk, from 6,084 to only 44, without loosing much information about
+the shape of the line. To test this,try plotting the original and
+simplified tracks on your computer: when visualized using the
+\texttt{plot} function, object \texttt{shf2lds.simple} retains the
+overall shape of the line and is virtually indistinguishable from the
+original object.
 
 This example is rather contrived because even the larger object
 \texttt{shf2lds} is only 0.107 Mb, negligible compared with the
@@ -453,26 +454,29 @@ read Shapefiles. This is performed using the following command:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{shf2lds.simple <- }\KeywordTok{SpatialLinesDataFrame}\NormalTok{(shf2lds.simple, }\DataTypeTok{data =} \KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{row.names =} \StringTok{"0"}\NormalTok{, }
+\NormalTok{shf2lds.simple <- }\KeywordTok{SpatialLinesDataFrame}\NormalTok{(shf2lds.simple, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{row.names =} \StringTok{"0"}\NormalTok{, }
     \DataTypeTok{a =} \DecValTok{1}\NormalTok{))}
 \KeywordTok{writeOGR}\NormalTok{(shf2lds.simple, }\DataTypeTok{layer =} \StringTok{"shf2lds"}\NormalTok{, }\DataTypeTok{dsn =} \StringTok{"data/"}\NormalTok{, }\DataTypeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 In the above code, the object was first converted into a spatial
-dataframe class, before being exported as a shapefile entitled shf2lds.
-Unlike with \texttt{readOGR}, the driver must be specified, in this case
-with ``ESRI Shapefile'' {[}4{]}. The simplified GPS data is now
-available to other GIS programs for further analysis.
+dataframe class required by the \texttt{writeOGR} command, before being
+exported as a shapefile entitled shf2lds. Unlike with \texttt{readOGR},
+the driver must be specified, in this case with ``ESRI Shapefile''
+{[}4{]}. The simplified GPS data is now available to other GIS programs
+for further analysis. Alternatively,
+\texttt{save(shf2lds.simple, file = "data/shf2lds.RData")} will save the
+object in R's own spatial data format, which is described in the next
+section.
 
-\subsection{The structure of spatial data in R}
+\subsubsection{The structure of spatial data in R}
 
 Spatial datasets in R are saved in their own format, defined as
 \texttt{Spatial...} classes within the \texttt{sp} package. For this
 reason, \texttt{sp} is the basic spatial package in R, upon which the
-others depend. Spatial classes range from the simples class
-\texttt{Spatial} to the most complex, \texttt{SpatialPolygonsDataFrame}:
-the \texttt{Spatial} class contains only two required
-\emph{slots}{[}5{]}:
+others depend. Spatial classes range from the basic \texttt{Spatial}
+class to the complex, \texttt{SpatialPolygonsDataFrame}: the
+\texttt{Spatial} class contains only two required \emph{slots}{[}5{]}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -483,14 +487,15 @@ the \texttt{Spatial} class contains only two required
 ##        bbox proj4string 
 ##    "matrix"       "CRS"
 \end{verbatim}
-Further details on these can be found by typing \texttt{?bbox} and
-\texttt{?proj4string}. All other spatial classes in R build on this
-foundation of a bounding box and a projection system (which is set
-automatically to \texttt{NA} if it is not known). However, more complex
-classes contain more slots, some of which are lists which contain
-additional lists. To find out the slots of \texttt{shf2lds.simple}, for
-example, we would first ascertain its class and then use the
-\texttt{getSlots} command:
+This tells us that \texttt{Spatial} objects must contain a bounding box
+(\texttt{bbox}) and and CRS. Further details on these can be found by
+typing \texttt{?bbox} and \texttt{?proj4string}. All other spatial
+classes in R build on this foundation of a bounding box and a projection
+system (which is set automatically to \texttt{NA} if it is not known).
+However, more complex classes contain more slots, some of which are
+lists which contain additional lists. To find out the slots of
+\texttt{shf2lds.simple}, for example, we would first ascertain its class
+and then use the \texttt{getSlots} command:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -534,7 +539,7 @@ type the following:
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs"
+## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy "
 \end{verbatim}
 The output may seem cryptic but is in fact highly informative:
 \texttt{lnd} has \emph{projected} coordinates, based on the
@@ -550,12 +555,8 @@ updated as follows:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{proj4string}\NormalTok{(lnd) <- }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:27700"}\NormalTok{)}
-\KeywordTok{proj4string}\NormalTok{(lnd)}
 \end{Highlighting}
 \end{Shaded}
-\begin{verbatim}
-## [1] "+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs +ellps=airy +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894"
-\end{verbatim}
 The CRS has now been updated - note that the key details are all the
 same as before. Note: this method \textbf{should never} be used as an
 attempt to \emph{reproject} data from one CRS to another.
@@ -578,13 +579,6 @@ To illustrate why that is necessary, try to plot the objects
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{combined <- }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{fortify}\NormalTok{(shf2lds.simple)[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{], }\KeywordTok{fortify}\NormalTok{(lnd)[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-## Regions defined for each Polygons
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(combined)}
 \end{Highlighting}
 \end{Shaded}
@@ -617,13 +611,6 @@ to the GPS data:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{combined <- }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{fortify}\NormalTok{(shf2lds.simple)[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{], }\KeywordTok{fortify}\NormalTok{(lnd.wgs84)[, }\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-## Regions defined for each Polygons
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(combined)}
 \end{Highlighting}
 \end{Shaded}
@@ -640,7 +627,7 @@ position and shape of both objects can now be seen. The presence of the
 dotted line in the top left of the plot confirms our assumption that the
 GPS data is from around Sheffield, which is northwest of London.
 
-\subsubsection{Attribute join}
+\subsubsection{Attribute joins}
 
 Because boroughs are official administrative zones, there is much data
 available at this level that we can link to the polygons in the
@@ -668,13 +655,10 @@ done, the join funtion is actually very simple:
 \NormalTok{lnd@data <- }\KeywordTok{join}\NormalTok{(lnd@data, crimeAg)}
 \end{Highlighting}
 \end{Shaded}
-\begin{verbatim}
-## Joining by: name
-\end{verbatim}
 Take a look at the \texttt{lnd@data} object. You should see new
 variables added, meaning the attribute join was successful.
 
-\subsubsection{Spatial join}
+\subsection{Spatial joins}
 
 A spatial join, like attribute joins, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
@@ -684,16 +668,21 @@ layers to each other. There are three broad types of spatial join:
 one-to-one, many-to-one and one-to-many. We will focus only the former
 two as the third type is rarely used.
 
+\subsubsection{One-to-one spatial joins}
+
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure x below.
+figure x below, and can performed using the same technique as described
+in the section on spatial aggregation.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/Illustration_of_a_one-to-one_spatial_join_.png}
 \caption{Illustration of a one-to-one spatial join}
 \end{figure}
+
+\subsubsection{Many-to-one spatial joins}
 
 Many-to-one spatial joins involve taking a spatial layer with many
 elements and allocating the attributes associated with these elements to
@@ -716,8 +705,7 @@ administrative boundaries, as represented in Fig. x.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(lnd)}
-\KeywordTok{plot}\NormalTok{(lnd.stations[}\KeywordTok{round}\NormalTok{(}\KeywordTok{runif}\NormalTok{(}\DataTypeTok{n =} \DecValTok{500}\NormalTok{, }\DataTypeTok{min =} \DecValTok{1}\NormalTok{, }\DataTypeTok{max =} \KeywordTok{nrow}\NormalTok{(lnd.stations))), }
-    \NormalTok{], }\DataTypeTok{add =} \NormalTok{T)}
+\KeywordTok{plot}\NormalTok{(lnd.stations[}\KeywordTok{round}\NormalTok{(}\KeywordTok{runif}\NormalTok{(}\DecValTok{500}\NormalTok{, }\DecValTok{1}\NormalTok{, }\KeywordTok{nrow}\NormalTok{(lnd.stations))), ], }\DataTypeTok{add =} \NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 \begin{figure}[htbp]
@@ -776,7 +764,7 @@ produced. This line of code is an example of R's `terseness' - only a
 single line of code is needed to perform what is in fact quite a complex
 operation.
 
-\subsection{Spatial aggregation}
+\subsubsection{Spatial aggregation}
 
 Now that only stations which \emph{intersect} with the \texttt{lnd}
 polygon have been selected, the next stage is to extract information
@@ -826,17 +814,13 @@ symbol:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{head}\NormalTok{(lnd.stations@data)}
+\KeywordTok{head}\NormalTok{(lnd.stations@data, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-##    CODE          LEGEND FILE_NAME NUMBER                   NAME MICE
-## 91 5520 Railway Station  gb_south  17607        Belmont Station   19
-## 92 5520 Railway Station  gb_south  17608  Woodmansterne Station    5
-## 93 5520 Railway Station  gb_south  17609 Coulsdon South Station   11
-## 94 5520 Railway Station  gb_south  17610        Smitham Station   14
-## 95 5520 Railway Station  gb_south  17611         Kenley Station   11
-## 96 5520 Railway Station  gb_south  17612        Reedham Station    8
+##    CODE          LEGEND FILE_NAME NUMBER                  NAME MICE
+## 91 5520 Railway Station  gb_south  17607       Belmont Station   19
+## 92 5520 Railway Station  gb_south  17608 Woodmansterne Station    5
 \end{verbatim}
 In this case we have three potentially interesting variables:
 ``LEGEND'', telling us what the point is, ``NAME'', and ``MICE'', which
@@ -849,11 +833,33 @@ standard deviation:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{lndAvMice <- }\KeywordTok{aggregate}\NormalTok{(lnd.stations[}\StringTok{"MICE"}\NormalTok{], }\DataTypeTok{by =} \NormalTok{lnd, }\DataTypeTok{FUN =} \NormalTok{mean)}
-\KeywordTok{summary}\NormalTok{(lndAvMice)}
 \NormalTok{lndSdMice <- }\KeywordTok{aggregate}\NormalTok{(lnd.stations[}\StringTok{"MICE"}\NormalTok{], }\DataTypeTok{by =} \NormalTok{lnd, }\DataTypeTok{FUN =} \NormalTok{sd)}
-\KeywordTok{summary}\NormalTok{(lndSdMice)}
 \end{Highlighting}
 \end{Shaded}
+In the above code, \texttt{aggregate} was used to create entirely new
+spatial objects that are exactly the same as \texttt{lnd}, except with
+new attribute data. To add the mean mice count to the original object,
+the following code can be used:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lnd$av.mice <- lndAvMice$MICE}
+\end{Highlighting}
+\end{Shaded}
+The above code creates a new variable in the \texttt{lnd@data} object
+entitled ``av.mice'' and populates it with desired values. Thus
+\texttt{Spatial} objects can behave in the same way as data.frames when
+refering to attribute variables.
+
+\subsection{Summary}
+
+To summarise this section, we have taken a look inside R's
+representation of spatial data, learned how to manipulate these datasets
+in terms of CRS transformations and attribute data and finally explored
+spatial joins and aggregation. Only \emph{after} the datasets are well
+understood and saved in a suitable form should we move on to
+visualisation.
+
 \section{Fundamentals of Spatial Data Visualisation}
 
 Good maps depend on sound analysis and data preparation and can have an

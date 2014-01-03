@@ -90,7 +90,7 @@ using functions such as `summary` and `plot`.
 
 ### The size of spatial datasets in R
 
-Any data that have been read into R's *workspace*, which constitutes all
+Any datasets that have been read into R's *workspace*, which constitutes all
 objects that can be accessed by name and can be listed using the `ls()`
 function, can be saved in R's own data storage file type, `.RData`.
 Spatial datasets can get quite large and this can cause problems on
@@ -137,7 +137,7 @@ the scale of the objects *bounding box*.
 
 In many cases the spatial data we have are too detailed for effective data visualisation. Simplifcation can help to make a graphic more readable and less cluttered. Within the 'rgeos' package it is possible to use the `gSimplify` function to simplify spatial R objects:
 
-```{r fig.keep='none'}
+```{r fig.keep='none', message=FALSE}
 library(rgeos)
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 (object.size(shf2lds.simple) / object.size(shf2lds))[1]
@@ -146,13 +146,27 @@ plot(shf2lds, col = "red", add = T)
 ```
 
 In the above block of code, `gSimplify` is given the object `shf2lds`
-and the `tol` argument, short for "tolerance", is set at 0.001 (much
-larger values may be needed, for data that use is *projected* - does not
-use latitude and longitude). Comparison between the sizes of the
-simplified object and the original shows that the new object is less than
-3% of its original size. Try plotting the original and simplified tracks
-on your computer: when visualized using the `plot` function, it becomes
-clear that the object `shf2lds.simple` retains the overall shape of the
+and the `tol` argument of 0.001 (much
+larger tolerance values may be needed, for data that is *projected*). 
+Next, we divide the size of the simplified object by the original 
+(note the use of the `/` symbol). The output  of `0.03...` 
+tells us that the new object is only
+3% of its original size. We can see how this has happened
+by again counting the number of vertices. This time we use the 
+`coordinates` and `nrow` functions together:
+
+```{r}
+nrow(coordinates(shf2lds.simple)[[1]][[1]])
+```
+
+The syntax of the double square brackets will seem strange, 
+providing a taster of how R 'sees' spatial data (see section x). 
+Do not worry about this for now. 
+Of interest here is that the number of vertices has shrunk, from 6,084 to 
+only 44, without loosing much information about the shape of the line.
+To test this,try plotting the original and simplified tracks
+on your computer: when visualized using the `plot` function, 
+object `shf2lds.simple` retains the overall shape of the
 line and is virtually indistinguishable from the original object.
 
 This example is rather contrived because even the larger object
@@ -172,7 +186,7 @@ in software that can only read Shapefiles. This is performed using
 the following command:
 
 ```{r}
-shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data = data.frame(row.names = "0", a = 1))
+shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data.frame(row.names = "0", a = 1))
 writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapefile")
 ```
 
@@ -181,26 +195,28 @@ writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapef
 system("rm data/shf2lds*")
 ```
 
-
-In the above code, the object was first converted into a spatial dataframe class, before 
+In the above code, the object was first converted into a spatial dataframe class required
+by the `writeOGR` command, before 
 being exported as a shapefile entitled shf2lds. Unlike with `readOGR`, the driver must 
 be specified, in this case with "ESRI Shapefile" [4]. The simplified GPS data is now available
-to other GIS programs for further analysis.
+to other GIS programs for further analysis. Alternatively, 
+`save(shf2lds.simple, file = "data/shf2lds.RData")`
+will save the object in R's own spatial data format, which is described in the next section.
 
-The structure of spatial data in R
-----------------------------------
+### The structure of spatial data in R
 
 Spatial datasets in R are saved in their own format, defined as 
 `Spatial...` classes within the `sp` package. For this reason, 
 `sp` is the basic spatial package in R, upon which the others depend. 
-Spatial classes range from the simples class `Spatial` to the most complex, 
+Spatial classes range from the basic `Spatial` class to the complex, 
 `SpatialPolygonsDataFrame`: the `Spatial` class contains only two required *slots*[5]:
 
 ```{r}
 getSlots("Spatial")
 ```
 
-Further details on these can be found by typing `?bbox` and `?proj4string`. 
+This tells us that `Spatial` objects must contain a bounding box (`bbox`) and 
+and CRS. Further details on these can be found by typing `?bbox` and `?proj4string`. 
 All other spatial classes in R build on 
 this foundation of a bounding box and a projection system (which 
 is set automatically to `NA` if it is not known). However, more complex 
@@ -243,14 +259,20 @@ the result will simply be `NA`.
 To discover the CRS of the `lnd` object for example, 
 type the following: 
 
-```{r}
+```{r, eval=FALSE}
 proj4string(lnd)
 ```
+```{r, echo=FALSE}
+strtrim(proj4string(lnd), width=85)
+```
+
 
 The output may seem cryptic but is in fact highly informative: `lnd` has *projected*
 coordinates, based on the 
 [*Transverse Mercator*](http://en.wikipedia.org/wiki/Transverse_Mercator_projection)
 system (hence `"+proj=tmerc"` in the output) and its origin is at latitude 49N, -2E.
+This point is 
+
 If we *know* that the CRS is incorrectly specified, it can be re-set.
 In this case, for example we know that `lnd` actually has a CRS OSGB1936.
 Knowing also that the code for this is 27700, it can be updated as follows:
@@ -277,7 +299,7 @@ Reprojecting data in R is quite simple: all you need is a spatial object with a 
 CRS and knowledge of the CRS you wish to transform it to. To illustrate why that is necessary, 
 try to plot the objects `lnd` and `shf2lnd.simple` on the same map:
 
-```{r Plot of spatial objects with different CRS}
+```{r Plot of spatial objects with different CRS, message=FALSE}
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd)[, 1:2])
 plot(combined)
 ```
@@ -300,7 +322,7 @@ same geometries as the original but in a new CRS using the
 EPSG code [6]. Now `lnd` has been reprojected we can plot it 
 next to the GPS data:
 
-```{r Plot of spatial objects sharing the same CRS}
+```{r Plot of spatial objects sharing the same CRS, message=FALSE}
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd.wgs84)[, 1:2])
 plot(combined)
 ```
@@ -311,7 +333,7 @@ at least the relative position and shape of both objects can now be seen. The pr
 dotted line in the top left of the plot confirms our assumption that the GPS data is 
 from around Sheffield, which is northwest of London.
 
-### Attribute join
+### Attribute joins
 
 Because boroughs are official administrative
 zones, there is much data available at this level that we 
@@ -337,7 +359,7 @@ same name, but this work has already been done [7]. Once
 this preparation has been done, the 
 join funtion is actually very simple:
 
-```{r, results='hide'}
+```{r, results='hide', message=FALSE}
 lnd@data <- join(lnd@data, crimeAg)
 ```
 
@@ -345,7 +367,7 @@ Take a look at the `lnd@data` object. You should
 see new variables added, meaning the attribute join 
 was successful. 
 
-### Spatial join
+## Spatial joins
 
 A spatial join, like attribute joins, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
@@ -355,13 +377,18 @@ layers to each other. There are three broad types of spatial join:
 one-to-one, many-to-one and one-to-many. We will focus only the former
 two as the third type is rarely used.
 
+### One-to-one spatial joins
+
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-Figure x below.
+figure x below, and can performed using the same technique 
+as described in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
 join](figure/Illustration_of_a_one-to-one_spatial_join_.png)
+
+### Many-to-one spatial joins
 
 Many-to-one spatial joins involve taking a spatial layer with many
 elements and allocating the attributes associated with these elements to
@@ -370,10 +397,10 @@ many-to-one spatial join is the allocation of data collected at many
 point sources unevenly scattered over space to polygons representing
 administrative boundaries, as represented in Fig. x.
 
-```{r Input data for a spatial join}
+```{r Input data for a spatial join, message=FALSE}
 lnd.stations <- readOGR("data/", "lnd-stns", p4s="+init=epsg:27700")
 plot(lnd)
-plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))),], add = T)
+plot(lnd.stations[round(runif(500, 1, nrow(lnd.stations))),], add = T)
 ```
 
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532
@@ -410,7 +437,7 @@ discussed in section !!!. In this case, only the name was slightly
 different hence direct alteration of the CRS name via the function
 `proj4string`.
 
-The second line of code is where the power of
+The second line of code is where the magic happens and the brilliance of
 R's sp package becomes clear: all that was needed was to place another
 spatial object in the row index of the points (`[lnd, ]`) and R
 automatically understood that a subset based on location should be
@@ -418,8 +445,7 @@ produced. This line of code is an example of R's 'terseness' - only a
 single line of code is needed to perform what is in fact quite a complex
 operation.
 
-Spatial aggregation
--------------------
+### Spatial aggregation
 
 Now that only stations which *intersect* with the `lnd` polygon have
 been selected, the next stage is to extract information about the points
@@ -476,7 +502,7 @@ As with any spatial attribute data stored as an `sp` object, we can look
 at the attributes of the point data using the `@` symbol:
 
 ```{r}
-head(lnd.stations@data)
+head(lnd.stations@data, n = 2)
 ```
 
 In this case we have three potentially interesting variables: "LEGEND",
@@ -493,7 +519,32 @@ lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
 summary(lndSdMice)
 ```
 
-```{r, echo=FALSE}
+In the above code, `aggregate` was used to create entirely new spatial objects 
+that are exactly the same as `lnd`, except with new attribute data.
+To add the mean mice count to the original object, the following code can be 
+used: 
+
+```{r}
+lnd$av.mice <- lndAvMice$MICE
+```
+
+The above code creates a new variable in the `lnd@data` object
+entitled "av.mice" and populates it with desired values. Thus
+`Spatial` objects can behave in the same way as data.frames when 
+refering to attribute variables.
+
+## Summary
+
+To summarise this section, we have taken a look inside R's representation 
+of spatial data, learned how to manipulate these datasets in terms of 
+CRS transformations and attribute data and finally explored spatial joins and aggregation. 
+Only *after* the datasets are well understood
+and saved in a suitable form should we move on to visualisation.
+
+
+```{r, echo=FALSE, eval=FALSE}
+# used to create MICE variable
+set.seed(1)
 lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
 ```
 

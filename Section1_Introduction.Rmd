@@ -67,15 +67,11 @@ broadening of functionality to reflect a growing user base across disciplines.
 R has become "an integrated suite of software facilities for data manipulation,
 calculation and graphical display" (Venables et al. 2013). 
 Spatial data analysis and visualisation is an important growth area within this 
-increased functionality to the extent that R can almost entirely replace major 
-GIS packages for a whole host of spatial analysis workflows. 
-That said, it will never be a complete replacement for those seeking a user interface 
-that enables panning and zooming, or for those seeking to manually digitise spatial data. 
-We therefore suggest using R *in addition to* GIS packages where required.
-In fact, R's spatial capabilities have already been integrated in conventional GIS packages
-ArcGIS (via its R [toolbox](http://www.arcgis.com/home/item.html?id=a5736544d97a4544aa47d06baf910f6d)
-and the [Geospatial Modelling Environment](http://www.spatialecology.com/gme/)) and QGIS
-(via the [*Processing* framework](http://qgis.org/en/docs/user_manual/processing/3rdParty.html)).
+increased functionality.
+In recent years R has really made its mark as a data visualisation tool. Perhaps the first truly inspiring graphic to be created in R that reached a global audience was the map of Facebook friendships produced by Paul Butler. He mapped the linkages between friends by calculating the great circle arcs between them (using the “geosphere” package) and then plotting them using the basic R graphics functionality. The secret to the success of this map was the time taken to select the appropriate colour palette, line widths and transparency for the plot. As we discuss in Section XXX the importance of these cannot be understated and are the difference between a stunning graphic and an impenetrable mess of lines.
+
+The impact of the graphic was to inspire the R community to produce more ambitious graphics; a process fuelled by the increased demand for data visualisation and the development of sophisticated packages, such as ggplot2, that augment the basic plot functions of R. It is now the case that R has become a key analysis and visualisation tool used by the likes of Twitter, the New York Times and Facebook and thousands of consultants, design houses and journalists. It is not longer the preserve of academic research, with many graduate jobs listing R as a desirable skill. 
+
 
 ### R and conventional GIS programs
 
@@ -85,10 +81,16 @@ more suited to creating one-off graphics than exploring spatial data
 through repeated zooming, panning and spatial sub-setting using
 custom-drawn polygons, compared with conventional GIS programs. Although
 interactive maps in R can be created (e.g. using the web interface
-`shiny`), it is recommended that R is used *in addition to* rather than
-as a direct replacement of dedicated GIS programs, especially now that
-there are myriad free options to try (Sherman 2008). An additional point
-is that while dedicated GIS programs handle spatial data by default and
+`shiny`), That said, it will never be a complete replacement for those seeking a user interface 
+that enables panning and zooming, or for those seeking to manually digitise spatial data. 
+We therefore suggest using R *in addition to* GIS packages where required.
+In fact, R's spatial capabilities have already been integrated in conventional GIS packages
+ArcGIS (via its R [toolbox](http://www.arcgis.com/home/item.html?id=a5736544d97a4544aa47d06baf910f6d)
+and the [Geospatial Modelling Environment](http://www.spatialecology.com/gme/)) and QGIS
+(via the [*Processing* framework](http://qgis.org/en/docs/user_manual/processing/3rdParty.html)).
+. 
+
+Finally, it is worth noting that while dedicated GIS programs handle spatial data by default and
 display the results in a single way, there are various options in R that
 must be decided by the user, for example whether to use R's base
 graphics or a dedicated graphics package such as ggplot2. On the other
@@ -98,7 +100,7 @@ great effect in this chapter.
 
 ### R and reproducible research
 
-Finally, there is a drive towards transparency in data and methods datasets in academic publishing. 
+There is a drive towards transparency in data and methods datasets in academic publishing. 
 R encourages truly transparent and reproducible research by enabling anyone with an 
 R installation reproduce results described in previous paper. 
 This process is eased by the RStudio integrated development environment (IDE) 

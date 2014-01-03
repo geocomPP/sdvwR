@@ -88,7 +88,7 @@ The final step in the process is to save the animation to HTML and view it in yo
 ```{r}
 saveHTML(ani.replay(), img.name = "record_plot",outdir = getwd())
 ```
-You will note that there is something a little odd about the order in which the years appear. This can be solved by an additional step before the loop code above. Add this in and then regenerate the animation.  
+You will note that there is something a little odd about the order in which the years appear. This can be solved by an additional step before the loop code above. Have a think then add this in and then regenerate the animation.  
 
 Recap and Conclusions
 =====================

@@ -188,7 +188,8 @@ shf2lds.p <- readOGR(dsn = "data/gps-trace.gpx", layer = "track_points")  # load
 points(shf2lds.p[seq(1, 3000, 100), ])
 ~~~~
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png)
+![plot of chunk Leeds to Sheffield GPS data with latitude and longitude
+axes](figure/Leeds_to_Sheffield_GPS_data_with_latitude_and_longitude_axes.png)
 
 There is a lot going on in the preceding 7 lines of code, including
 functions that you are unlikely to have encountered before. Let us think
@@ -270,11 +271,6 @@ nrow(shf2lds.f)
 ~~~~ {.r}
 
 lnd.f <- fortify(lnd)
-~~~~
-
-    ## Regions defined for each Polygons
-
-~~~~ {.r}
 nrow(lnd.f)
 ~~~~
 
@@ -302,13 +298,6 @@ its `gSimplify` function to simplify spatial R objects:
 
 ~~~~ {.r}
 library(rgeos)
-~~~~
-
-    ## rgeos version: 0.2-19, (SVN revision 394)
-    ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
-    ##  Polygon checking: TRUE
-
-~~~~ {.r}
 shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 (object.size(shf2lds.simple)/object.size(shf2lds))[1]
 ~~~~
@@ -321,14 +310,28 @@ plot(shf2lds, col = "red", add = T)
 ~~~~
 
 In the above block of code, `gSimplify` is given the object `shf2lds`
-and the `tol` argument, short for "tolerance", is set at 0.001 (much
-larger values may be needed, for data that use is *projected* - does not
-use latitude and longitude). Comparison between the sizes of the
-simplified object and the original shows that the new object is less
-than 3% of its original size. Try plotting the original and simplified
-tracks on your computer: when visualized using the `plot` function, it
-becomes clear that the object `shf2lds.simple` retains the overall shape
-of the line and is virtually indistinguishable from the original object.
+and the `tol` argument of 0.001 (much larger tolerance values may be
+needed, for data that is *projected*). Next, we divide the size of the
+simplified object by the original (note the use of the `/` symbol). The
+output of `0.03...` tells us that the new object is only 3% of its
+original size. We can see how this has happened by again counting the
+number of vertices. This time we use the `coordinates` and `nrow`
+functions together:
+
+~~~~ {.r}
+nrow(coordinates(shf2lds.simple)[[1]][[1]])
+~~~~
+
+    ## [1] 44
+
+The syntax of the double square brackets will seem strange, providing a
+taster of how R 'sees' spatial data (see section x). Do not worry about
+this for now. Of interest here is that the number of vertices has
+shrunk, from 6,084 to only 44, without loosing much information about
+the shape of the line. To test this,try plotting the original and
+simplified tracks on your computer: when visualized using the `plot`
+function, object `shf2lds.simple` retains the overall shape of the line
+and is virtually indistinguishable from the original object.
 
 This example is rather contrived because even the larger object
 `shf2lds` is only 0.107 Mb, negligible compared with the gigabytes of
@@ -345,24 +348,26 @@ simplified `gpx` data in software that can only read Shapefiles. This is
 performed using the following command:
 
 ~~~~ {.r}
-shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data = data.frame(row.names = "0", 
+shf2lds.simple <- SpatialLinesDataFrame(shf2lds.simple, data.frame(row.names = "0", 
     a = 1))
 writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapefile")
 ~~~~
 
 In the above code, the object was first converted into a spatial
-dataframe class, before being exported as a shapefile entitled shf2lds.
-Unlike with `readOGR`, the driver must be specified, in this case with
-"ESRI Shapefile" [4]. The simplified GPS data is now available to other
-GIS programs for further analysis.
+dataframe class required by the `writeOGR` command, before being
+exported as a shapefile entitled shf2lds. Unlike with `readOGR`, the
+driver must be specified, in this case with "ESRI Shapefile" [4]. The
+simplified GPS data is now available to other GIS programs for further
+analysis. Alternatively,
+`save(shf2lds.simple, file = "data/shf2lds.RData")` will save the object
+in R's own spatial data format, which is described in the next section.
 
-The structure of spatial data in R
-----------------------------------
+### The structure of spatial data in R
 
 Spatial datasets in R are saved in their own format, defined as
 `Spatial...` classes within the `sp` package. For this reason, `sp` is
 the basic spatial package in R, upon which the others depend. Spatial
-classes range from the simples class `Spatial` to the most complex,
+classes range from the basic `Spatial` class to the complex,
 `SpatialPolygonsDataFrame`: the `Spatial` class contains only two
 required *slots*[5]:
 
@@ -373,13 +378,14 @@ getSlots("Spatial")
     ##        bbox proj4string 
     ##    "matrix"       "CRS"
 
-Further details on these can be found by typing `?bbox` and
-`?proj4string`. All other spatial classes in R build on this foundation
-of a bounding box and a projection system (which is set automatically to
-`NA` if it is not known). However, more complex classes contain more
-slots, some of which are lists which contain additional lists. To find
-out the slots of `shf2lds.simple`, for example, we would first ascertain
-its class and then use the `getSlots` command:
+This tells us that `Spatial` objects must contain a bounding box
+(`bbox`) and and CRS. Further details on these can be found by typing
+`?bbox` and `?proj4string`. All other spatial classes in R build on this
+foundation of a bounding box and a projection system (which is set
+automatically to `NA` if it is not known). However, more complex classes
+contain more slots, some of which are lists which contain additional
+lists. To find out the slots of `shf2lds.simple`, for example, we would
+first ascertain its class and then use the `getSlots` command:
 
 ~~~~ {.r}
 class(shf2lds.simple)  # identify the object's class
@@ -416,7 +422,7 @@ discover the CRS of the `lnd` object for example, type the following:
 proj4string(lnd)
 ~~~~
 
-    ## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs"
+    ## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy "
 
 The output may seem cryptic but is in fact highly informative: `lnd` has
 *projected* coordinates, based on the [*Transverse
@@ -431,10 +437,7 @@ follows:
 
 ~~~~ {.r}
 proj4string(lnd) <- CRS("+init=epsg:27700")
-proj4string(lnd)
 ~~~~
-
-    ## [1] "+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs +ellps=airy +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894"
 
 The CRS has now been updated - note that the key details are all the
 same as before. Note: this method **should never** be used as an attempt
@@ -457,11 +460,6 @@ To illustrate why that is necessary, try to plot the objects `lnd` and
 
 ~~~~ {.r}
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd)[, 1:2])
-~~~~
-
-    ## Regions defined for each Polygons
-
-~~~~ {.r}
 plot(combined)
 ~~~~
 
@@ -487,11 +485,6 @@ reprojected we can plot it next to the GPS data:
 
 ~~~~ {.r}
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd.wgs84)[, 1:2])
-~~~~
-
-    ## Regions defined for each Polygons
-
-~~~~ {.r}
 plot(combined)
 ~~~~
 
@@ -505,7 +498,7 @@ position and shape of both objects can now be seen. The presence of the
 dotted line in the top left of the plot confirms our assumption that the
 GPS data is from around Sheffield, which is northwest of London.
 
-### Attribute join
+### Attribute joins
 
 Because boroughs are official administrative zones, there is much data
 available at this level that we can link to the polygons in the `lnd`
@@ -531,12 +524,11 @@ join funtion is actually very simple:
 lnd@data <- join(lnd@data, crimeAg)
 ~~~~
 
-    ## Joining by: name
-
 Take a look at the `lnd@data` object. You should see new variables
 added, meaning the attribute join was successful.
 
-### Spatial join
+Spatial joins
+-------------
 
 A spatial join, like attribute joins, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
@@ -546,13 +538,18 @@ layers to each other. There are three broad types of spatial join:
 one-to-one, many-to-one and one-to-many. We will focus only the former
 two as the third type is rarely used.
 
+### One-to-one spatial joins
+
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure x below.
+figure x below, and can performed using the same technique as described
+in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
 join](figure/Illustration_of_a_one-to-one_spatial_join_.png)
+
+### Many-to-one spatial joins
 
 Many-to-one spatial joins involve taking a spatial layer with many
 elements and allocating the attributes associated with these elements to
@@ -572,8 +569,7 @@ lnd.stations <- readOGR("data/", "lnd-stns", p4s = "+init=epsg:27700")
 
 ~~~~ {.r}
 plot(lnd)
-plot(lnd.stations[round(runif(n = 500, min = 1, max = nrow(lnd.stations))), 
-    ], add = T)
+plot(lnd.stations[round(runif(500, 1, nrow(lnd.stations))), ], add = T)
 ~~~~
 
 ![plot of chunk Input data for a spatial
@@ -624,8 +620,7 @@ produced. This line of code is an example of R's 'terseness' - only a
 single line of code is needed to perform what is in fact quite a complex
 operation.
 
-Spatial aggregation
--------------------
+### Spatial aggregation
 
 Now that only stations which *intersect* with the `lnd` polygon have
 been selected, the next stage is to extract information about the points
@@ -668,16 +663,12 @@ As with any spatial attribute data stored as an `sp` object, we can look
 at the attributes of the point data using the `@` symbol:
 
 ~~~~ {.r}
-head(lnd.stations@data)
+head(lnd.stations@data, n = 2)
 ~~~~
 
-    ##    CODE          LEGEND FILE_NAME NUMBER                   NAME MICE
-    ## 91 5520 Railway Station  gb_south  17607        Belmont Station   19
-    ## 92 5520 Railway Station  gb_south  17608  Woodmansterne Station    5
-    ## 93 5520 Railway Station  gb_south  17609 Coulsdon South Station   11
-    ## 94 5520 Railway Station  gb_south  17610        Smitham Station   14
-    ## 95 5520 Railway Station  gb_south  17611         Kenley Station   11
-    ## 96 5520 Railway Station  gb_south  17612        Reedham Station    8
+    ##    CODE          LEGEND FILE_NAME NUMBER                  NAME MICE
+    ## 91 5520 Railway Station  gb_south  17607       Belmont Station   19
+    ## 92 5520 Railway Station  gb_south  17608 Woodmansterne Station    5
 
 In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
@@ -688,10 +679,32 @@ transport points in each London borough, and the standard deviation:
 
 ~~~~ {.r}
 lndAvMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = mean)
-summary(lndAvMice)
 lndSdMice <- aggregate(lnd.stations["MICE"], by = lnd, FUN = sd)
-summary(lndSdMice)
 ~~~~
+
+In the above code, `aggregate` was used to create entirely new spatial
+objects that are exactly the same as `lnd`, except with new attribute
+data. To add the mean mice count to the original object, the following
+code can be used:
+
+~~~~ {.r}
+lnd$av.mice <- lndAvMice$MICE
+~~~~
+
+The above code creates a new variable in the `lnd@data` object entitled
+"av.mice" and populates it with desired values. Thus `Spatial` objects
+can behave in the same way as data.frames when refering to attribute
+variables.
+
+Summary
+-------
+
+To summarise this section, we have taken a look inside R's
+representation of spatial data, learned how to manipulate these datasets
+in terms of CRS transformations and attribute data and finally explored
+spatial joins and aggregation. Only *after* the datasets are well
+understood and saved in a suitable form should we move on to
+visualisation.
 
 Fundamentals of Spatial Data Visualisation
 ==========================================

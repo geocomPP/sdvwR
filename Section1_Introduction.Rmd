@@ -50,15 +50,6 @@ diversity of extensions is certainly one of its strong points. One area
 where extension of R's basic capabilities has been particularly
 successful is the addition of a wide variety of spatial tools.
 
-The rise of R's spatial capabilities
-------------------------------------
-
-!!! Quick history of R's spatial packages emphasizing current growth and
-heavy dependence on sp.
-
-!!!Mention exciting and recently added packages.
-
-!!! Not sure if this is worth a complete section- we probably mention many of the things throughout the chapter. I also wonder who really cares!
 
 Why R for spatial data visualisation?
 -------------------------------------

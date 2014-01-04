@@ -488,7 +488,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in figure 8 below.
+colours added, are presented in Figure 8 below. The code used below involves a number of steps that we have not yet covered. Copy these to create the map and they will be explained in Section 3 of the tutorial.
 
 ```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
 library(RColorBrewer)
@@ -546,15 +546,3 @@ refering to attribute variables.
 To summarise this section, we have taken a look inside R's representation 
 of spatial data, learned how to manipulate these datasets in terms of 
 CRS transformations and attribute data and finally explored spatial joins and aggregation. 
-
-
-```{r, echo=FALSE, eval=FALSE}
-# used to create MICE variable
-set.seed(1)
-lnd.stations$MICE <- rpois(n = nrow(lnd.stations), lambda = 10)
-```
-
-```{r, echo=FALSE}
-### Clipping
-```
-

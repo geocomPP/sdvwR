@@ -73,7 +73,7 @@ ani.record(reset = TRUE)
 We then initiate the "for loop". In this case we are using the unique() function to list the unique years within the bdata object. The loop will take the first year, in this case 1791, and assign it to the object i. The code inside the {} brackets will then run with i=1791. You will spot that i is used in a number of places- first to subset the data when creating the route plot and then as the title in the ggtitle() function. We need to force ggplot to create the graphic within the loop so the entire plot call is wrapped in the print() function. Once the plot is called anin.record() is used to save the plot still and dev.off() used to clear the plot window ready for the next iteration. i is then assigned the next year in the list and the code runs again until all years are plotted.
 
 ```{r, eval=FALSE}
-  for (i in order(unique(bdata$year))
+  for (i in unique(bdata$year))
     {
     route<-c(geom_path(aes(long,lat,group=paste(trp, group.regroup, sep=".")), colour="#0F3B5F", size=0.2, data= bdata[which(bdata$year==i),], alpha=0.5, lineend="round"))
     print(base+route+wrld + theme(panel.background = element_rect(fill='#BAC4B9',colour='black')) +annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87)+annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65)+ coord_equal()+quiet+ggtitle(i))

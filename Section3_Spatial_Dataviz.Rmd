@@ -205,13 +205,20 @@ ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = 
 
 #Scale bar
 
-!!! use geom_segment with geom_text 
+```{r}
+ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
+  geom_line(aes(x = c(-0.85e+07, -1.75e+07), y = c(-5e+06, -5e+06)), lwd=2) + annotate("text",label="1000km",x=-1.3e+07,y=-4e+06) +coord_fixed() # correct aspect ratio
+```
 
 
-There is an almost infinite number of different combinations of the above parameters so take inspiration from maps and graphics you have seen and liked. The process is an iterative one, it will take multiple attempts to get right. Show your map to friends and colleagues- all will have an opinion but don’t be afraid to stand by the decisions you have taken. 
+#Legends
+
+theme(legend.position="top")
 
 
-!!!Consistency- across papers.
+
+There is an almost infinite number of different combinations of the above parameters so take inspiration from maps and graphics you have seen and liked. The process is an iterative one, it will take multiple attempts to get right. Show your map to friends and colleagues- all will have an opinion but don’t be afraid to stand by the decisions you have taken. To give your maps a final polish you may wish to export them as a pdf using the `ggsave()` function and importing them into a vector graphics package such as Adobe Illustrator or Inkscape. 
+
 
 
 Adding Basemaps To Your Plots
@@ -302,3 +309,9 @@ lnd.b3 +
                aes(x = long, y = lat, group = group, fill = Partic_Per), 
                alpha = 0.5)
 ```
+
+Summary
+=======
+
+The beauty of producing maps in a programming environment as opposed to the GUI offered by the majority of GIS software packages lies in the fact that each line of code can be easily adapted to a different dataset. Users can therefore create a series of scripts that act as templates and simply call them when required. This saves a huge amount of time and has the added advantage that all outputs will have a consistent style and thus offer more professional looking publications. 
+

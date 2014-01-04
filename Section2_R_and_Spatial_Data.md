@@ -6,7 +6,7 @@ R and Spatial Data
 R has a unique syntax that is worth learning in basic terms before 
 loading spatial data: to R spatial and non-spatial data are 
 treated in the same way, although they have different underlying data structures. 
-Try typing and running (by pressing `ctl-Enter` in a an RStudio script)
+Try typing and running (by pressing `ctl-Enter` in an RStudio script)
 the following calculations to see how R works and plot the result.
 
 
@@ -21,7 +21,7 @@ plot(x)
 
 R code consists of *functions*, usually proceeded by brackets (e.g. `seq`)
 and *objects* (`d`, `t` and `x`). Each function contains *arguments*,
-the names of which often do not need to be states: the function `seq(0, 20, 0.1)`, for example,
+the names of which often do not need to be stated: the function `seq(0, 20, 0.1)`, for example,
 would also work, `from`, `to` and `by` are the *default* arguments.
 Knowing this is important as it can save typing. In this tutorial, however, 
 we generally spell out each of the argument names, for clarity. 
@@ -29,7 +29,7 @@ we generally spell out each of the argument names, for clarity.
 Note the use of the `<-` assignment to create new objects. 
 Objects are entities that can be called to by name in R 
 and can be renamed through additional assignements (e.g `y <- x` if y seems 
-a more appropriate name). 
+a more appropriate name). This is an efficient way of referring to large data objects or sets of commands.
 
 Spatial Data in R
 -----------------
@@ -43,8 +43,8 @@ structure of spatial data in R.
 
 ### Loading spatial data in R
 
-In most situations, the starting point of spatial analysis tasks is
-loading in datasets. These may originate from government
+In most situations, the starting point of a spatial analysis project is to
+load in a datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
 information' (Goodchild 2007). R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
@@ -104,13 +104,15 @@ lnd <- readOGR(dsn = "data/", "london_sport")
 ```
 
 
-Here, the files reside in a folder entitled `data` which in
+Here, the files reside in a folder entitled `data`, which is in
 R's current working directory (remember to check this using `getwd()`).
 If the files were stored in the working directory, one would use
 `dsn = "."` instead. Again, it may be wise to plot the data that
 results, to ensure that it has worked correctly. Now that the data has
 been loaded into R's own `sp` format, try interrogating and plotting it,
 using functions such as `summary` and `plot`.
+
+The london_sport file contains data pertaining to the percentage of people within each London Borough who regularly undertake physical activity and also the 2001 population of each Borough. 
 
 ### The size of spatial datasets in R
 
@@ -135,7 +137,7 @@ object.size(shf2lds)
 ```
 
 ```
-## 103168 bytes
+## 107464 bytes
 ```
 
 ```r
@@ -143,22 +145,29 @@ object.size(lnd)
 ```
 
 ```
-## 79168 bytes
+## 125544 bytes
 ```
 
 
-Surprisingly, the GPS data is larger. To see why, we can find out how
+Surprisingly, the GPS data object is larger. To see why, we can find out how
 many *vertices* (points connected by lines) are contained in each
 dataset:
 
 
 ```r
 shf2lds.f <- fortify(shf2lds)
+```
+
+```
+## Error: could not find function "fortify"
+```
+
+```r
 nrow(shf2lds.f)
 ```
 
 ```
-## [1] 6085
+## Error: object 'shf2lds.f' not found
 ```
 
 ```r
@@ -167,7 +176,7 @@ lnd.f <- fortify(lnd)
 ```
 
 ```
-## Regions defined for each Polygons
+## Error: could not find function "fortify"
 ```
 
 ```r
@@ -175,7 +184,7 @@ nrow(lnd.f)
 ```
 
 ```
-## [1] 1102
+## Error: object 'lnd.f' not found
 ```
 
 
@@ -185,10 +194,10 @@ each vertice is allocated a unique row  2) use
 `nrow` to count the result. 
 
 It is clear that the GPS data has almost 6 times the number
-of vertices as does the London data, explaining its larger size. Yet
+of vertices compared to the London data, explaining its larger size. Yet
 when plotted, the GPS data does not seem more detailed, implying that
 some of the vertices in the object are not needed for visualisation at
-the scale of the objects *bounding box*.
+the scale of the object's *bounding box*.
 
 ### Simplifying geometries
 
@@ -202,7 +211,7 @@ shf2lds.simple <- gSimplify(shf2lds, tol = 0.001)
 ```
 
 ```
-## [1] 0.03047
+## [1] 0.04608
 ```
 
 ```r
@@ -232,11 +241,11 @@ nrow(coordinates(shf2lds.simple)[[1]][[1]])
 
 
 The syntax of the double square brackets will seem strange, 
-providing a taster of how R 'sees' spatial data (see section x). 
+providing a taster of how R 'sees' spatial data (see Section x). 
 Do not worry about this for now. 
 Of interest here is that the number of vertices has shrunk, from 6,084 to 
-only 44, without loosing much information about the shape of the line.
-To test this,try plotting the original and simplified tracks
+only 44, without losing much information about the shape of the line.
+To test this, try plotting the original and simplified tracks
 on your computer: when visualized using the `plot` function, 
 object `shf2lds.simple` retains the overall shape of the
 line and is virtually indistinguishable from the original object.
@@ -252,10 +261,8 @@ use of computer memory.
 
 A typical R workflow involves loading the data, processing
 and finally exporting the data in a new form. `writeOGR`, the 
-logical counterpart of `readOGR` is ideal for this task.
-Imagine that we want to view the simplified `gpx` data
-in software that can only read Shapefiles. This is performed using
-the following command:
+logical counterpart of `readOGR` is ideal for this task. This is performed using
+the following command (in this case we are exporting to an ESRI Shapefile):
 
 
 ```r
@@ -271,7 +278,7 @@ writeOGR(shf2lds.simple, layer = "shf2lds", dsn = "data/", driver = "ESRI Shapef
 In the above code, the object was first converted into a spatial dataframe class required
 by the `writeOGR` command, before 
 being exported as a shapefile entitled shf2lds. Unlike with `readOGR`, the driver must 
-be specified, in this case with "ESRI Shapefile" [4]. The simplified GPS data is now available
+be specified, in this case with "ESRI Shapefile" [4]. The simplified GPS data are now available
 to other GIS programs for further analysis. Alternatively, 
 `save(shf2lds.simple, file = "data/shf2lds.RData")`
 will save the object in R's own spatial data format, which is described in the next section.
@@ -296,7 +303,7 @@ getSlots("Spatial")
 
 
 This tells us that `Spatial` objects must contain a bounding box (`bbox`) and 
-and CRS. Further details on these can be found by typing `?bbox` and `?proj4string`. 
+a coordinate reference system (CRS) as stated in a `proj4string`. Further details on these can be found by typing `?bbox` and `?proj4string`. 
 All other spatial classes in R build on 
 this foundation of a bounding box and a projection system (which 
 is set automatically to `NA` if it is not known). However, more complex 
@@ -330,9 +337,6 @@ The same principles apply to all spatial classes including
 as well as associated `*DataFrame` classes. For more information on 
 this, see the `sp` documentation: `?Spatial`.
 
-
-
-
 Manipulating spatial data
 -------------------------
 
@@ -358,11 +362,10 @@ proj4string(lnd)
 
 
 
-The output may seem cryptic but is in fact highly informative: `lnd` has *projected*
+The output may seem cryptic, but is in fact highly informative: `lnd` has *projected*
 coordinates, based on the 
 [*Transverse Mercator*](http://en.wikipedia.org/wiki/Transverse_Mercator_projection)
 system (hence `"+proj=tmerc"` in the output) and its origin is at latitude 49N, -2E.
-This point is 
 
 If we *know* that the CRS is incorrectly specified, it can be re-set.
 In this case, for example we know that `lnd` actually has a CRS OSGB1936.
@@ -399,13 +402,22 @@ try to plot the objects `lnd` and `shf2lnd.simple` on the same map:
 
 ```r
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd)[, 1:2])
+```
+
+```
+## Error: could not find function "fortify"
+```
+
+```r
 plot(combined)
 ```
 
-![plot of chunk Plot of spatial objects with different CRS](figure/Plot_of_spatial_objects_with_different_CRS.png) 
+```
+## Error: error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'combined' not found
+```
 
 
-In the above code we first extracted the coordinates of each point 
+In the above code we first extracted the coordinates of the vertices of each line and polygon 
 using `fortify` and then plotted them using `plot`. The image shows why 
 reprojection is necessary: the .gpx data are on a totally different scale
 than the shapefile of London. Hence the tiny dot at the bottom right of the graph.
@@ -428,14 +440,23 @@ next to the GPS data:
 
 ```r
 combined <- rbind(fortify(shf2lds.simple)[, 1:2], fortify(lnd.wgs84)[, 1:2])
+```
+
+```
+## Error: could not find function "fortify"
+```
+
+```r
 plot(combined)
 ```
 
-![plot of chunk Plot of spatial objects sharing the same CRS](figure/Plot_of_spatial_objects_sharing_the_same_CRS.png) 
+```
+## Error: error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'combined' not found
+```
 
 
 Although the plot of the reprojected data is squashed because the axis scales are not fixed
-and distorted (*geographic* coordinates such as WGS84 should not usually be used for plotting), 
+and distorted (*geographic* coordinates such as WGS84 should not usually be used for plotting), but
 at least the relative position and shape of both objects can now be seen
 (making visualisations attractive is covered in the next section). The presence of the 
 dotted line in the top left of the plot confirms our assumption that the GPS data is 
@@ -443,9 +464,8 @@ from around Sheffield, which is northwest of London.
 
 ### Attribute joins
 
-Because boroughs are official administrative
-zones, there is much data available at this level that we 
-can link to the polygons in the `lnd` object. We will use the example 
+London Boroughs are official administrative
+zones so we can easily join a range of other datasets to the polygons in the `lnd` object. We will use the example 
 of crime data to illustrate this data availability, which is 
 stored in the `data` folder available from this project's github page.
 
@@ -464,9 +484,7 @@ could equally be used (remember to type `library(plyr)` if needed).
 
 
 `join` requires all joining variables to have the 
-same name, but this work has already been done [7]. Once 
-this preparation has been done, the 
-join funtion is actually very simple:
+same name, which has already been done [7].
 
 
 ```r
@@ -531,14 +549,14 @@ plot(lnd.stations[round(runif(500, 1, nrow(lnd.stations))), ], add = T)
 The above code reads in a `SpatialPointsDataFrame` consisting of 2532
 transport nodes in and surrounding London and then plots a random sample
 of 500 of these over the previously loaded borough level administrative
-boundaries. The reason for piloting a sample of the points rather than
+boundaries. The reason for plotting a sample of the points rather than
 all of them is that the boundary data becomes difficult to see if all of
-the points are piloted. It is also useful to see and practice sampling
+the points are plotted. It is also useful to see and practice sampling
 techniques in practice; try to plot only the first 500 points, rather
-than a random selection, and describe the difference.
+than a random selection, and spot the difference.
 
 The most obvious issue with the point data from the perspective of a
-spatial join with the borough data is that many of the points in the
+spatial join with the borough data we have is that many of the points in the
 dataset are in fact located outside the region of interest. Thus, the
 first stage in the analysis is to filter the point data such that only
 those that lie within London's administrative zones are selected. This
@@ -566,7 +584,7 @@ discussed in section !!!. In this case, only the name was slightly
 different hence direct alteration of the CRS name via the function
 `proj4string`.
 
-The second line of code is where the magic happens and the brilliance of
+The second line of code is where power of
 R's sp package becomes clear: all that was needed was to place another
 spatial object in the row index of the points (`[lnd, ]`) and R
 automatically understood that a subset based on location should be
@@ -584,7 +602,7 @@ using the `sp` package and the other using `rgeos` (see Bivand et al.
 2013, 5.3).
 
 As with the *spatial subest* method described above, the developers of R
-have been very clever in their implementation of spatial aggregations
+have been very clever in their implementation of spatial aggregation
 methods. To minimise typing and ensure consistency with R's base
 functions, `sp` extends the capabilities of the `aggregate` function to
 automatically detect whether the user is asking for a spatial or a
@@ -611,7 +629,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in figure 8 below.
+colours added, are presented in Figure 8 below. The code used below involves a number of steps that we have not yet covered. Copy these to create the map and they will be explained in Section 3 of the tutorial.
 
 
 
@@ -636,7 +654,7 @@ head(lnd.stations@data, n = 2)
 In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
 number of mice sightings reported by the public at that point (this is a
-fictional variable). To illustrate the power of the `aggregate`
+fictional variable!!). To illustrate the power of the `aggregate`
 function, let us use it to find the average number of mice spotted in
 transport points in each London borough, and the standard deviation:
 
@@ -670,13 +688,3 @@ refering to attribute variables.
 To summarise this section, we have taken a look inside R's representation 
 of spatial data, learned how to manipulate these datasets in terms of 
 CRS transformations and attribute data and finally explored spatial joins and aggregation. 
-Only *after* the datasets are well understood
-and saved in a suitable form should we move on to visualisation.
-
-
-
-
-
-
-
-

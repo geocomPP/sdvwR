@@ -1,6 +1,6 @@
 A Final Example
 ===============
-Here we present a final example that draws upon the many advanced concepts discussed in this chapter to produce a map of 18th Century Shipping flows. The data have been obtained from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. We are using a very small sample of the the full dataset, which is available from here: http://pendientedemigracion.ucm.es/info/cliwoc/. The example has been chosen to demonstrate a range of capabilities within ggplot2 and the ways in which they can be applied to produce high-quality maps with only a few lines of code. We end by showing how the maps can be animated to show the routes over time and the power of R to produce many maps very quickly.
+Here we present a final example that draws upon the many advanced concepts discussed in this chapter to produce a map of 18th Century Shipping flows. The data have been obtained from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. We are using a very small sample of the the full dataset, which is available from here: http://pendientedemigracion.ucm.es/info/cliwoc/. The example has been chosen to demonstrate a range of capabilities within ggplot2 and the ways in which they can be applied to produce high-quality maps with only a few lines of code. We end by showing how the maps can be animated to show the routes over time and the ability of R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and datasets. Here we are using the png package to load in a series of map annotations. These have been created in image editing software and will add a historic feel to the map. We are also loading in a World boundary shapefile and the shipping data itself. 
 
@@ -46,8 +46,8 @@ wrld.f <- fortify(wrld, region = "sov_a3")
 
 ```
 ## Loading required package: rgeos
-## rgeos version: 0.2-19, (SVN revision 394)
-##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
+## rgeos version: 0.3-2, (SVN revision 413M)
+##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
 ##  Polygon checking: TRUE
 ```
 
@@ -77,7 +77,7 @@ route <- c(geom_path(aes(long, lat, group = paste(bdata$trp, bdata$group.regroup
 ```
 
 
-We now have all we need to generate the final plot by building the layers together with the + sign. The first 3 arguments are the plot layers and the parameters within theme() are changing the background colour to sea blue. annotation_raster() plots the png map adornments loaded in earlier- this requires the bounding box of each image to be specified. In this case we use latitude and longitude (the plot's coordinate system) and we can use these paramrters to change the png's position and also its size. The final two arguments fix the aspect ratio of the plot and remove the axis labels. 
+We now have all we need to generate the final plot by building the layers together with the + sign as shown in the code below. The first 3 arguments are the plot layers, and the parameters within theme() are changing the background colour to sea blue. annotation_raster() plots the png map adornments loaded in earlier- this requires the bounding box of each image to be specified. In this case we use latitude and longitude (in WGS84) and we can use these paramrters to change the png's position and also its size. The final two arguments fix the aspect ratio of the plot and remove the axis labels. 
 
 
 ```r
@@ -90,7 +90,7 @@ base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9",
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
 
-In the plot example we have chosen the colours carefully to give the appearance of a historic map. An alternative approach could be to use a satellite image as a base map. It is possible to use the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the route information is the same projection as the image - latitude and longitude (WGS84) - it is very straightforward to set the image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the shipping data. Producing the plot is accomplished using the code below. This offers a good example of where functionality designed without spatial data in mind can be harnessed for the purposes of producing interesting maps. Once you have produced the plot, alter the code to recolour the shipping routes to make them appear more clearly against the blue marble background. 
+In the plot example we have chosen the colours carefully to give the appearance of a historic map. An alternative approach could be to use a satellite image as a base map. It is possible to use the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the route information is the same projection as the image it is very straightforward to set the image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the shipping data. Producing the plot is accomplished using the code below. This offers a good example of where functionality designed without spatial data in mind can be harnessed for the purposes of producing interesting maps. Once you have produced the plot, alter the code to recolour the shipping routes to make them appear more clearly against the blue marble background. 
 
 
 ```r
@@ -107,7 +107,7 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
 
 
 Animating your plots
-
+====================
 R is not designed to produce animated graphics and as such it has very few functions that enable straightforward animation. To produce animated graphics users can use a loop to plot and then export a series of images that can then be stitched together into a video. There are two approaches to this; the first is to create a loop that fills a folder with the desired images and then utilise third party software to stitch the images together, whilst the second uses R's own animation package. The latter option still requires the installation of an additional software package called ImageMagick but it has the benefit of creating the animation for you within R and faciliting the export to a range of formats, not least HTML and GIF. Here we demonstrate the use of the package to produce an HTML animation of the shipping tracks completed in each year of the bdata object. The code snippet below appears extremely dense, but it only contains a few addtions to the plot code utilised above.
 
 First load the package:
@@ -128,13 +128,17 @@ We then initiate the "for loop". In this case we are using the unique() function
 
 
 ```r
-  for (i in order(unique(bdata$year))
-    {
-    route<-c(geom_path(aes(long,lat,group=paste(trp, group.regroup, sep=".")), colour="#0F3B5F", size=0.2, data= bdata[which(bdata$year==i),], alpha=0.5, lineend="round"))
-    print(base+route+wrld + theme(panel.background = element_rect(fill='#BAC4B9',colour='black')) +annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87)+annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65)+ coord_equal()+quiet+ggtitle(i))
-ani.record()
+for (i in unique(bdata$year)) {
+    route <- c(geom_path(aes(long, lat, group = paste(trp, group.regroup, sep = ".")), 
+        colour = "#0F3B5F", size = 0.2, data = bdata[which(bdata$year == i), 
+            ], alpha = 0.5, lineend = "round"))
+    print(base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9", 
+        colour = "black")) + annotation_raster(btitle, xmin = 30, xmax = 140, 
+        ymin = 51, ymax = 87) + annotation_raster(compass, xmin = 65, xmax = 105, 
+        ymin = 25, ymax = 65) + coord_equal() + quiet + ggtitle(i))
+    ani.record()
     dev.off()
-    }  
+}
 ```
 
        
@@ -147,10 +151,12 @@ saveHTML(ani.replay(), img.name = "record_plot", outdir = getwd())
 ```
 
 ```
-## HTML file created at: /home/robin/repos/sdvwR/index.html
+## HTML file created at: /Users/james1/Desktop/sdvwr/index.html
 ```
 
-You will note that there is something a little odd about the order in which the years appear. This can be solved by an additional step before the loop code above. Add this in and then regenerate the animation.  
+You will note that there is something a little odd about the order in which the years appear. This can be solved by an additional step before the loop code above. Have a think then add this in and then regenerate the animation.  
 
 Recap and Conclusions
 =====================
+
+This tutorial has covered a large number of techniques and approaches for the preparation, analysis and visualisation of spatial data in R. Whilst it  only covers the tip of the iceberg in terms of R's capabilities, it does lay the foundations to the use of the multitude of other spatial data packages available. These can be discovered online and through the help documentation and other tutorials provided by the R community. By utilising the data visualisation techniques and examples of best practice we have covered it is hoped that you will be able to communicate your results in a compelling and effective way without the need for the repetitive "pointing and clicking" required of many GIS packages; you can now tweak colours and other aspects of the plots without the need to start from scratch each time an iterative improvement is required. As the R community grows so will its range of applications and available packages so there will be many exciting opportunities ahead to improve on what is presented here.

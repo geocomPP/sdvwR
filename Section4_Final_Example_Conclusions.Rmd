@@ -92,3 +92,5 @@ You will note that there is something a little odd about the order in which the 
 
 Recap and Conclusions
 =====================
+
+This tutorial has covered a large number of techniques and approaches for the preparation, analysis and visualisation of spatial data in R. Whilst it  only covers the tip of the iceberg in terms of R's capabilities, it does lay the foundations to the use of the multitude of other spatial data packages available. These can be discovered online and through the help documentation and other tutorials provided by the R community. By utilising the data visualisation techniques and examples of best practice we have covered it is hoped that you will be able to communicate your results in a compelling and effective way without the need for the repetitive "pointing and clicking" required of many GIS packages; you can now tweak colours and other aspects of the plots without the need to start from scratch each time an iterative improvement is required. As the R community grows so will its range of applications and available packages so there will be many exciting opportunities ahead to improve on what is presented here.

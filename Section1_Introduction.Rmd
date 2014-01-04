@@ -5,13 +5,12 @@ What is R?
 ----------
 
 R is a free and open source computer program that runs on all major
-operating systems. R relies primarily on the *command line* for data
-input: instead of interacting with the program by moving your mouse
-around clicking on different parts of the screen, users enter commands
+operating systems. It relies primarily on the *command line* for data
+input: instead of interacting with the program by clicking on different parts of the screen, so users enter commands
 via the keyboard. This will seem to strange to people accustomed to
 relying on a graphical user interface (GUI) for most of their computing, yet the
 approach has a number of benefits, as highlighted by Gary Sherman (2008,
-p. 283), developer of the popular Geographical Informations System QGIS:
+p. 283), developer of the popular Geographical Informations System (GIS) QGIS:
 
 > With the advent of “modern” GIS software, most people want to point
 > and click their way through life. That’s good, but there is a
@@ -27,10 +26,8 @@ long-term (more on this in section ...).
 Another important attribute of R, related to its command line interface,
 is that it is a fully fledged *programming language*. Other GIS programs
 are written in lower level languages such as C++ which are kept at a
-safe distance from the users by the GUI. In R, by contrast, the user is
-'close to the metal' in the sense that what he or she inputs is the same
-as what R sees when it processes the request. This 'openness' can seem
-raw and daunting to beginners, but it is vital to R's success. Access to
+safe distance from the users by the GUI. In R, by contrast, the user inputs is the same
+as what R sees when it processes the request. Access to
 R's source code and openness about how it works has enabled a veritable
 army of programmers to improve R over time and add an incredible number
 of extensions to its capabilities. There
@@ -40,11 +37,9 @@ almost any computational or numerical problem one could imagine.
 Although writing R source code and creating new packages will not appeal
 to most R users, it inspires confidence to know that there is a strong
 and highly skilled community of R developers. If there is a useful
-spatial function that R cannot currently perform, there is a reasonable
+function that R cannot currently perform, there is a reasonable
 chance that someone is working on a solution that will become available
-at a later date. This constant evolution and improvement is a feature of
-open source software projects not limited to R, but the range and
-diversity of extensions is certainly one of its strong points. One area
+at a later date. One area
 where extension of R's basic capabilities has been particularly
 successful is the addition of a wide variety of spatial tools.
 
@@ -54,7 +49,7 @@ Why R for spatial data visualisation?
 
 Aside from confusion surrounding its one character name [1] and 
 uncertainty about how to search for help [2],
-R may also seem a strange choice for a chapter on
+R may also seem a strange choice for a tutorial on
 *spatial* data visualisation specifically. "I thought R was just for
 statistics?" and "Why not use a proper GIS package like ArcGIS?" are valid
 questions.
@@ -71,24 +66,6 @@ increased functionality.
 In recent years R has really made its mark as a data visualisation tool. Perhaps the first truly inspiring graphic to be created in R that reached a global audience was the map of Facebook friendships produced by Paul Butler. He mapped the linkages between friends by calculating the great circle arcs between them (using the “geosphere” package) and then plotting them using the basic R graphics functionality. The secret to the success of this map was the time taken to select the appropriate colour palette, line widths and transparency for the plot. As we discuss in Section XXX the importance of these cannot be understated and are the difference between a stunning graphic and an impenetrable mess of lines.
 
 The impact of the graphic was to inspire the R community to produce more ambitious graphics; a process fuelled by the increased demand for data visualisation and the development of sophisticated packages, such as ggplot2, that augment the basic plot functions of R. It is now the case that R has become a key analysis and visualisation tool used by the likes of Twitter, the New York Times and Facebook and thousands of consultants, design houses and journalists. It is not longer the preserve of academic research, with many graduate jobs listing R as a desirable skill. 
-
-
-### R and conventional GIS programs
-
-There are a few major differences between R and
-conventional GIS programs in terms of spatial data visualisation: R is
-more suited to creating one-off graphics than exploring spatial data
-through repeated zooming, panning and spatial sub-setting using
-custom-drawn polygons, compared with conventional GIS programs. Although
-interactive maps in R can be created (e.g. using the web interface
-`shiny`), That said, it will never be a complete replacement for those seeking a user interface 
-that enables panning and zooming, or for those seeking to manually digitise spatial data. 
-We therefore suggest using R *in addition to* GIS packages where required.
-In fact, R's spatial capabilities have already been integrated in conventional GIS packages
-ArcGIS (via its R [toolbox](http://www.arcgis.com/home/item.html?id=a5736544d97a4544aa47d06baf910f6d)
-and the [Geospatial Modelling Environment](http://www.spatialecology.com/gme/)) and QGIS
-(via the [*Processing* framework](http://qgis.org/en/docs/user_manual/processing/3rdParty.html)).
-. 
 
 Finally, it is worth noting that while dedicated GIS programs handle spatial data by default and
 display the results in a single way, there are various options in R that
@@ -116,7 +93,9 @@ Click on the "Download ZIP" button on the right, and unpack the folder to a sens
 on your computer (e.g. the Desktop). Explore the folder and try opening some of the files, 
 especially those from the sub-folder entitled "data": these are the input datasets we'll be using.
 
-Now open up a version of RStudio on your own computer (or on-line) and we are ready to go.
+For the purpose of this practical we will be using the RStudio software installed on a server. This marks a real step forward in terms of the use of R "in the cloud" by enabling users to access the software from their web browser. This is the first time we have tried this so lets hope it goes smoothly!
+
+In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio (this is only accessible if you are part of the UCL network). Enter the log in details you have been given and you should see the RStudio interface. In the bottom right window you should see an "Upload" button. Click on this and upload the zipfile you have just downloaded from github. RStudio will automatically uncompress this and you should see the list of files and folders appear. At the end of today you can tick the boxes next to the files/ folders you want and then under the "More" menu export them to a zipfile that you can email to yourself or take on a memory stick.
 
 
 

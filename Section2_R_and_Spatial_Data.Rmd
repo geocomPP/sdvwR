@@ -40,7 +40,7 @@ structure of spatial data in R.
 ### Loading spatial data in R
 
 In most situations, the starting point of a spatial analysis project is to
-load in a datasets. These may originate from government
+load in the datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
 information' (Goodchild 2007). R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
@@ -156,12 +156,11 @@ each vertice is allocated a unique row  2) use
 It is clear that the GPS data has almost 6 times the number
 of vertices compared to the London data, explaining its large size. Yet
 when plotted, the GPS data does not seem more detailed, implying that
-some of the vertices in the object are not needed for visualisation at
-the scale of the object's *bounding box*.
+some of the vertices in the object are not needed for effective visualisation since the nodes of the line are imperceptible. 
 
 ### Simplifying geometries
 
-In many cases the spatial data we have are too detailed for effective data visualisation. Simplifcation can help to make a graphic more readable and less cluttered. Within the 'rgeos' package it is possible to use the `gSimplify` function to simplify spatial R objects:
+Simplifcation can help to make a graphic more readable and less cluttered. Within the 'rgeos' package it is possible to use the `gSimplify` function to simplify spatial R objects:
 
 ```{r fig.keep='none', message=FALSE}
 library(rgeos)
@@ -381,7 +380,7 @@ was successful.
 
 ## Spatial joins
 
-A spatial join, like attribute joins, is used to transfer information
+A spatial join, like an attribute join, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
 spatial joins, with the *target layer* receiving information from
 another spatial layer based on the proximity of elements from both
@@ -394,7 +393,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure 5 below, and can performed using the same technique 
+Figure 5 below, and can performed using the same technique 
 as described in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
@@ -421,7 +420,7 @@ of 500 of these over the previously loaded borough level administrative
 boundaries. The reason for plotting a sample of the points rather than
 all of them is that the boundary data becomes difficult to see if all of
 the points are plotted. It is also useful to see and practice sampling
-techniques in practice; try to plot only the first 500 points, rather
+techniques; try to plot only the first 500 points, rather
 than a random selection, and spot the difference.
 
 The most obvious issue with the point data from the perspective of a
@@ -444,8 +443,7 @@ this to happen: the first line ensured that the CRS associated with each
 layer is *exactly* the same: this step should not be required in most
 cases, but it is worth knowing about. Of course, if the coordinate
 systems are *actually* different in each layer, the function
-`spTransform` will be needed to make them compatible. This procedure is
-discussed in section !!!. In this case, only the name was slightly
+`spTransform` will be needed to make them compatible. In this case, only the name was slightly
 different hence direct alteration of the CRS name via the function
 `proj4string`.
 

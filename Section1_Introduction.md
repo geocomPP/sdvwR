@@ -75,7 +75,7 @@ line widths and transparency for the plot.
 As we discuss in Section 3 the importance of these cannot be understated 
 and are the difference between a stunning graphic and an impenetrable mess.
 
-![Iconic plot of Facebook freindship networks worldwide, by Paul Butler](figure/butler_facebook_2.jpg)
+![Iconic plot of Facebook friendship networks worldwide, by Paul Butler](figure/butler_facebook_2.jpg)
 
 The impact of the graphic was to inspire the R community to produce more ambitious
 graphics; a process fuelled by the increased demand for data visualisation and the

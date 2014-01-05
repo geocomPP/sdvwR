@@ -57,7 +57,7 @@ some of the cartographic principles as they are introduced.
 The world map used is available from the Natural Earth website. 
 Because these are already saved in the data folder, we can proceed to load the data. 
 
-```{r A Basic Map of the World}
+```{r A Basic Map of the World, fig.width = 8, fig.height= 5}
 wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 plot(wrld)
 ```
@@ -81,7 +81,7 @@ the shapes of those countries further from the equator.
 Instead the Robinson projection provides a good compromise
 between areal distortion and shape preservation. We therefore project it as follows.
 
-```{r The Robinson Projection, message=FALSE}
+```{r The Robinson Projection, fig.width = 8, fig.height= 5, message=FALSE}
 wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
 plot(wrld.rob)
 ```
@@ -110,7 +110,7 @@ fill colour the countries using a default colour pallette and
 auto-generated key. As will be shown in the next section these
 defaults can be easily altered to produce different looking maps.
 
-```{r World Population Map}
+```{r World Population Map, fig.width = 8, fig.height= 5}
 map <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
   geom_polygon() + 
   coord_equal() + 
@@ -129,7 +129,7 @@ Readers of a map come to it with a range of pre-conceptions about how the world 
 
 ggplot2 knows the different between continuous and categorical (nominal) data and will automatically assign the appropriate colour palettes when producing choropleth maps such as the one above. The default colour palettes are generally a good place to start but users may wish to vary them for a whole host of reasons, such as the need to print in black and white. The `scale_fill_` family of commands facilitate such customisation. For categorical data `scale_fill_manual()` is a useful command:
 
-```{r A Map of the Continents Using Default Colours}
+```{r A Map of the Continents Using Default Colours, fig.width = 8, fig.height= 5}
 #Produce a map of continents
 map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) + 
   geom_polygon() + 
@@ -139,14 +139,17 @@ map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) 
 
 #To see the default colours
 map.cont
+```
 
-#To change these
+To change the colour scheme:
+
+```{r, eval=FALSE}
 map.cont + scale_fill_manual(values = c("yellow", "red", "purple", "white", "orange", "blue", "green", "black"))
 ```
 
-Whilst, `scale_fill_continuous()` works with continuous datasets:
+Whilst `scale_fill_continuous()` works with continuous datasets:
 
-```{r Black and White Population Map}
+```{r Black and White Population Map, eval=FALSE}
 #note the use of the "map" object created earler
 
 map + scale_fill_continuous(low = "white", high = "black")
@@ -155,14 +158,11 @@ map + scale_fill_continuous(low = "white", high = "black")
 
 It is well worth looking at the *Color Brewer* palettes developed by Cynthia Brewer. These are designed to be colour blind safe and perceptually uniform such that no one colour jumps out more than any others. This latter characteristic is important when trying to produce impartial maps. R has a package that contains the colour palettes and these can be easily utlised by ggplot2.
 
-```{r World Map with Yellow Green Colour Brewer Palette}
+```{r World Map with Yellow Green Colour Brewer Palette, fig.keep='none'}
 library(RColorBrewer)
-
-#look at the help documents to see the palettes available. Also visit http://colorbrewer2.org/ for more information
+# look at the help documents to see the palettes available. See http://colorbrewer2.org/ 
 ?RColorBrewer
-
-#note the use of the scale_fill_gradientn() function rather than scale_fill_continuous() used above
-
+# note the use of the scale_fill_gradientn() function rather than scale_fill_continuous() used above
 map + scale_fill_gradientn(colours = brewer.pal(7,"YlGn"))
 ```
 
@@ -191,11 +191,10 @@ grid.arrange(YlGn, PuBu, ncol = 2)
 If you are not happy with the automatic methods of specifying breaks it can also be done manually:
 
 ```{r}
+library()
 nbrks <- 4
 brks <- c(100000000,250000000,50000000,1000000000)
-
 map + scale_fill_gradientn(colours = brewer.pal(nbrks,"PuBu"), breaks = c(brks))
-
 ```
 
 There are many other ways to specify and alter the colours in ggplot2 and these are outlined in the help documentation. There are also many examples online.
@@ -279,7 +278,12 @@ Legends are added automatically but can be customised in a number of ways. A few
 ```{r Formatting the Legend}
 #Position
 map + theme(legend.position = "top")
+```
 
+As you can see, this added the legend in a new place. Many more options for customization 
+are available, as highlighed in the examples below.
+
+```{r, eval=FALSE}
 #Title
 map + theme(legend.title = element_text(colour = "Red", size=16, face= "bold"))
 

@@ -182,7 +182,7 @@ for (i in unique(bdata$year)) {
 ```
 
        
-The final step in the process is to save the animation to HTML and view it in your web browser. `ani.replay()` retrieves the animation stored by the `ani.record()` function and `outdir=getwd()` ensures the final file is stored in your working directory.
+The final step in the process is to save the animation to HTML and view it in your web browser. `ani.replay()` retrieves the animation stored by the `ani.record()` function and `outdir = getwd()` ensures the final file is stored in your working directory.
 
 
 

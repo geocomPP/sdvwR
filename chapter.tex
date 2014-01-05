@@ -65,7 +65,7 @@
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{0}
-\usepackage[margin=2cm]{geometry}
+\usepackage[margin=1.8cm]{geometry}
 
 \author{
 Cheshire, James\\
@@ -155,7 +155,7 @@ impenetrable mess.
 \begin{figure}[htbp]
 \centering
 \includegraphics{figure/butler_facebook_2.jpg}
-\caption{Iconic plot of Facebook freindship networks worldwide, by Paul
+\caption{Iconic plot of Facebook friendship networks worldwide, by Paul
 Butler}
 \end{figure}
 
@@ -1101,25 +1101,19 @@ useful command:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/A_Map_of_the_Continents_Using_Default_Colours1.png}
+\includegraphics{figure/A_Map_of_the_Continents_Using_Default_Colours.png}
 \caption{A Map of the Continents Using Default Colours}
 \end{figure}
 
+To change the colour scheme:
+
 \begin{Shaded}
 \begin{Highlighting}[]
-
-\CommentTok{# To change these}
 \NormalTok{map.cont + }\KeywordTok{scale_fill_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"yellow"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }
     \StringTok{"orange"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/A_Map_of_the_Continents_Using_Default_Colours2.png}
-\caption{A Map of the Continents Using Default Colours}
-\end{figure}
-
-Whilst, \texttt{scale\_fill\_continuous()} works with continuous
+Whilst \texttt{scale\_fill\_continuous()} works with continuous
 datasets:
 
 \begin{Shaded}
@@ -1129,12 +1123,6 @@ datasets:
 \NormalTok{map + }\KeywordTok{scale_fill_continuous}\NormalTok{(}\DataTypeTok{low =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{high =} \StringTok{"black"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/Black_and_White_Population_Map.png}
-\caption{Black and White Population Map}
-\end{figure}
-
 It is well worth looking at the \emph{Color Brewer} palettes developed
 by Cynthia Brewer. These are designed to be colour blind safe and
 perceptually uniform such that no one colour jumps out more than any
@@ -1145,24 +1133,14 @@ these can be easily utlised by ggplot2.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(RColorBrewer)}
-
-\CommentTok{# look at the help documents to see the palettes available. Also visit}
-\CommentTok{# http://colorbrewer2.org/ for more information}
+\CommentTok{# look at the help documents to see the palettes available. See}
+\CommentTok{# http://colorbrewer2.org/}
 \StringTok{`}\DataTypeTok{?}\StringTok{`}\NormalTok{(RColorBrewer)}
-
 \CommentTok{# note the use of the scale_fill_gradientn() function rather than}
 \CommentTok{# scale_fill_continuous() used above}
-
 \NormalTok{map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{7}\NormalTok{, }\StringTok{"YlGn"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/World_Map_with_Yellow_Green_Colour_Brewer_Palette.png}
-\caption{World Map with Yellow Green Colour Brewer
-Palette}
-\end{figure}
-
 In addition to altering the colour scale used to represent continuous
 data it may also be desirable to adjust the breaks at which the colour
 transitions occur. There are many ways to select both the optimum number
@@ -1206,27 +1184,21 @@ function from the gridExtra package to display the maps side by side.
 \KeywordTok{grid.arrange}\NormalTok{(YlGn, PuBu, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/Different_Colour_Palettes_with_Bespoke_Breaks.png}
-\caption{Different Colour Palettes with Bespoke Breaks}
-\end{figure}
-
 If you are not happy with the automatic methods of specifying breaks it
 can also be done manually:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{()}
 \NormalTok{nbrks <- }\DecValTok{4}
 \NormalTok{brks <- }\KeywordTok{c}\NormalTok{(}\FloatTok{1e+08}\NormalTok{, }\FloatTok{2.5e+08}\NormalTok{, }\FloatTok{5e+07}\NormalTok{, }\FloatTok{1e+09}\NormalTok{)}
-
 \NormalTok{map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(nbrks, }\StringTok{"PuBu"}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(brks))}
 \end{Highlighting}
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-5.png}
-\caption{unnamed-chunk-5}
+\includegraphics{figure/unnamed-chunk-6.png}
+\caption{unnamed-chunk-6}
 \end{figure}
 
 There are many other ways to specify and alter the colours in ggplot2
@@ -1381,49 +1353,25 @@ the \texttt{ggplot2} documentation.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/Formatting_the_Legend1.png}
+\includegraphics{figure/Formatting_the_Legend.png}
 \caption{Formatting the Legend}
 \end{figure}
 
+As you can see, this added the legend in a new place. Many more options
+for customization are available, as highlighed in the examples below.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-
 \CommentTok{# Title}
 \NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.title =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"Red"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{16}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/Formatting_the_Legend2.png}
-\caption{Formatting the Legend}
-\end{figure}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 
 \CommentTok{# Label Font Size and Colour}
 \NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"blue"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{16}\NormalTok{, }\DataTypeTok{face =} \StringTok{"italic"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/Formatting_the_Legend3.png}
-\caption{Formatting the Legend}
-\end{figure}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 
 \CommentTok{# Border and background box}
 \NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"gray90"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype =} \StringTok{"dotted"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
-\begin{figure}[htbp]
-\centering
-\includegraphics{figure/Formatting_the_Legend4.png}
-\caption{Formatting the Legend}
-\end{figure}
-
 \subsection{Adding Basemaps To Your Plots}
 
 The development of the ggmap package has enabled the simple use of
@@ -1787,8 +1735,9 @@ plotted.
 \end{Shaded}
 The final step in the process is to save the animation to HTML and view
 it in your web browser. \texttt{ani.replay()} retrieves the animation
-stored by the \texttt{ani.record()} function and \texttt{outdir=getwd()}
-ensures the final file is stored in your working directory.
+stored by the \texttt{ani.record()} function and
+\texttt{outdir = getwd()} ensures the final file is stored in your
+working directory.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1818,7 +1767,7 @@ improvement is required. As the R community grows so will its range of
 applications and available packages so there will be many exciting
 opportunities ahead to improve on what is presented here.
 
-\newpage \section{References}
+\section{References}
 
 Bivand, R., \& Gebhardt, A. (2000). Implementing functions for spatial
 statistical analysis using the language. Journal of Geographical

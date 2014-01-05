@@ -188,28 +188,27 @@ map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) 
 map.cont
 ```
 
-![plot of chunk A Map of the Continents Using Default Colours](figure/A_Map_of_the_Continents_Using_Default_Colours1.png) 
+![plot of chunk A Map of the Continents Using Default Colours](figure/A_Map_of_the_Continents_Using_Default_Colours.png) 
+
+
+To change the colour scheme:
+
 
 ```r
-
-# To change these
 map.cont + scale_fill_manual(values = c("yellow", "red", "purple", "white", 
     "orange", "blue", "green", "black"))
 ```
 
-![plot of chunk A Map of the Continents Using Default Colours](figure/A_Map_of_the_Continents_Using_Default_Colours2.png) 
 
-
-Whilst, `scale_fill_continuous()` works with continuous datasets:
+Whilst `scale_fill_continuous()` works with continuous datasets:
 
 
 ```r
 # note the use of the 'map' object created earler
 
 map + scale_fill_continuous(low = "white", high = "black")
-```
 
-![plot of chunk Black and White Population Map](figure/Black_and_White_Population_Map.png) 
+```
 
 
 It is well worth looking at the *Color Brewer* palettes developed by Cynthia Brewer. These are designed to be colour blind safe and perceptually uniform such that no one colour jumps out more than any others. This latter characteristic is important when trying to produce impartial maps. R has a package that contains the colour palettes and these can be easily utlised by ggplot2.
@@ -217,18 +216,13 @@ It is well worth looking at the *Color Brewer* palettes developed by Cynthia Bre
 
 ```r
 library(RColorBrewer)
-
-# look at the help documents to see the palettes available. Also visit
-# http://colorbrewer2.org/ for more information
+# look at the help documents to see the palettes available. See
+# http://colorbrewer2.org/
 `?`(RColorBrewer)
-
 # note the use of the scale_fill_gradientn() function rather than
 # scale_fill_continuous() used above
-
 map + scale_fill_gradientn(colours = brewer.pal(7, "YlGn"))
 ```
-
-![plot of chunk World Map with Yellow Green Colour Brewer Palette](figure/World_Map_with_Yellow_Green_Colour_Brewer_Palette.png) 
 
 
 In addition to altering the colour scale used to represent continuous data it may also be desirable to adjust the breaks at which the colour transitions occur. There are many ways to select both the optimum number of breaks (i.e colour transtions) and the locations in the dataset at which they occur. The `classINT` package contains many ways to automatically create these breaks. We use the `grid.arrange` function from the gridExtra package to display the maps side by side.
@@ -268,20 +262,18 @@ PuBu <- map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks =
 grid.arrange(YlGn, PuBu, ncol = 2)
 ```
 
-![plot of chunk Different Colour Palettes with Bespoke Breaks](figure/Different_Colour_Palettes_with_Bespoke_Breaks.png) 
-
 
 If you are not happy with the automatic methods of specifying breaks it can also be done manually:
 
 
 ```r
+library()
 nbrks <- 4
 brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
-
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
 
 There are many other ways to specify and alter the colours in ggplot2 and these are outlined in the help documentation. There are also many examples online.
@@ -385,31 +377,23 @@ Legends are added automatically but can be customised in a number of ways. A few
 map + theme(legend.position = "top")
 ```
 
-![plot of chunk Formatting the Legend](figure/Formatting_the_Legend1.png) 
+![plot of chunk Formatting the Legend](figure/Formatting_the_Legend.png) 
+
+
+As you can see, this added the legend in a new place. Many more options for customization 
+are available, as highlighed in the examples below.
+
 
 ```r
-
 # Title
 map + theme(legend.title = element_text(colour = "Red", size = 16, face = "bold"))
-```
-
-![plot of chunk Formatting the Legend](figure/Formatting_the_Legend2.png) 
-
-```r
 
 # Label Font Size and Colour
 map + theme(legend.text = element_text(colour = "blue", size = 16, face = "italic"))
-```
-
-![plot of chunk Formatting the Legend](figure/Formatting_the_Legend3.png) 
-
-```r
 
 # Border and background box
 map + theme(legend.background = element_rect(fill = "gray90", size = 0.5, linetype = "dotted"))
 ```
-
-![plot of chunk Formatting the Legend](figure/Formatting_the_Legend4.png) 
 
 
 Adding Basemaps To Your Plots

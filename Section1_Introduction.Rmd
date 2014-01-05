@@ -10,7 +10,7 @@ input: instead of interacting with the program by clicking on different parts of
 via the keyboard. This will seem to strange to people accustomed to
 relying on a graphical user interface (GUI) for most of their computing, yet the
 approach has a number of benefits, as highlighted by Gary Sherman (2008,
-p. 283), developer of the popular Geographical Informations System (GIS) QGIS:
+p. 283), developer of the popular Geographical Information System (GIS) QGIS:
 
 > With the advent of “modern” GIS software, most people want to point
 > and click their way through life. That’s good, but there is a
@@ -73,7 +73,7 @@ must be decided by the user, for example whether to use R's base
 graphics or a dedicated graphics package such as ggplot2. On the other
 hand, the main benefits of R for spatial data visualisation lie in the
 *reproducibility* of its outputs, a feature that we will be using to
-great effect in this chapter.
+great effect in this tutorial.
 
 ### R and reproducible research
 

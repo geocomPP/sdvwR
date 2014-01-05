@@ -1,4 +1,3 @@
-
 Fundamentals of Spatial Data Visualisation
 ==========================================
 
@@ -16,10 +15,6 @@ library(ggplot2)
 library(gridExtra)
 ```
 
-```
-## Error: there is no package called 'gridExtra'
-```
-
 
 Set your working directory as before:
 
@@ -29,17 +24,8 @@ setwd("C:/Users/Uname/Desktop/sdvwR")
 ```
 
 
-For this section we are going to use a map of the world to demonstrate some of the cartographic principles as they are introduced. A world map is available from the Natural Earth website. The code below will download this and save it to your working directory. It is commented out because the data may already be on your system. Uncomment each new line (by deleting the `#` symbol) if you need to download and extract the data.
-
-
-```r
-# download.file(url='http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip',
-# 'ne_110m_admin_0_countries.zip', 'auto') # download file
-# unzip('ne_110m_admin_0_countries.zip', exdir = 'data/') # unzip to data
-# folder file.remove('ne_110m_admin_0_countries.zip') # remove zip file
-```
-
-Once downloaded we can then load the data into the R console. 
+For this section we are going to use a map of the world to demonstrate some of the cartographic principles as they are introduced. The world map used is available from the Natural Earth website. 
+Because these are already saved in the data folder, we can proceed to load the data. 
 
 
 ```r
@@ -57,7 +43,7 @@ wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 plot(wrld)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 
 To see the first ten rows of attribute information assocuiated with each of the country boundaries type the following:
@@ -86,7 +72,7 @@ wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
 plot(wrld.rob)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 
 "+proj=robin" refers to the Robinson prjection. You will have spotted from the plot that the countries in the world map are much better proportioned.
@@ -101,7 +87,7 @@ wrld.rob.f <- fortify(wrld.rob, region = "sov_a3")
 ```
 ## Loading required package: rgeos
 ## rgeos version: 0.3-2, (SVN revision 413M)
-##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
+##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 ```
 
@@ -122,14 +108,14 @@ map <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + geom_
 map
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
 
-# Colour
+## Colour and other aesthetics
 
 Colour has an enormous impact on how people will percieve a graphic. Readers of a map come to it with a range of pre-conceptions about how the world looks. 
 
-# Choropleth Maps
+### Choropleth Maps
 
 ggplot2 knows the different between continuous and categorical (nominal) data and will automatically assign the appropriate colour palettes when producing choropleth maps such as the one above. The default colour palettes are generally a good place to start but users may wish to vary them for a whole host of reasons, such as the need to print in black and white. The `scale_fill_` family of commands facilitate such customisation. For categorical data `scale_fill_manual()` is a useful command:
 
@@ -144,7 +130,7 @@ map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) 
 map.cont
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-91.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-81.png) 
 
 ```r
 
@@ -153,7 +139,7 @@ map.cont + scale_fill_manual(values = c("yellow", "red", "purple", "white",
     "orange", "blue", "green", "black"))
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-92.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-82.png) 
 
 
 Whilst, `scale_fill_continuous()' works with continuous datasets:
@@ -165,7 +151,7 @@ Whilst, `scale_fill_continuous()' works with continuous datasets:
 map + scale_fill_continuous(low = "white", high = "black")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
 It is well worth looking at the *Color Brewer* palettes developed by Cynthia Brewer. These are designed to be colour blind safe and perceptually uniform such that no one colour jumps out more than any others. This latter characteristic is important when trying to produce impartial maps. R has a package that contains the colour palettes and these can be easily utlised by ggplot2.
@@ -184,7 +170,7 @@ library(RColorBrewer)
 map + scale_fill_gradientn(colours = brewer.pal(7, "YlGn"))
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
 
 
 In addition to altering the colour scale used to represent continuous data it may also be desirable to adjust the breaks at which the colour transitions occur. There are many ways to select both the optimum number of breaks (i.e colour transtions) and the locations in the dataset at which they occur. The `classINT` package contains many ways to automatically create these breaks.
@@ -192,14 +178,6 @@ In addition to altering the colour scale used to represent continuous data it ma
 
 ```r
 library(classInt)
-```
-
-```
-## Loading required package: class
-## Loading required package: e1071
-```
-
-```r
 
 # Specify how many breaks you want - generally this should be fewer than 7.
 
@@ -208,20 +186,17 @@ nbrks <- 6
 # Here quantiles are used to identify the breaks (note that we are using the
 # original 'wrld.rob' object and not the 'wrld.rob@data$pop_est.f'). USe the
 # help files to see the full range of options.
-brks <- classIntervals(wrld.rob@data$pop_est, n = nbrks, style = "quantiles")
-```
-
-```
-## Error: quantiles unknown
-```
-
-```r
+brks <- classIntervals(wrld.rob@data$pop_est, n = nbrks, style = "quantile")
 
 print(brks)
 ```
 
 ```
-## Error: object 'brks' not found
+## style: quantile
+##        [-99,1790208)    [1790208,4579439)    [4579439,9035536) 
+##                   30                   29                   29 
+##   [9035536,16639804)  [16639804,40784057) [40784057,1.339e+09] 
+##                   30                   29                   30
 ```
 
 ```r
@@ -229,29 +204,13 @@ print(brks)
 # Now the breaks can be easily inserted into the code above for a range of
 # colour palettes
 YlGn <- map + scale_fill_gradientn(colours = brewer.pal(nbrks, "YlGn"), breaks = c(brks$brks))
-```
-
-```
-## Error: object 'brks' not found
-```
-
-```r
 
 PuBu <- map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks$brks))
-```
-
-```
-## Error: object 'brks' not found
-```
-
-```r
 
 grid.arrange(YlGn, PuBu, ncol = 2)
 ```
 
-```
-## Error: could not find function "grid.arrange"
-```
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
 
 
 If you are not happy with the automatic methods of specifying breaks it can also be done manually:
@@ -264,7 +223,7 @@ brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
 
 
 There are many other ways to specify and alter the colours in ggplot2 and these are outlined in the help documentation. There are also many examples online.
@@ -282,12 +241,10 @@ green <- map2 + geom_polygon(fill = "dark green") + theme(panel.background = ele
 grid.arrange(blue, green, ncol = 2)
 ```
 
-```
-## Error: could not find function "grid.arrange"
-```
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
 
 
-## Experimenting with line colour and line widths
+### Experimenting with line colour and line widths
 
 In addition to conforming to colour conventions, line colour and width offer important parameters, which are often overlooked tools for increasing the legibility of a graphic. As the code below demonstrates, it is possible to adjust line colour through using the "colour" parameter and the line width using the "lwd" parameter. The impact of different line widths will vary depending on your screen size and resolution. If you save the plot to pdf (or an image) then the size at which you do this will also affect the line widths.
 
@@ -306,20 +263,18 @@ thick <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 1.5)
 grid.arrange(yellow, black, thick, thin, ncol = 2)
 ```
 
-```
-## Error: could not find function "grid.arrange"
-```
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
 
 
 There are other parameters such as layer transparency (use the `alpha` parameter for this) that can be applied to all aspects of the plot - both points, lines and polygons. Space does not permit their full exploration here but more information is available from the many online examples and the `ggplot2` package documentation.
 
-Map Adornments and Annotations
-==============================
+## Map Adornments and Annotations
+
 
 Map adornments and annotations are essential to orientate the viewer and provide context; they include graticules, north arrows, scale bars and data attribution. Not all are required on a single map, indeed it is often best that they are used sparingly to avoid unecessary clutter (Monkhouse and Wilkinson, 1971). With ggplot2 many of these are added automatically but they can be customised.
 
 
-#North arrow
+### North arrow
 
 In the maps created so far, we have defined the *aesthetics* of the map
 in the foundation function `ggplot`. The result of this is that all
@@ -343,25 +298,26 @@ ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = 
     coord_fixed()  # correct aspect ratio
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
 
 
-#Scale bar
+### Scale bar
 `ggplot2's` scale bar capabilities are perhaps the least satisfactory element of the package. For this example we use the `geom_line()` function to draw a line of approximately 1km in length using the `lnd.f` object containing the London Boroughs discussed in Section 2. The reason for this is that it is in a projected coordinate system - British National Grid - so each map unit is worth 1m. In the case of the world map the distances at the equator east to west are very different from those further north or south. Any line drawn using the the simple approach below would therefore be inaccurate. For maps covering large areas - such as the entire world - leaving the axis labels on will enable them to act as a graticule which will indicate distance. 
 
 
+
+
 ```r
+load("data/lnd.f.RData")
 ggplot() + geom_polygon(data = lnd.f, aes(long, lat, group = group)) + geom_line(aes(x = c(505000, 
     515000), y = c(158000, 158000)), lwd = 2) + annotate("text", label = "10km", 
     x = 510000, y = 160000) + coord_fixed()
 ```
 
-```
-## Error: object 'lnd.f' not found
-```
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
 
 
-#Legends
+### Legends
 
 Legends are added automatically but can be customised in a number of ways. A few examples are included below with more details avaialble in the `ggplot2` documentation. 
 
@@ -371,7 +327,7 @@ Legends are added automatically but can be customised in a number of ways. A few
 map + theme(legend.position = "top")
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-181.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-171.png) 
 
 ```r
 
@@ -379,7 +335,7 @@ map + theme(legend.position = "top")
 map + theme(legend.title = element_text(colour = "Red", size = 16, face = "bold"))
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-182.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-172.png) 
 
 ```r
 
@@ -387,7 +343,7 @@ map + theme(legend.title = element_text(colour = "Red", size = 16, face = "bold"
 map + theme(legend.text = element_text(colour = "blue", size = 16, face = "italic"))
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-183.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-173.png) 
 
 ```r
 
@@ -395,11 +351,12 @@ map + theme(legend.text = element_text(colour = "blue", size = 16, face = "itali
 map + theme(legend.background = element_rect(fill = "gray90", size = 0.5, linetype = "dotted"))
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-184.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-174.png) 
 
 
 Adding Basemaps To Your Plots
-=============================
+----------
+
 The development of the `ggmap` package has enabled the simple use of online mapping services such as Google Maps and OpenStreetMap for base maps. Using image tiles from these services spatial data can be placed in context as users can easily orientate themselves to streets and landmarks.
 
 For this example we are going to use the shapefile of London sports participation introduced in Section 2. The data were originally projected to British National Grid (BNG) which is not compatible with the online map services used in the following examples. It therefore needs reprojecting - a step we completed earlier. The reprojected file can be loaded as follows:
@@ -489,7 +446,7 @@ lnd.b3 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group,
 Spatial polygons are not the only data types compatible with `ggmap`- you can use any plot type and set of parameters available in `ggplot2`, making it an ideal companion package for spatial data visualisation. 
 
 Summary
-=======
+-----------------
 
 There is an almost infinite number of different combinations colours, adornments and line widths that could be applied to a map so take inspiration from maps and graphics you have seen and liked. The process is an iterative one, it will take multiple attempts to get right. Show your map to friends and colleagues- all will have an opinion but don’t be afraid to stand by the decisions you have taken. To give your maps a final polish you may wish to export them as a pdf using the `ggsave()` function and importing them into a vector graphics package such as Adobe Illustrator or Inkscape. 
 

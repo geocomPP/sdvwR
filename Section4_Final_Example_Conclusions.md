@@ -1,6 +1,7 @@
 A Final Example
 ===============
-Here we present a final example that draws upon the many advanced concepts discussed in this chapter to produce a map of 18th Century Shipping flows. The data have been obtained from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. We are using a very small sample of the the full dataset, which is available from here: http://pendientedemigracion.ucm.es/info/cliwoc/. The example has been chosen to demonstrate a range of capabilities within ggplot2 and the ways in which they can be applied to produce high-quality maps with only a few lines of code. We end by showing how the maps can be animated to show the routes over time and the ability of R to produce many maps very quickly.
+
+Here we present a final example that draws upon the many advanced concepts discussed in this tutorial to produce a map of 18th Century Shipping flows. The data have been obtained from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. We are using a very small sample of the the full dataset, which is available from here: http://pendientedemigracion.ucm.es/info/cliwoc/. The example has been chosen to demonstrate a range of capabilities within ggplot2 and the ways in which they can be applied to produce high-quality maps with only a few lines of code. We end by showing how the maps can be animated to show the routes over time and the ability of R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and datasets. Here we are using the png package to load in a series of map annotations. These have been created in image editing software and will add a historic feel to the map. We are also loading in a World boundary shapefile and the shipping data itself. 
 
@@ -47,7 +48,7 @@ wrld.f <- fortify(wrld, region = "sov_a3")
 ```
 ## Loading required package: rgeos
 ## rgeos version: 0.3-2, (SVN revision 413M)
-##  GEOS runtime version: 3.3.3-CAPI-1.7.4 
+##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 ```
 
@@ -106,8 +107,8 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
 
-Animating your plots
-====================
+## Animating your plots
+
 R is not designed to produce animated graphics and as such it has very few functions that enable straightforward animation. To produce animated graphics users can use a loop to plot and then export a series of images that can then be stitched together into a video. There are two approaches to this; the first is to create a loop that fills a folder with the desired images and then utilise third party software to stitch the images together, whilst the second uses R's own animation package. The latter option still requires the installation of an additional software package called ImageMagick but it has the benefit of creating the animation for you within R and faciliting the export to a range of formats, not least HTML and GIF. Here we demonstrate the use of the package to produce an HTML animation of the shipping tracks completed in each year of the bdata object. The code snippet below appears extremely dense, but it only contains a few addtions to the plot code utilised above.
 
 First load the package:
@@ -120,9 +121,11 @@ library(animation)
 
 Then clear any previous animation. Obviously the first time you run this it is unnecessary, but it is a good habit to get into.
 
+
 ```r
 ani.record(reset = TRUE)
 ```
+
 
 We then initiate the "for loop". In this case we are using the unique() function to list the unique years within the bdata object. The loop will take the first year, in this case 1791, and assign it to the object i. The code inside the {} brackets will then run with i=1791. You will spot that i is used in a number of places- first to subset the data when creating the route plot and then as the title in the ggtitle() function. We need to force ggplot to create the graphic within the loop so the entire plot call is wrapped in the print() function. Once the plot is called anin.record() is used to save the plot still and dev.off() used to clear the plot window ready for the next iteration. i is then assigned the next year in the list and the code runs again until all years are plotted.
 
@@ -150,9 +153,6 @@ The final step in the process is to save the animation to HTML and view it in yo
 saveHTML(ani.replay(), img.name = "record_plot", outdir = getwd())
 ```
 
-```
-## HTML file created at: /Users/james1/Desktop/sdvwr/index.html
-```
 
 You will note that there is something a little odd about the order in which the years appear. This can be solved by an additional step before the loop code above. Have a think then add this in and then regenerate the animation.  
 

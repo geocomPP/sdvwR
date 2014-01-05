@@ -84,14 +84,13 @@ Lovelace, Robin\\
 \subsection{What is R?}
 
 R is a free and open source computer program that runs on all major
-operating systems. R relies primarily on the \emph{command line} for
-data input: instead of interacting with the program by moving your mouse
-around clicking on different parts of the screen, users enter commands
-via the keyboard. This will seem to strange to people accustomed to
-relying on a graphical user interface (GUI) for most of their computing,
-yet the approach has a number of benefits, as highlighted by Gary
-Sherman (2008, p.~283), developer of the popular Geographical
-Informations System QGIS:
+operating systems. It relies primarily on the \emph{command line} for
+data input: instead of interacting with the program by clicking on
+different parts of the screen, so users enter commands via the keyboard.
+This will seem to strange to people accustomed to relying on a graphical
+user interface (GUI) for most of their computing, yet the approach has a
+number of benefits, as highlighted by Gary Sherman (2008, p.~283),
+developer of the popular Geographical Information System (GIS) QGIS:
 
 \begin{quote}
 With the advent of ``modern'' GIS software, most people want to point
@@ -110,9 +109,7 @@ Another important attribute of R, related to its command line interface,
 is that it is a fully fledged \emph{programming language}. Other GIS
 programs are written in lower level languages such as C++ which are kept
 at a safe distance from the users by the GUI. In R, by contrast, the
-user is `close to the metal' in the sense that what he or she inputs is
-the same as what R sees when it processes the request. This `openness'
-can seem raw and daunting to beginners, but it is vital to R's success.
+user inputs is the same as what R sees when it processes the request.
 Access to R's source code and openness about how it works has enabled a
 veritable army of programmers to improve R over time and add an
 incredible number of extensions to its capabilities. There are now more
@@ -122,19 +119,17 @@ computational or numerical problem one could imagine.
 Although writing R source code and creating new packages will not appeal
 to most R users, it inspires confidence to know that there is a strong
 and highly skilled community of R developers. If there is a useful
-spatial function that R cannot currently perform, there is a reasonable
-chance that someone is working on a solution that will become available
-at a later date. This constant evolution and improvement is a feature of
-open source software projects not limited to R, but the range and
-diversity of extensions is certainly one of its strong points. One area
-where extension of R's basic capabilities has been particularly
-successful is the addition of a wide variety of spatial tools.
+function that R cannot currently perform, there is a reasonable chance
+that someone is working on a solution that will become available at a
+later date. One area where extension of R's basic capabilities has been
+particularly successful is the addition of a wide variety of spatial
+tools.
 
 \subsection{Why R for spatial data visualisation?}
 
 Aside from confusion surrounding its one character name {[}1{]} and
 uncertainty about how to search for help {[}2{]}, R may also seem a
-strange choice for a chapter on \emph{spatial} data visualisation
+strange choice for a tutorial on \emph{spatial} data visualisation
 specifically. ``I thought R was just for statistics?'' and ``Why not use
 a proper GIS package like ArcGIS?'' are valid questions.
 
@@ -145,49 +140,46 @@ broadening of functionality to reflect a growing user base across
 disciplines. R has become ``an integrated suite of software facilities
 for data manipulation, calculation and graphical display'' (Venables et
 al. 2013). Spatial data analysis and visualisation is an important
-growth area within this increased functionality to the extent that R can
-almost entirely replace major GIS packages for a whole host of spatial
-analysis workflows. That said, it will never be a complete replacement
-for those seeking a user interface that enables panning and zooming, or
-for those seeking to manually digitise spatial data. We therefore
-suggest using R \emph{in addition to} GIS packages where required. In
-fact, R's spatial capabilities have already been integrated in
-conventional GIS packages ArcGIS (via its R
-\href{http://www.arcgis.com/home/item.html?id=a5736544d97a4544aa47d06baf910f6d}{toolbox}
-and the \href{http://www.spatialecology.com/gme/}{Geospatial Modelling
-Environment}) and QGIS (via the
-\href{http://qgis.org/en/docs/user\_manual/processing/3rdParty.html}{\emph{Processing}
-framework}).
+growth area within this increased functionality. In recent years R has
+really made its mark as a data visualisation tool. Perhaps the first
+truly inspiring graphic to be created in R that reached a global
+audience was the map of Facebook friendships produced by Paul Butler. He
+mapped the linkages between friends by calculating the great circle arcs
+between them (using the ``geosphere'' package) and then plotting them
+using the basic R graphics functionality. The secret to the success of
+this map was the time taken to select the appropriate colour palette,
+line widths and transparency for the plot. As we discuss in Section XXX
+the importance of these cannot be understated and are the difference
+between a stunning graphic and an impenetrable mess of lines.
 
-\subsubsection{R and conventional GIS programs}
+The impact of the graphic was to inspire the R community to produce more
+ambitious graphics; a process fuelled by the increased demand for data
+visualisation and the development of sophisticated packages, such as
+ggplot2, that augment the basic plot functions of R. It is now the case
+that R has become a key analysis and visualisation tool used by the
+likes of Twitter, the New York Times and Facebook and thousands of
+consultants, design houses and journalists. It is not longer the
+preserve of academic research, with many graduate jobs listing R as a
+desirable skill.
 
-There are a few major differences between R and conventional GIS
-programs in terms of spatial data visualisation: R is more suited to
-creating one-off graphics than exploring spatial data through repeated
-zooming, panning and spatial sub-setting using custom-drawn polygons,
-compared with conventional GIS programs. Although interactive maps in R
-can be created (e.g.~using the web interface \texttt{shiny}), it is
-recommended that R is used \emph{in addition to} rather than as a direct
-replacement of dedicated GIS programs, especially now that there are
-myriad free options to try (Sherman 2008). An additional point is that
-while dedicated GIS programs handle spatial data by default and display
-the results in a single way, there are various options in R that must be
-decided by the user, for example whether to use R's base graphics or a
-dedicated graphics package such as ggplot2. On the other hand, the main
-benefits of R for spatial data visualisation lie in the
-\emph{reproducibility} of its outputs, a feature that we will be using
-to great effect in this chapter.
+Finally, it is worth noting that while dedicated GIS programs handle
+spatial data by default and display the results in a single way, there
+are various options in R that must be decided by the user, for example
+whether to use R's base graphics or a dedicated graphics package such as
+ggplot2. On the other hand, the main benefits of R for spatial data
+visualisation lie in the \emph{reproducibility} of its outputs, a
+feature that we will be using to great effect in this tutorial.
 
 \subsubsection{R and reproducible research}
 
-Finally, there is a drive towards transparency in data and methods
-datasets in academic publishing. R encourages truly transparent and
-reproducible research by enabling anyone with an R installation
-reproduce results described in previous paper. This process is eased by
-the RStudio integrated development environment (IDE) that allows `live'
-R code and results to be embedded in documents. In fact, this tutorial
-was written in RStudio and can be recompiled on any computer by
-downloading the project's GitHub repository.
+There is a drive towards transparency in data and methods datasets in
+academic publishing. R encourages truly transparent and reproducible
+research by enabling anyone with an R installation reproduce results
+described in previous paper. This process is eased by the RStudio
+integrated development environment (IDE) that allows `live' R code and
+results to be embedded in documents. In fact, this tutorial was written
+in RStudio and can be recompiled on any computer by downloading the
+project's GitHub repository.
 
 \subsection{Getting started with the tutorial}
 
@@ -200,8 +192,21 @@ folder and try opening some of the files, especially those from the
 sub-folder entitled ``data'': these are the input datasets we'll be
 using.
 
-Now open up a version of RStudio on your own computer (or on-line) and
-we are ready to go.
+For the purpose of this practical we will be using the RStudio software
+installed on a server. This marks a real step forward in terms of the
+use of R ``in the cloud'' by enabling users to access the software from
+their web browser. This is the first time we have tried this so lets
+hope it goes smoothly!
+
+In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio (this is only
+accessible if you are part of the UCL network). Enter the log in details
+you have been given and you should see the RStudio interface. In the
+bottom right window you should see an ``Upload'' button. Click on this
+and upload the zipfile you have just downloaded from github. RStudio
+will automatically uncompress this and you should see the list of files
+and folders appear. At the end of today you can tick the boxes next to
+the files/ folders you want and then under the ``More'' menu export them
+to a zipfile that you can email to yourself or take on a memory stick.
 
 \section{R and Spatial Data}
 
@@ -210,7 +215,7 @@ we are ready to go.
 R has a unique syntax that is worth learning in basic terms before
 loading spatial data: to R spatial and non-spatial data are treated in
 the same way, although they have different underlying data structures.
-Try typing and running (by pressing \texttt{ctl-Enter} in a an RStudio
+Try typing and running (by pressing \texttt{ctl-Enter} in an RStudio
 script) the following calculations to see how R works and plot the
 result.
 
@@ -218,28 +223,29 @@ result.
 \begin{Highlighting}[]
 \NormalTok{t <- }\KeywordTok{seq}\NormalTok{(}\DataTypeTok{from =} \DecValTok{0}\NormalTok{, }\DataTypeTok{to =} \DecValTok{20}\NormalTok{, }\DataTypeTok{by =} \FloatTok{0.1}\NormalTok{)}
 \NormalTok{x <- }\KeywordTok{sin}\NormalTok{(t) * }\KeywordTok{exp}\NormalTok{(-}\FloatTok{0.2} \NormalTok{* t)}
-\KeywordTok{plot}\NormalTok{(x)}
+\KeywordTok{plot}\NormalTok{(t, x)}
 \end{Highlighting}
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-1.png}
-\caption{unnamed-chunk-1}
+\includegraphics{figure/A_preliminary_plot.png}
+\caption{A preliminary plot}
 \end{figure}
 
 R code consists of \emph{functions}, usually proceeded by brackets (e.g.
 \texttt{seq}) and \emph{objects} (\texttt{d}, \texttt{t} and
 \texttt{x}). Each function contains \emph{arguments}, the names of which
-often do not need to be states: the function \texttt{seq(0, 20, 0.1)},
-for example, would also work, \texttt{from}, \texttt{to} and \texttt{by}
-are the \emph{default} arguments. Knowing this is important as it can
-save typing. In this tutorial, however, we generally spell out each of
-the argument names, for clarity.
+often do not need to be stated: the function \texttt{seq(0, 20, 0.1)},
+for example, would also work because \texttt{from}, \texttt{to} and
+\texttt{by} are the \emph{default} arguments. Knowing this is important
+as it can save typing. In this tutorial, however, we generally spell out
+each of the argument names, for clarity.
 
-Note the use of the \texttt{\textless{}-} assignment to create new
+Note the use of the assignment arrow \texttt{\textless{}-} to create new
 objects. Objects are entities that can be called to by name in R and can
 be renamed through additional assignements (e.g
-\texttt{y \textless{}- x} if y seems a more appropriate name).
+\texttt{y \textless{}- x} if y seems a more appropriate name). This is
+an efficient way of referring to large data objects or sets of commands.
 
 \subsection{Spatial Data in R}
 
@@ -252,27 +258,26 @@ data in R.
 
 \subsubsection{Loading spatial data in R}
 
-In most situations, the starting point of spatial analysis tasks is
-loading in datasets. These may originate from government agencies,
+In most situations, the starting point of a spatial analysis project is
+to load in a datasets. These may originate from government agencies,
 remote sensing devices or `volunteered geographical information'
 (Goodchild 2007). R is able to import a very wide range of spatial data
 formats thanks to its interface with the Geospatial Data Abstraction
 Library (GDAL), which is enabled by the package \texttt{rgdal}. Below we
 will load data from two spatial data formats: GPS eXchange
-(\texttt{.gpx}) and an ESRI Shapefile.
+(\texttt{.gpx}) and ESRI's Shapefile.
 
 \texttt{readOGR} is in fact capable of loading dozens more file formats,
 so the focus is on the \emph{method} rather than the specific formats.
-The \texttt{readOGR} function is therefore capable of loading most
-common spatial file formats. Let's start with a \texttt{.gpx} file, a
-tracklog recording a bicycle ride from Sheffield to Wakefield which was
-uploaded OpenStreetMap {[}3{]}.
+Let's start with a \texttt{.gpx} file, a tracklog recording a bicycle
+ride from Sheffield to Wakefield uploaded OpenStreetMap {[}3{]}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile}
 \CommentTok{# = 'data/gps-trace.gpx')}
 \KeywordTok{library}\NormalTok{(rgdal)  }\CommentTok{# load the gdal package}
+\KeywordTok{ogrListLayers}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/gps-trace.gpx"}\NormalTok{)}
 \NormalTok{shf2lds <- }\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/gps-trace.gpx"}\NormalTok{, }\DataTypeTok{layer =} \StringTok{"tracks"}\NormalTok{)  }\CommentTok{# load track}
 \KeywordTok{plot}\NormalTok{(shf2lds)}
 \NormalTok{shf2lds.p <- }\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/gps-trace.gpx"}\NormalTok{, }\DataTypeTok{layer =} \StringTok{"track_points"}\NormalTok{)  }\CommentTok{# load points}
@@ -281,12 +286,13 @@ uploaded OpenStreetMap {[}3{]}.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-2.png}
-\caption{unnamed-chunk-2}
+\includegraphics{figure/Leeds_to_Sheffield_GPS_data.png}
+\caption{Leeds to Sheffield GPS data}
 \end{figure}
 
 In the code above we first used R to \emph{download} a file from the
-internet, using the function \texttt{download.file}. The two essential
+internet, using the function \texttt{download.file} (note this has been
+\emph{commented out} using the \texttt{\#} symbol). The two essential
 arguments of this function are \texttt{url} (we could have typed
 \texttt{url =} before the link) and \texttt{destfile}, the destination
 file. As with any function, more optional arguments can be viewed by by
@@ -300,9 +306,9 @@ command tells us that various layers are available, including
 \emph{workspace} using \texttt{readOGR}.
 
 Finally, the basic \texttt{plot} function is used to visualize the newly
-imported objects, ensuring they make sense. In the second \texttt{plot}
-function, we take a subset of the object (see section \ldots{} for more
-on this). To see how to add axes, enter \texttt{?axis}
+imported objects, ensuring they make sense. In the second plot function
+(\texttt{points}), we add points for a subset of the object. To see how
+to add axes, enter \texttt{?axis}
 
 Try discovering more about the function by typing \texttt{?readOGR}. The
 documentation explains that the \texttt{dsn =} argument is interpreted
@@ -315,8 +321,8 @@ by contrast, the \emph{folder} containing the data is used:
 \NormalTok{lnd <- }\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/"}\NormalTok{, }\StringTok{"london_sport"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-Here, the files reside in a folder entitled \texttt{data} which in R's
-current working directory (remember to check this using
+Here, the files reside in a folder entitled \texttt{data}, which is in
+R's current working directory (you can check this using
 \texttt{getwd()}). If the files were stored in the working directory,
 one would use \texttt{dsn = "."} instead. Again, it may be wise to plot
 the data that results, to ensure that it has worked correctly. Now that
@@ -324,23 +330,26 @@ the data has been loaded into R's own \texttt{sp} format, try
 interrogating and plotting it, using functions such as \texttt{summary}
 and \texttt{plot}.
 
+The london\_sport file contains data pertaining to the percentage of
+people within each London Borough who regularly undertake physical
+activity and also the 2001 population of each Borough.
+
 \subsubsection{The size of spatial datasets in R}
 
 Any datasets that have been read into R's \emph{workspace}, which
 constitutes all objects that can be accessed by name and can be listed
 using the \texttt{ls()} function, can be saved in R's own data storage
-file type, \texttt{.RData}. Spatial datasets can get quite large and
-this can cause problems on computers by consuming all available memory
-(RAM) or hard disk space. It is therefore wise to understand roughly how
-large spatial objects are, providing insight into how long certain
-functions will take to run.
+file type \texttt{.RData}. Spatial datasets can get quite large and this
+can cause problems on computers by consuming all available memory (RAM)
+or hard disk space. It is therefore wise to understand roughly how large
+spatial objects are, providing insight into how long certain functions
+will take to run.
 
 In the absence of prior knowledge, which of the two objects loaded in
 the previous section would one expect to be larger? One could
-hypothesize that the London boroughs represented by the object
-\texttt{lnd} would be larger based on its greater spatial extent, but
-how much larger? The answer in R is found in the function
-\texttt{object.size}:
+hypothesize that the London dataset would be larger based on its greater
+spatial extent, but how much larger? The answer in R is found in the
+function \texttt{object.size}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -348,7 +357,7 @@ how much larger? The answer in R is found in the function
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-## 103168 bytes
+## 107464 bytes
 \end{verbatim}
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -356,11 +365,11 @@ how much larger? The answer in R is found in the function
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-## 79168 bytes
+## 125544 bytes
 \end{verbatim}
-Surprisingly, the GPS data is larger. To see why, we can find out how
-many \emph{vertices} (points connected by lines) are contained in each
-dataset:
+In fact, the objects have similar sizes: the GPS dataset is surprisingly
+large. To see why, we can find out how many \emph{vertices} (points
+connected by lines) are contained in each dataset:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -393,10 +402,10 @@ In the above block of code we performed two functions for each object:
 row 2) use \texttt{nrow} to count the result.
 
 It is clear that the GPS data has almost 6 times the number of vertices
-as does the London data, explaining its larger size. Yet when plotted,
-the GPS data does not seem more detailed, implying that some of the
-vertices in the object are not needed for visualisation at the scale of
-the objects \emph{bounding box}.
+compared to the London data, explaining its large size. Yet when
+plotted, the GPS data does not seem more detailed, implying that some of
+the vertices in the object are not needed for visualisation at the scale
+of the object's \emph{bounding box}.
 
 \subsubsection{Simplifying geometries}
 
@@ -413,7 +422,7 @@ to use the \texttt{gSimplify} function to simplify spatial R objects:
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-## [1] 0.03047
+## [1] 0.04608
 \end{verbatim}
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -425,10 +434,11 @@ In the above block of code, \texttt{gSimplify} is given the object
 \texttt{shf2lds} and the \texttt{tol} argument of 0.001 (much larger
 tolerance values may be needed, for data that is \emph{projected}).
 Next, we divide the size of the simplified object by the original (note
-the use of the \texttt{/} symbol). The output of \texttt{0.03...} tells
-us that the new object is only 3\% of its original size. We can see how
-this has happened by again counting the number of vertices. This time we
-use the \texttt{coordinates} and \texttt{nrow} functions together:
+the use of the \texttt{/} symbol). The output of \texttt{0.04...} tells
+us that the new object is only around 4\% of its original size. We can
+see how this has happened by again counting the number of vertices. This
+time we use the \texttt{coordinates} and \texttt{nrow} functions
+together:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -439,29 +449,28 @@ use the \texttt{coordinates} and \texttt{nrow} functions together:
 ## [1] 44
 \end{verbatim}
 The syntax of the double square brackets will seem strange, providing a
-taster of how R `sees' spatial data (see section x). Do not worry about
-this for now. Of interest here is that the number of vertices has
-shrunk, from 6,084 to only 44, without loosing much information about
-the shape of the line. To test this,try plotting the original and
-simplified tracks on your computer: when visualized using the
-\texttt{plot} function, object \texttt{shf2lds.simple} retains the
-overall shape of the line and is virtually indistinguishable from the
-original object.
+taster of how R `sees' spatial data. Do not worry about this for now. Of
+interest here is that the number of vertices has shrunk, from over 6,000
+to only 44, without losing much information about the shape of the line.
+To test this, try plotting the original and simplified tracks on your
+computer: when visualized using the \texttt{plot} function, object
+\texttt{shf2lds.simple} retains the overall shape of the line and is
+virtually indistinguishable from the original object.
 
 This example is rather contrived because even the larger object
-\texttt{shf2lds} is only 0.107 Mb, negligible compared with the
-gigabytes of RAM available to modern computers. However, it underlines a
-wider point: for visualizing \emph{small scale} maps, spatial data
-\emph{geometries} can often be simplified to reduce processing time and
-use of computer memory.
+\texttt{shf2lds} is only a tenth of a megabyte, negligible compared with
+the gigabytes of memory available to modern computers. However, it
+underlines a wider point: for visualizing \emph{small scale} maps,
+spatial data \emph{geometries} can often be simplified to reduce
+processing time and use of memory.
 
 \subsubsection{Saving and exporting spatial objects}
 
-A typical R workflow involves loading the data, processing and finally
-exporting the data in a new form. \texttt{writeOGR}, the logical
-counterpart of \texttt{readOGR} is ideal for this task. Imagine that we
-want to view the simplified \texttt{gpx} data in software that can only
-read Shapefiles. This is performed using the following command:
+A typical R workflow involves loading the data, processing/analysing the
+data and finally exporting the data in a new form. \texttt{writeOGR},
+the logical counterpart of \texttt{readOGR} is ideal for this task. This
+is performed using the following command (in this case we are exporting
+to an ESRI Shapefile):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -474,7 +483,7 @@ In the above code, the object was first converted into a spatial
 dataframe class required by the \texttt{writeOGR} command, before being
 exported as a shapefile entitled shf2lds. Unlike with \texttt{readOGR},
 the driver must be specified, in this case with ``ESRI Shapefile''
-{[}4{]}. The simplified GPS data is now available to other GIS programs
+{[}4{]}. The simplified GPS data are now available to other GIS programs
 for further analysis. Alternatively,
 \texttt{save(shf2lds.simple, file = "data/shf2lds.RData")} will save the
 object in R's own spatial data format, which is described in the next
@@ -486,8 +495,8 @@ Spatial datasets in R are saved in their own format, defined as
 \texttt{Spatial...} classes within the \texttt{sp} package. For this
 reason, \texttt{sp} is the basic spatial package in R, upon which the
 others depend. Spatial classes range from the basic \texttt{Spatial}
-class to the complex, \texttt{SpatialPolygonsDataFrame}: the
-\texttt{Spatial} class contains only two required \emph{slots}{[}5{]}:
+class to the complex \texttt{SpatialPolygonsDataFrame}: the
+\texttt{Spatial} class contains only two required \emph{slots} {[}5{]}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -499,7 +508,8 @@ class to the complex, \texttt{SpatialPolygonsDataFrame}: the
 ##    "matrix"       "CRS"
 \end{verbatim}
 This tells us that \texttt{Spatial} objects must contain a bounding box
-(\texttt{bbox}) and and CRS. Further details on these can be found by
+(\texttt{bbox}) and a coordinate reference system (CRS) accessed via the
+function \texttt{proj4string}. Further details on these can be found by
 typing \texttt{?bbox} and \texttt{?proj4string}. All other spatial
 classes in R build on this foundation of a bounding box and a projection
 system (which is set automatically to \texttt{NA} if it is not known).
@@ -552,16 +562,16 @@ type the following:
 \begin{verbatim}
 ## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy "
 \end{verbatim}
-The output may seem cryptic but is in fact highly informative:
+The output may seem cryptic, but is in fact highly informative:
 \texttt{lnd} has \emph{projected} coordinates, based on the
 \href{http://en.wikipedia.org/wiki/Transverse\_Mercator\_projection}{\emph{Transverse
 Mercator}} system (hence \texttt{"+proj=tmerc"} in the output) and its
-origin is at latitude 49N, -2E. This point is
+origin is at latitude 49N, -2E.
 
 If we \emph{know} that the CRS is incorrectly specified, it can be
 re-set. In this case, for example we know that \texttt{lnd} actually has
-a CRS OSGB1936. Knowing also that the code for this is 27700, it can be
-updated as follows:
+a CRS of OSGB1936. Knowing also that the code for this is 27700, it can
+be updated as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -573,7 +583,7 @@ updated as follows:
 ## [1] "+init=epsg:27700 +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs +ellps=airy +towgs84=446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894"
 \end{verbatim}
 The CRS has now been updated - note that the key details are all the
-same as before. Note: this method \textbf{should never} be used as an
+same as before. Note: this method should \textbf{never} be used as an
 attempt to \emph{reproject} data from one CRS to another.
 
 \subsubsection{Reprojecting data}
@@ -603,13 +613,13 @@ To illustrate why that is necessary, try to plot the objects
 \caption{Plot of spatial objects with different CRS}
 \end{figure}
 
-In the above code we first extracted the coordinates of each point using
-\texttt{fortify} and then plotted them using \texttt{plot}. The image
-shows why reprojection is necessary: the .gpx data are on a totally
-different scale than the shapefile of London. Hence the tiny dot at the
-bottom right of the graph. We will now reproject the data, allowing
-\texttt{lnd} and \texttt{shf2lds.simple} to be usefully plotted on the
-same graphic:
+In the above code we first extracted the coordinates of the vertices of
+each line and polygon using \texttt{fortify} and then plotted them using
+\texttt{plot}. The image shows why reprojection is necessary: the
+\texttt{.gpx} data are on a totally different scale than the shapefile
+of London. Hence the tiny dot at the bottom left of the graph. We will
+now reproject the data, allowing \texttt{lnd} and
+\texttt{shf2lds.simple} to be usefully plotted on the same graphic:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -637,20 +647,20 @@ to the GPS data:
 
 Although the plot of the reprojected data is squashed because the axis
 scales are not fixed and distorted (\emph{geographic} coordinates such
-as WGS84 should not usually be used for plotting), at least the relative
+as WGS84 distort space close to the poles), but at least the relative
 position and shape of both objects can now be seen (making
-visualisations attractive is covered in the next section). The presence
-of the dotted line in the top left of the plot confirms our assumption
-that the GPS data is from around Sheffield, which is northwest of
-London.
+visualisations attractive is covered in the next major section). The
+presence of the dotted line in the top left of the plot confirms our
+assumption that the GPS data is from around Sheffield, which is
+northwest of London.
 
 \subsubsection{Attribute joins}
 
-Because boroughs are official administrative zones, there is much data
-available at this level that we can link to the polygons in the
-\texttt{lnd} object. We will use the example of crime data to illustrate
-this data availability, which is stored in the \texttt{data} folder
-available from this project's github page.
+London Boroughs are official administrative zones so we can easily join
+a range of other datasets to the polygons in the \texttt{lnd} object. We
+will use the example of crime data to illustrate this data availability,
+which is stored in the \texttt{data} folder available from this
+project's github page.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -663,9 +673,8 @@ After the dataset has been explored (e.g.~using the \texttt{summary} and
 \texttt{plyr} package but the \texttt{merge} function could equally be
 used (remember to type \texttt{library(plyr)} if needed).
 
-\texttt{join} requires all joining variables to have the same name, but
-this work has already been done {[}7{]}. Once this preparation has been
-done, the join funtion is actually very simple:
+\texttt{join} requires all joining variables to have the same name,
+which has already been done {[}7{]}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -734,20 +743,20 @@ administrative boundaries, as represented in Fig. x.
 The above code reads in a \texttt{SpatialPointsDataFrame} consisting of
 2532 transport nodes in and surrounding London and then plots a random
 sample of 500 of these over the previously loaded borough level
-administrative boundaries. The reason for piloting a sample of the
+administrative boundaries. The reason for plotting a sample of the
 points rather than all of them is that the boundary data becomes
-difficult to see if all of the points are piloted. It is also useful to
+difficult to see if all of the points are plotted. It is also useful to
 see and practice sampling techniques in practice; try to plot only the
-first 500 points, rather than a random selection, and describe the
+first 500 points, rather than a random selection, and spot the
 difference.
 
 The most obvious issue with the point data from the perspective of a
-spatial join with the borough data is that many of the points in the
-dataset are in fact located outside the region of interest. Thus, the
-first stage in the analysis is to filter the point data such that only
-those that lie within London's administrative zones are selected. This
-in itself is a kind of spatial join, and can be accomplished with the
-following code.
+spatial join with the borough data we have is that many of the points in
+the dataset are in fact located outside the region of interest. Thus,
+the first stage in the analysis is to filter the point data such that
+only those that lie within London's administrative zones are selected.
+This in itself is a kind of spatial join, and can be accomplished with
+the following code.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -773,13 +782,12 @@ This procedure is discussed in section !!!. In this case, only the name
 was slightly different hence direct alteration of the CRS name via the
 function \texttt{proj4string}.
 
-The second line of code is where the magic happens and the brilliance of
-R's sp package becomes clear: all that was needed was to place another
-spatial object in the row index of the points (\texttt{{[}lnd, {]}}) and
-R automatically understood that a subset based on location should be
-produced. This line of code is an example of R's `terseness' - only a
-single line of code is needed to perform what is in fact quite a complex
-operation.
+The second line of code is where power of R's sp package becomes clear:
+all that was needed was to place another spatial object in the row index
+of the points (\texttt{{[}lnd, {]}}) and R automatically understood that
+a subset based on location should be produced. This line of code is an
+example of R's `terseness' - only a single line of code is needed to
+perform what is in fact quite a complex operation.
 
 \subsubsection{Spatial aggregation}
 
@@ -792,7 +800,7 @@ approaches: one using the \texttt{sp} package and the other using
 
 As with the \emph{spatial subest} method described above, the developers
 of R have been very clever in their implementation of spatial
-aggregations methods. To minimise typing and ensure consistency with R's
+aggregation methods. To minimise typing and ensure consistency with R's
 base functions, \texttt{sp} extends the capabilities of the
 \texttt{aggregate} function to automatically detect whether the user is
 asking for a spatial or a non-spatial aggregation (they are, in essence,
@@ -817,7 +825,10 @@ perform a function on the output, in this case \texttt{length}, which
 simply means ``count'' in this context; and 3) creates a new spatial
 object equivalent to \texttt{lnd} but with updated attribute data to
 reflect the results of the spatial aggregation. The results, with a
-legend and colours added, are presented in figure 8 below.
+legend and colours added, are presented in Figure 8 below. The code used
+below involves a number of steps that we have not yet covered. Copy
+these to create the map and they will be explained in Section 3 of the
+tutorial.
 
 \begin{figure}[htbp]
 \centering
@@ -842,7 +853,7 @@ symbol:
 In this case we have three potentially interesting variables:
 ``LEGEND'', telling us what the point is, ``NAME'', and ``MICE'', which
 represents the number of mice sightings reported by the public at that
-point (this is a fictional variable). To illustrate the power of the
+point (this is a fictional variable!!). To illustrate the power of the
 \texttt{aggregate} function, let us use it to find the average number of
 mice spotted in transport points in each London borough, and the
 standard deviation:
@@ -875,34 +886,32 @@ refering to attribute variables.
 To summarise this section, we have taken a look inside R's
 representation of spatial data, learned how to manipulate these datasets
 in terms of CRS transformations and attribute data and finally explored
-spatial joins and aggregation. Only \emph{after} the datasets are well
-understood and saved in a suitable form should we move on to
-visualisation.
+spatial joins and aggregation.
 
 \section{Fundamentals of Spatial Data Visualisation}
 
-Good maps depend on sound analysis and data preparation and can have an
-enormous impact on the understanding and communication of results. It
-has never been easier to produce a map. The underlying data required are
-available in unprecedented volumes and the technological capabilities of
-transforming them into compelling maps and graphics are increasingly
-sophisticated and straightforward to use. Data and software, however,
-only offer the starting points of good spatial data visualisation since
-they need to be refined and calibrated by the researchers seeking to
-communicate their findings. In this section we will run through the
-features of a good map. We will then seek to emulate them with R in
-Section XX. It is worth noting that not all good maps and graphics
-contain all the features below -- they should simply be seen as
-suggestions rather than firm principles.
+Good maps depend on sound analysis and can have an enormous impact on
+the understanding and communication of results. It has never been easier
+to produce a map. The underlying data required are available in
+unprecedented volumes and the technological capabilities of transforming
+them into compelling maps and graphics are increasingly sophisticated
+and straightforward to use. Data and software, however, only offer the
+starting points of good spatial data visualisation since they need to be
+refined and calibrated by the researchers seeking to communicate their
+findings. In this section we will run through the features of a good
+map. We will then seek to emulate them with R in Section XX. It is worth
+noting that not all good maps and graphics contain all the features
+below -- they should simply be seen as suggestions rather than firm
+principles.
 
-Effective map making is hard process -- as Krygier and Wood (XXX) put it
-``there is a lot to see, think about, and do'' (p6). It often comes at
-the end of a period of intense data analysis and perhaps when the
+Effective map making is hard process -- as Krygier and Wood (2011) put
+it ``there is a lot to see, think about, and do'' (p6). It often comes
+at the end of a period of intense data analysis and perhaps when the
 priority is to get a paper finished or results published and can
 therefore be rushed as a result. The beauty of R (and other scripting
 languages) is the ability to save code and simply re-run it with
 different data. Colours, map adornments and other parameters can
-therefore be quickly applied so it is well worth creating a template
+therefore be quickly applied, so it is well worth creating a template
 script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of our
@@ -910,17 +919,15 @@ maps and spatial data visualisations because it has a number of these
 elements at its core. The ``gg'' in its slightly odd name stands for
 ``Grammar of Graphics'', which is a set of rules developed by Leland
 Wilkinson (2005) in a book of the same name. Grammar in the context of
-graphics works in much the same way as it does in language- it provides
+graphics works in much the same way as it does in language - it provides
 a structure. The structure is informed by both human perception and also
 mathematics to ensure that the resulting visualisations are both
-technically sound and comprehensible. Through creating ggplot2, Hadley
+technically sound and comprehensible. By creating ggplot2, Hadley
 Wickham, implemented these rules as well as developing ways in which
 plots can be built up in layers (see Wickham, 2010). This layering
 component is especially useful in the context of spatial data since it
 is conceptually the same as map layers in Geographical Information
 Systems (GIS).
-
-!!!!Maps with ggplot2 !!!!Adding base maps with ggmap
 
 First load the libraries required for this section:
 
@@ -931,9 +938,7 @@ First load the libraries required for this section:
 \KeywordTok{library}\NormalTok{(gridExtra)}
 \end{Highlighting}
 \end{Shaded}
-You will also need create a folder and then set it as your working
-directory. Assuming your name is \texttt{Uname}, and the folder is saved
-as \texttt{sdvwR} in the Desktop in Windows, use the following.
+Set your working directory as before:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -941,21 +946,9 @@ as \texttt{sdvwR} in the Desktop in Windows, use the following.
 \end{Highlighting}
 \end{Shaded}
 For this section we are going to use a map of the world to demonstrate
-some of the cartographic principles discussed. A world map is available
-from the Natural Earth website. The code below will download this and
-save it to your working directory. It is commented out because the data
-may already be on your system. Uncomment each new line (by deleting the
-\texttt{\#} symbol) if you need to download and extract the data.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# download.file(url='http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip',}
-\CommentTok{# 'ne_110m_admin_0_countries.zip', 'auto') # download file}
-\CommentTok{# unzip('ne_110m_admin_0_countries.zip', exdir = 'data/') # unzip to data}
-\CommentTok{# folder file.remove('ne_110m_admin_0_countries.zip') # remove zip file}
-\end{Highlighting}
-\end{Shaded}
-Once downloaded we can then load the data into the R console.
+some of the cartographic principles as they are introduced. The world
+map used is available from the Natural Earth website. Because these are
+already saved in the data folder, we can proceed to load the data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -975,8 +968,8 @@ Once downloaded we can then load the data into the R console.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-4.png}
-\caption{unnamed-chunk-4}
+\includegraphics{figure/unnamed-chunk-3.png}
+\caption{unnamed-chunk-3}
 \end{figure}
 
 To see the first ten rows of attribute information assocuiated with each
@@ -997,9 +990,9 @@ of the country boundaries type the following:
 ## 5         1 Admin-0 country         6              Armenia    ARM
 \end{verbatim}
 You can see there are a lot of columns associated with this file.
-Although we will keep all of the them, we are only really interested in
-the population estimate (``pop\_est'') field. Before progressing it is
-is worth reprojecting the data in order that the population data can be
+Although we will keep all of them, we are only really interested in the
+population estimate (``pop\_est'') field. Before progressing it is is
+worth reprojecting the data in order that the population data can be
 seen better. The coordinate reference system of the wrld shapefile is
 currently WGS84. This is the common latitude and longitude format that
 all spatial software packages understand. From a cartographic
@@ -1017,8 +1010,8 @@ preservation. We therefore project it as follows.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-6.png}
-\caption{unnamed-chunk-6}
+\includegraphics{figure/unnamed-chunk-5.png}
+\caption{unnamed-chunk-5}
 \end{figure}
 
 ``+proj=robin'' refers to the Robinson prjection. You will have spotted
@@ -1027,8 +1020,7 @@ proportioned.
 
 We now need to ``fortify'' this spatial data to convert it into a format
 that ggplot2 understands, we also use ``merge'' to re-attach the
-attribute data that is lost in the fortify operation. !!! explain
-fortify
+attribute data that is lost in the fortify operation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1037,7 +1029,7 @@ fortify
 \end{Shaded}
 \begin{verbatim}
 ## Loading required package: rgeos
-## rgeos version: 0.2-19, (SVN revision 394)
+## rgeos version: 0.3-2, (SVN revision 413M)
 ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 \end{verbatim}
@@ -1047,41 +1039,200 @@ fortify
 \NormalTok{wrld.pop.f <- }\KeywordTok{merge}\NormalTok{(wrld.rob.f, wrld.rob@data, }\DataTypeTok{by.x =} \StringTok{"id"}\NormalTok{, }\DataTypeTok{by.y =} \StringTok{"sov_a3"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+The code below produces a map coloured by the population variable. It
+demonstrates the sophistication of ggplot2 by first stringing together a
+series of plot commands and assigning them to a single R object called
+\texttt{map}. If you type \texttt{map} into the command line, R will
+then execute the code and generate the plot. By simple specifing our
+\texttt{fill} variable within the \texttt{aes()} part of the code and
+then using the \texttt{geom\_polygon()} command ggplot2 will fill colour
+the countries using a default colour pallette and auto-generated key. As
+will be shown in the next section these defaults can be easily altered
+to produce different looking maps.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# continuous colour ramp}
-
 \NormalTok{map <- }\KeywordTok{ggplot}\NormalTok{(wrld.pop.f, }\KeywordTok{aes}\NormalTok{(long, lat, }\DataTypeTok{group =} \NormalTok{group, }\DataTypeTok{fill =} \NormalTok{pop_est)) + }\KeywordTok{geom_polygon}\NormalTok{() + }
     \KeywordTok{coord_equal}\NormalTok{() + }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Longitude"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Latitude"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"World Population"}\NormalTok{) + }
     \KeywordTok{ggtitle}\NormalTok{(}\StringTok{"World Population"}\NormalTok{)}
 
-\CommentTok{# better colours with more breaks- to finish}
+\NormalTok{map}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-7.png}
+\caption{unnamed-chunk-7}
+\end{figure}
 
-\NormalTok{map + }\KeywordTok{scale_fill_continuous}\NormalTok{(}\DataTypeTok{breaks =} \NormalTok{)}
+\subsection{Colour and other aesthetics}
+
+Colour has an enormous impact on how people will percieve a graphic.
+Readers of a map come to it with a range of pre-conceptions about how
+the world looks.
+
+\subsubsection{Choropleth Maps}
+
+ggplot2 knows the different between continuous and categorical (nominal)
+data and will automatically assign the appropriate colour palettes when
+producing choropleth maps such as the one above. The default colour
+palettes are generally a good place to start but users may wish to vary
+them for a whole host of reasons, such as the need to print in black and
+white. The \texttt{scale\_fill\_} family of commands facilitate such
+customisation. For categorical data \texttt{scale\_fill\_manual()} is a
+useful command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Produce a map of continents}
+\NormalTok{map.cont <- }\KeywordTok{ggplot}\NormalTok{(wrld.pop.f, }\KeywordTok{aes}\NormalTok{(long, lat, }\DataTypeTok{group =} \NormalTok{group, }\DataTypeTok{fill =} \NormalTok{continent)) + }
+    \KeywordTok{geom_polygon}\NormalTok{() + }\KeywordTok{coord_equal}\NormalTok{() + }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Longitude"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Latitude"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"World Population"}\NormalTok{) + }
+    \KeywordTok{ggtitle}\NormalTok{(}\StringTok{"World Continents"}\NormalTok{)}
+
+\CommentTok{# To see the default colours}
+\NormalTok{map.cont}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-81.png}
+\caption{unnamed-chunk-8}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# To change these}
+\NormalTok{map.cont + }\KeywordTok{scale_fill_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"yellow"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }
+    \StringTok{"orange"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"black"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-82.png}
+\caption{unnamed-chunk-8}
+\end{figure}
+
+Whilst, `scale\_fill\_continuous()' works with continuous datasets:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# note the use of the 'map' object created earler}
+
+\NormalTok{map + }\KeywordTok{scale_fill_continuous}\NormalTok{(}\DataTypeTok{low =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{high =} \StringTok{"black"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-9.png}
+\caption{unnamed-chunk-9}
+\end{figure}
+
+It is well worth looking at the \emph{Color Brewer} palettes developed
+by Cynthia Brewer. These are designed to be colour blind safe and
+perceptually uniform such that no one colour jumps out more than any
+others. This latter characteristic is important when trying to produce
+impartial maps. R has a package that contains the colour palettes and
+these can be easily utlised by ggplot2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(RColorBrewer)}
+
+\CommentTok{# look at the help documents to see the palettes available. Also visit}
+\CommentTok{# http://colorbrewer2.org/ for more information}
+\StringTok{`}\DataTypeTok{?}\StringTok{`}\NormalTok{(RColorBrewer)}
+
+\CommentTok{# note the use of the scale_fill_gradientn() function rather than}
+\CommentTok{# scale_fill_continuous() used above}
+
+\NormalTok{map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{7}\NormalTok{, }\StringTok{"YlGn"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-10.png}
+\caption{unnamed-chunk-10}
+\end{figure}
+
+In addition to altering the colour scale used to represent continuous
+data it may also be desirable to adjust the breaks at which the colour
+transitions occur. There are many ways to select both the optimum number
+of breaks (i.e colour transtions) and the locations in the dataset at
+which they occur. The \texttt{classINT} package contains many ways to
+automatically create these breaks.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(classInt)}
+
+\CommentTok{# Specify how many breaks you want - generally this should be fewer than 7.}
+
+\NormalTok{nbrks <- }\DecValTok{6}
+
+\CommentTok{# Here quantiles are used to identify the breaks (note that we are using the}
+\CommentTok{# original 'wrld.rob' object and not the 'wrld.rob@data$pop_est.f'). USe the}
+\CommentTok{# help files to see the full range of options.}
+\NormalTok{brks <- }\KeywordTok{classIntervals}\NormalTok{(wrld.rob@data$pop_est, }\DataTypeTok{n =} \NormalTok{nbrks, }\DataTypeTok{style =} \StringTok{"quantile"}\NormalTok{)}
+
+\KeywordTok{print}\NormalTok{(brks)}
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
-## Error: argument is missing, with no default
+## style: quantile
+##        [-99,1790208)    [1790208,4579439)    [4579439,9035536) 
+##                   30                   29                   29 
+##   [9035536,16639804)  [16639804,40784057) [40784057,1.339e+09] 
+##                   30                   29                   30
 \end{verbatim}
 \begin{Shaded}
 \begin{Highlighting}[]
 
-\CommentTok{# categorical variables}
+\CommentTok{# Now the breaks can be easily inserted into the code above for a range of}
+\CommentTok{# colour palettes}
+\NormalTok{YlGn <- map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(nbrks, }\StringTok{"YlGn"}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(brks$brks))}
+
+\NormalTok{PuBu <- map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(nbrks, }\StringTok{"PuBu"}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(brks$brks))}
+
+\KeywordTok{grid.arrange}\NormalTok{(YlGn, PuBu, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-\section{Conforming to colour conventions}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-11.png}
+\caption{unnamed-chunk-11}
+\end{figure}
 
-Colour has an enormous impact on how people will percieve your graphic.
-``Readers'' of a map come to it with a range of pre-conceptions about
-how the world looks. If the map's purpose is to clearly communicate data
-then it is often advisable to conform to conventions so as not to
-disorientate readers to ensure they can focus on the key messages
-contained in the data. A good example of this is the use of blue for
-bodies of water and green for landmasses. The code example below
-generates two plots with our wrld.pop.f object. The first colours the
-land blue and the sea (in this case the background to the map) green and
-the second is more conventional. We use the ``grid.arrange'' function
-from the ``gridExtra'' package to display the maps side by side.
+If you are not happy with the automatic methods of specifying breaks it
+can also be done manually:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nbrks <- }\DecValTok{4}
+\NormalTok{brks <- }\KeywordTok{c}\NormalTok{(}\FloatTok{1e+08}\NormalTok{, }\FloatTok{2.5e+08}\NormalTok{, }\FloatTok{5e+07}\NormalTok{, }\FloatTok{1e+09}\NormalTok{)}
+
+\NormalTok{map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(nbrks, }\StringTok{"PuBu"}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(brks))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-12.png}
+\caption{unnamed-chunk-12}
+\end{figure}
+
+There are many other ways to specify and alter the colours in ggplot2
+and these are outlined in the help documentation. There are also many
+examples online.
+
+If the map's purpose is to clearly communicate data then it is often
+advisable to conform to conventions so as not to disorientate readers to
+ensure they can focus on the key messages contained in the data. A good
+example of this is the use of blue for bodies of water and green for
+landmasses. The code example below generates two plots with our
+wrld.pop.f object. The first colours the land blue and the sea (in this
+case the background to the map) green and the second is more
+conventional. We use the ``grid.arrange'' function from the
+``gridExtra'' package to display the maps side by side.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1096,11 +1247,11 @@ from the ``gridExtra'' package to display the maps side by side.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-9.png}
-\caption{unnamed-chunk-9}
+\includegraphics{figure/unnamed-chunk-13.png}
+\caption{unnamed-chunk-13}
 \end{figure}
 
-\subsection{Experimenting with line colour and line widths}
+\subsubsection{Experimenting with line colour and line widths}
 
 In addition to conforming to colour conventions, line colour and width
 offer important parameters, which are often overlooked tools for
@@ -1128,35 +1279,26 @@ which you do this will also affect the line widths.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-10.png}
-\caption{unnamed-chunk-10}
+\includegraphics{figure/unnamed-chunk-14.png}
+\caption{unnamed-chunk-14}
 \end{figure}
 
-There are other parameters such as layer transparency that can be
-applied to all aspects of the plot - both points, lines and polygons -
-that we will reference in later examples in this chapter.
+There are other parameters such as layer transparency (use the
+\texttt{alpha} parameter for this) that can be applied to all aspects of
+the plot - both points, lines and polygons. Space does not permit their
+full exploration here but more information is available from the many
+online examples and the \texttt{ggplot2} package documentation.
 
-\section{Map Adornments and Annotations}
+\subsection{Map Adornments and Annotations}
 
 Map adornments and annotations are essential to orientate the viewer and
 provide context; they include graticules, north arrows, scale bars and
 data attribution. Not all are required on a single map, indeed it is
 often best that they are used sparingly to avoid unecessary clutter
-(Monkhouse and Wilkinson, 1971). Unfortunately it is not always as
-straightforward to add these in R, and perhaps less so using the ggplot2
-paradigm, when compared to a conventional GIS. Here we will outline the
-ways in which annotations can be added.
+(Monkhouse and Wilkinson, 1971). With ggplot2 many of these are added
+automatically but they can be customised.
 
-!!!! In the maps created so far, we have defined the \emph{aesthetics}
-of the map in the foundation function \texttt{ggplot}. The result of
-this is that all subsequent layers are expected to have the same
-variables and essentially contain data with the same dimensions as
-original dataset. But what if we want to add a new layer from a
-completely different dataset To do this, we must not add any arguments
-to the \texttt{ggplot} function, only adding data sources one layer at a
-time:
-
-\section{North arrow}
+\subsubsection{North arrow}
 
 In the maps created so far, we have defined the \emph{aesthetics} of the
 map in the foundation function \texttt{ggplot}. The result of this is
@@ -1184,42 +1326,119 @@ refinements):
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-11.png}
-\caption{unnamed-chunk-11}
+\includegraphics{figure/unnamed-chunk-15.png}
+\caption{unnamed-chunk-15}
 \end{figure}
 
-\section{Scale bar}
+\subsubsection{Scale bar}
 
-!!! use geom\_segment with geom\_text
-
-There is an almost infinite number of different combinations of the
-above parameters so take inspiration from maps and graphics you have
-seen and liked. The process is an iterative one, it will take multiple
-attempts to get right. Show your map to friends and colleagues- all will
-have an opinion but don't be afraid to stand by the decisions you have
-taken.
-
-!!!Consistency- across papers.
-
-ggmap is a package that uses the ggplot2 syntax as a template to create
-maps with image tiles from the likes of Google and OpenStreetMap:
-
-\section{Adding Basemaps To Your Plots}
+\texttt{ggplot2's} scale bar capabilities are perhaps the least
+satisfactory element of the package. For this example we use the
+\texttt{geom\_line()} function to draw a line of approximately 1km in
+length using the \texttt{lnd.f} object containing the London Boroughs
+discussed in Section 2. The reason for this is that it is in a projected
+coordinate system - British National Grid - so each map unit is worth
+1m. In the case of the world map the distances at the equator east to
+west are very different from those further north or south. Any line
+drawn using the the simple approach below would therefore be inaccurate.
+For maps covering large areas - such as the entire world - leaving the
+axis labels on will enable them to act as a graticule which will
+indicate distance.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(ggmap)}
+\KeywordTok{load}\NormalTok{(}\StringTok{"data/lnd.f.RData"}\NormalTok{)}
+\KeywordTok{ggplot}\NormalTok{() + }\KeywordTok{geom_polygon}\NormalTok{(}\DataTypeTok{data =} \NormalTok{lnd.f, }\KeywordTok{aes}\NormalTok{(long, lat, }\DataTypeTok{group =} \NormalTok{group)) + }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{505000}\NormalTok{, }
+    \DecValTok{515000}\NormalTok{), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\DecValTok{158000}\NormalTok{, }\DecValTok{158000}\NormalTok{)), }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{) + }\KeywordTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\DataTypeTok{label =} \StringTok{"10km"}\NormalTok{, }
+    \DataTypeTok{x =} \DecValTok{510000}\NormalTok{, }\DataTypeTok{y =} \DecValTok{160000}\NormalTok{) + }\KeywordTok{coord_fixed}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
-!!! adapt to the lnd.stations object.
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-16.png}
+\caption{unnamed-chunk-16}
+\end{figure}
 
-The sport object is in British National Grid but the ggmap image tiles
-are in WGS84. We therefore need to use the lnd.wgs84 object created in
-the reprojection operation earlier.
+\subsubsection{Legends}
+
+Legends are added automatically but can be customised in a number of
+ways. A few examples are included below with more details avaialble in
+the \texttt{ggplot2} documentation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Position}
+\NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"top"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-171.png}
+\caption{unnamed-chunk-17}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Title}
+\NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.title =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"Red"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{16}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-172.png}
+\caption{unnamed-chunk-17}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Label Font Size and Colour}
+\NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{colour =} \StringTok{"blue"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{16}\NormalTok{, }\DataTypeTok{face =} \StringTok{"italic"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-173.png}
+\caption{unnamed-chunk-17}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{# Border and background box}
+\NormalTok{map + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"gray90"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype =} \StringTok{"dotted"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+\begin{figure}[htbp]
+\centering
+\includegraphics{figure/unnamed-chunk-174.png}
+\caption{unnamed-chunk-17}
+\end{figure}
+
+\subsection{Adding Basemaps To Your Plots}
+
+The development of the \texttt{ggmap} package has enabled the simple use
+of online mapping services such as Google Maps and OpenStreetMap for
+base maps. Using image tiles from these services spatial data can be
+placed in context as users can easily orientate themselves to streets
+and landmarks.
+
+For this example we are going to use the shapefile of London sports
+participation introduced in Section 2. The data were originally
+projected to British National Grid (BNG) which is not compatible with
+the online map services used in the following examples. It therefore
+needs reprojecting - a step we completed earlier. The reprojected file
+can be loaded as follows:
 
 The first job is to calculate the bounding box (bb for short) of the
-lnd.wgs84 object to identify the geographic extent of the image tiles
-that we need.
+\texttt{lnd.wgs84} object to identify the geographic extent of the map.
+This information is used to request the appropriate map tiles from the
+map service of our choice. This process is conceptually the same as the
+size of your web browser or smartphone screen when using Google maps for
+navigation. The first line of code in the snippet below retrieves the
+bounding box and the two that follow add 5\% so there is a little space
+around the edges of the data to be plotted.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1237,21 +1456,17 @@ required to produce the plot and provides the base map data.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(ggmap)}
+
 \NormalTok{lnd.b1 <- }\KeywordTok{ggmap}\NormalTok{(}\KeywordTok{get_map}\NormalTok{(}\DataTypeTok{location =} \NormalTok{b))}
 \end{Highlighting}
 \end{Shaded}
 \begin{verbatim}
 ## Warning: bounding box given to google - spatial extent only approximate.
-## Warning: cannot open: HTTP status was '403 Forbidden'
-
-## Error: cannot open URL
-## 'http://maps.googleapis.com/maps/api/staticmap?center=51.489304,-0.088233&zoom=10&size=%20640x640&scale=%202&maptype=terrain&sensor=false'
 \end{verbatim}
-In much the same way as we did above we can then layer the plot with
-different geoms.
-
-First fortify the lnd.wgs84 object and then merge with the required
-attribute data (we already did this step to create the sport.f object).
+\texttt{ggmap} follows the same syntax structures as ggplot2 and so can
+easily be integrated with the other examples included here. First
+fortify the lnd.wgs84 object and then merge with the required attribute
+data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1259,7 +1474,8 @@ attribute data (we already did this step to create the sport.f object).
 \NormalTok{lnd.wgs84.f <- }\KeywordTok{merge}\NormalTok{(lnd.wgs84.f, lnd.wgs84@data, }\DataTypeTok{by.x =} \StringTok{"id"}\NormalTok{, }\DataTypeTok{by.y =} \StringTok{"ons_label"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-We can now overlay this on our base map.
+We can now overlay this on our base map using the `geom\_polugon()
+function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1267,16 +1483,15 @@ We can now overlay this on our base map.
     \DataTypeTok{fill =} \NormalTok{Partic_Per), }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-The code above contains a lot of parameters. Use the ggplot2 help pages
-to find out what they are. The resulting map looks okay, but it would be
-improved with a simpler base map in black and white. A design firm
-called stamen provide the tiles we need and they can be brought into the
-plot with the \texttt{get\_map} function:
+The resulting map looks reasonable, but it would be improved with a
+simpler base map in black and white. A design firm called stamen provide
+the tiles we need and they can be brought into the plot with the
+\texttt{get\_map} function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{lnd.b2 <- }\KeywordTok{ggmap}\NormalTok{(}\KeywordTok{get_map}\NormalTok{(}\DataTypeTok{location =} \NormalTok{b, }\DataTypeTok{source =} \StringTok{"stamen"}\NormalTok{, }\DataTypeTok{maptype =} \StringTok{"toner"}\NormalTok{, }
-    \DataTypeTok{crop =} \NormalTok{T))}
+    \DataTypeTok{crop =} \NormalTok{T))  }\CommentTok{#note the addition of the maptype parameter.}
 \end{Highlighting}
 \end{Shaded}
 We can then produce the plot as before.
@@ -1305,10 +1520,35 @@ a zoom parameter.
 \caption{Basemap 3}
 \end{figure}
 
+Spatial polygons are not the only data types compatible with
+\texttt{ggmap}- you can use any plot type and set of parameters
+available in \texttt{ggplot2}, making it an ideal companion package for
+spatial data visualisation.
+
+\subsection{Summary}
+
+There is an almost infinite number of different combinations colours,
+adornments and line widths that could be applied to a map so take
+inspiration from maps and graphics you have seen and liked. The process
+is an iterative one, it will take multiple attempts to get right. Show
+your map to friends and colleagues- all will have an opinion but don't
+be afraid to stand by the decisions you have taken. To give your maps a
+final polish you may wish to export them as a pdf using the
+\texttt{ggsave()} function and importing them into a vector graphics
+package such as Adobe Illustrator or Inkscape.
+
+The beauty of producing maps in a programming environment as opposed to
+the GUI offered by the majority of GIS software packages lies in the
+fact that each line of code can be easily adapted to a different
+dataset. Users can therefore create a series of scripts that act as
+templates and simply call them when required. This saves a huge amount
+of time and has the added advantage that all outputs will have a
+consistent style and thus offer more professional looking publications.
+
 \section{A Final Example}
 
 Here we present a final example that draws upon the many advanced
-concepts discussed in this chapter to produce a map of 18th Century
+concepts discussed in this tutorial to produce a map of 18th Century
 Shipping flows. The data have been obtained from the CLIWOC project and
 they represent a sample of digitised ships' logs from the 18th Century.
 We are using a very small sample of the the full dataset, which is
@@ -1316,8 +1556,8 @@ available from here: http://pendientedemigracion.ucm.es/info/cliwoc/.
 The example has been chosen to demonstrate a range of capabilities
 within ggplot2 and the ways in which they can be applied to produce
 high-quality maps with only a few lines of code. We end by showing how
-the maps can be animated to show the routes over time and the power of R
-to produce many maps very quickly.
+the maps can be animated to show the routes over time and the ability of
+R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and
 datasets. Here we are using the png package to load in a series of map
@@ -1375,7 +1615,7 @@ by simply storing it as the plot's parameters.
 \end{Shaded}
 \begin{verbatim}
 ## Loading required package: rgeos
-## rgeos version: 0.2-19, (SVN revision 394)
+## rgeos version: 0.3-2, (SVN revision 413M)
 ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 \end{verbatim}
@@ -1413,12 +1653,12 @@ group.regroup variables to identify the unique paths.
 \end{Highlighting}
 \end{Shaded}
 We now have all we need to generate the final plot by building the
-layers together with the + sign. The first 3 arguments are the plot
-layers and the parameters within theme() are changing the background
-colour to sea blue. annotation\_raster() plots the png map adornments
-loaded in earlier- this requires the bounding box of each image to be
-specified. In this case we use latitude and longitude (the plot's
-coordinate system) and we can use these paramrters to change the png's
+layers together with the + sign as shown in the code below. The first 3
+arguments are the plot layers, and the parameters within theme() are
+changing the background colour to sea blue. annotation\_raster() plots
+the png map adornments loaded in earlier- this requires the bounding box
+of each image to be specified. In this case we use latitude and
+longitude (in WGS84) and we can use these paramrters to change the png's
 position and also its size. The final two arguments fix the aspect ratio
 of the plot and remove the axis labels.
 
@@ -1440,15 +1680,15 @@ In the plot example we have chosen the colours carefully to give the
 appearance of a historic map. An alternative approach could be to use a
 satellite image as a base map. It is possible to use the readPNG
 function to import NASA's ``Blue Marble'' image for this purpose. Given
-that the route information is the same projection as the image -
-latitude and longitude (WGS84) - it is very straightforward to set the
-image extent to span -180 to 180 degrees and -90 to 90 degrees and have
-it align with the shipping data. Producing the plot is accomplished
-using the code below. This offers a good example of where functionality
-designed without spatial data in mind can be harnessed for the purposes
-of producing interesting maps. Once you have produced the plot, alter
-the code to recolour the shipping routes to make them appear more
-clearly against the blue marble background.
+that the route information is the same projection as the image it is
+very straightforward to set the image extent to span -180 to 180 degrees
+and -90 to 90 degrees and have it align with the shipping data.
+Producing the plot is accomplished using the code below. This offers a
+good example of where functionality designed without spatial data in
+mind can be harnessed for the purposes of producing interesting maps.
+Once you have produced the plot, alter the code to recolour the shipping
+routes to make them appear more clearly against the blue marble
+background.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1467,7 +1707,7 @@ clearly against the blue marble background.
 \caption{unnamed-chunk-7}
 \end{figure}
 
-Animating your plots
+\subsection{Animating your plots}
 
 R is not designed to produce animated graphics and as such it has very
 few functions that enable straightforward animation. To produce animated
@@ -1515,13 +1755,17 @@ all years are plotted.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-  \NormalTok{for (i in }\KeywordTok{order}\NormalTok{(}\KeywordTok{unique}\NormalTok{(bdata$year))}
-    \NormalTok{\{}
-    \NormalTok{route<-}\KeywordTok{c}\NormalTok{(}\KeywordTok{geom_path}\NormalTok{(}\KeywordTok{aes}\NormalTok{(long,lat,}\DataTypeTok{group=}\KeywordTok{paste}\NormalTok{(trp, group.regroup, }\DataTypeTok{sep=}\StringTok{"."}\NormalTok{)), }\DataTypeTok{colour=}\StringTok{"#0F3B5F"}\NormalTok{, }\DataTypeTok{size=}\FloatTok{0.2}\NormalTok{, }\DataTypeTok{data=} \NormalTok{bdata[}\KeywordTok{which}\NormalTok{(bdata$year==i),], }\DataTypeTok{alpha=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{lineend=}\StringTok{"round"}\NormalTok{))}
-    \KeywordTok{print}\NormalTok{(base+route+wrld + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{'#BAC4B9'}\NormalTok{,}\DataTypeTok{colour=}\StringTok{'black'}\NormalTok{)) +}\KeywordTok{annotation_raster}\NormalTok{(btitle, }\DataTypeTok{xmin =} \DecValTok{30}\NormalTok{, }\DataTypeTok{xmax =} \DecValTok{140}\NormalTok{, }\DataTypeTok{ymin =} \DecValTok{51}\NormalTok{, }\DataTypeTok{ymax =} \DecValTok{87}\NormalTok{)+}\KeywordTok{annotation_raster}\NormalTok{(compass, }\DataTypeTok{xmin =} \DecValTok{65}\NormalTok{, }\DataTypeTok{xmax =} \DecValTok{105}\NormalTok{, }\DataTypeTok{ymin =} \DecValTok{25}\NormalTok{, }\DataTypeTok{ymax =} \DecValTok{65}\NormalTok{)+ }\KeywordTok{coord_equal}\NormalTok{()+quiet+}\KeywordTok{ggtitle}\NormalTok{(i))}
-\KeywordTok{ani.record}\NormalTok{()}
+\NormalTok{for (i in }\KeywordTok{unique}\NormalTok{(bdata$year)) \{}
+    \NormalTok{route <- }\KeywordTok{c}\NormalTok{(}\KeywordTok{geom_path}\NormalTok{(}\KeywordTok{aes}\NormalTok{(long, lat, }\DataTypeTok{group =} \KeywordTok{paste}\NormalTok{(trp, group.regroup, }\DataTypeTok{sep =} \StringTok{"."}\NormalTok{)), }
+        \DataTypeTok{colour =} \StringTok{"#0F3B5F"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{data =} \NormalTok{bdata[}\KeywordTok{which}\NormalTok{(bdata$year == i), }
+            \NormalTok{], }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{lineend =} \StringTok{"round"}\NormalTok{))}
+    \KeywordTok{print}\NormalTok{(base + route + wrld + }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"#BAC4B9"}\NormalTok{, }
+        \DataTypeTok{colour =} \StringTok{"black"}\NormalTok{)) + }\KeywordTok{annotation_raster}\NormalTok{(btitle, }\DataTypeTok{xmin =} \DecValTok{30}\NormalTok{, }\DataTypeTok{xmax =} \DecValTok{140}\NormalTok{, }
+        \DataTypeTok{ymin =} \DecValTok{51}\NormalTok{, }\DataTypeTok{ymax =} \DecValTok{87}\NormalTok{) + }\KeywordTok{annotation_raster}\NormalTok{(compass, }\DataTypeTok{xmin =} \DecValTok{65}\NormalTok{, }\DataTypeTok{xmax =} \DecValTok{105}\NormalTok{, }
+        \DataTypeTok{ymin =} \DecValTok{25}\NormalTok{, }\DataTypeTok{ymax =} \DecValTok{65}\NormalTok{) + }\KeywordTok{coord_equal}\NormalTok{() + quiet + }\KeywordTok{ggtitle}\NormalTok{(i))}
+    \KeywordTok{ani.record}\NormalTok{()}
     \KeywordTok{dev.off}\NormalTok{()}
-    \NormalTok{\}  }
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 The final step in the process is to save the animation to HTML and view
@@ -1534,14 +1778,28 @@ stored in your working directory.
 \KeywordTok{saveHTML}\NormalTok{(}\KeywordTok{ani.replay}\NormalTok{(), }\DataTypeTok{img.name =} \StringTok{"record_plot"}\NormalTok{, }\DataTypeTok{outdir =} \KeywordTok{getwd}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
-\begin{verbatim}
-## HTML file created at: /home/robin/repos/sdvwR/index.html
-\end{verbatim}
 You will note that there is something a little odd about the order in
 which the years appear. This can be solved by an additional step before
-the loop code above. Add this in and then regenerate the animation.
+the loop code above. Have a think then add this in and then regenerate
+the animation.
 
 \section{Recap and Conclusions}
+
+This tutorial has covered a large number of techniques and approaches
+for the preparation, analysis and visualisation of spatial data in R.
+Whilst it only covers the tip of the iceberg in terms of R's
+capabilities, it does lay the foundations to the use of the multitude of
+other spatial data packages available. These can be discovered online
+and through the help documentation and other tutorials provided by the R
+community. By utilising the data visualisation techniques and examples
+of best practice we have covered it is hoped that you will be able to
+communicate your results in a compelling and effective way without the
+need for the repetitive ``pointing and clicking'' required of many GIS
+packages; you can now tweak colours and other aspects of the plots
+without the need to start from scratch each time an iterative
+improvement is required. As the R community grows so will its range of
+applications and available packages so there will be many exciting
+opportunities ahead to improve on what is presented here.
 
 \newpage \section{References}
 

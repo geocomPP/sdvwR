@@ -9,7 +9,7 @@ system(mess) # create latex file
 mess <- paste("sed -i -e 's/plot of.chunk.//g' chapter.tex")
 system(mess) # replace "plot of chunk " text with nowt
 
-mess <- paste("sed -i -e 's/width=\\\\maxwidth/width=8cm/g' chapter.tex")
+mess <- paste("sed -i -e 's/width=\\\\maxwidth/width=10cm/g' chapter.tex")
 system(mess) # reduce plot size
 
 mess <- paste("sed -i -e 's/\\\\section{References}/\\\\newpage \\\\section{References}/g' chapter.tex")

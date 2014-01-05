@@ -94,7 +94,7 @@ that ggplot2 understands, we also use `merge` to re-attach the
 attribute data that is lost in the fortify operation.
 
 ```{r}
-wrld.rob.f<-fortify(wrld.rob, region="sov_a3")
+wrld.rob.f <- fortify(wrld.rob, region = "sov_a3")
 
 wrld.pop.f <- merge(wrld.rob.f, wrld.rob@data, by.x = "id", by.y = "sov_a3")
 ```
@@ -111,7 +111,7 @@ auto-generated key. As will be shown in the next section these
 defaults can be easily altered to produce different looking maps.
 
 ```{r World Population Map}
-map<-ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
+map <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
   geom_polygon() + 
   coord_equal() + 
   labs(x = "Longitude", y = "Latitude", fill = "World Population") + 
@@ -131,7 +131,7 @@ ggplot2 knows the different between continuous and categorical (nominal) data an
 
 ```{r A Map of the Continents Using Default Colours}
 #Produce a map of continents
-map.cont<-ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) + 
+map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) + 
   geom_polygon() + 
   coord_equal() + 
   labs(x = "Longitude", y = "Latitude", fill = "World Population") + 
@@ -141,7 +141,7 @@ map.cont<-ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) +
 map.cont
 
 #To change these
-map.cont+scale_fill_manual(values=c("yellow", "red", "purple", "white", "orange", "blue", "green", "black"))
+map.cont + scale_fill_manual(values = c("yellow", "red", "purple", "white", "orange", "blue", "green", "black"))
 ```
 
 Whilst, `scale_fill_continuous()` works with continuous datasets:
@@ -149,7 +149,7 @@ Whilst, `scale_fill_continuous()` works with continuous datasets:
 ```{r Black and White Population Map}
 #note the use of the "map" object created earler
 
-map+scale_fill_continuous(low="white", high="black")
+map + scale_fill_continuous(low = "white", high = "black")
 
 ```
 
@@ -163,38 +163,38 @@ library(RColorBrewer)
 
 #note the use of the scale_fill_gradientn() function rather than scale_fill_continuous() used above
 
-map+scale_fill_gradientn(colours=brewer.pal(7,"YlGn"))
+map + scale_fill_gradientn(colours = brewer.pal(7,"YlGn"))
 ```
 
 In addition to altering the colour scale used to represent continuous data it may also be desirable to adjust the breaks at which the colour transitions occur. There are many ways to select both the optimum number of breaks (i.e colour transtions) and the locations in the dataset at which they occur. The `classINT` package contains many ways to automatically create these breaks. We use the `grid.arrange` function from the gridExtra package to display the maps side by side.
 
-```{r Different Colour Palettes with Bespoke Breaks}
+```{r Different Colour Palettes with Bespoke Breaks,fig.keep='none'}
 library(classInt)
 
 #Specify how many breaks you want - generally this should be fewer than 7.
 
-nbrks<- 6
+nbrks <- 6
 
 #Here quantiles are used to identify the breaks (note that we are using the original "wrld.rob" object and not the "wrld.rob@data$pop_est.f"). USe the help files to see the full range of options.
-brks<-classIntervals(wrld.rob@data$pop_est, n=nbrks, style="quantile")
+brks <- classIntervals(wrld.rob@data$pop_est, n = nbrks, style = "quantile")
 
 print(brks)
 
 #Now the breaks can be easily inserted into the code above for a range of colour palettes
-YlGn<-map+scale_fill_gradientn(colours=brewer.pal(nbrks,"YlGn"), breaks=c(brks$brks))
+YlGn <- map + scale_fill_gradientn(colours = brewer.pal(nbrks,"YlGn"), breaks = c(brks$brks))
 
 PuBu<-map+scale_fill_gradientn(colours=brewer.pal(nbrks,"PuBu"), breaks=c(brks$brks))
 
-grid.arrange(YlGn, PuBu, ncol=2)
+grid.arrange(YlGn, PuBu, ncol = 2)
 ```
 
 If you are not happy with the automatic methods of specifying breaks it can also be done manually:
 
 ```{r}
-nbrks<-4
-brks<- c(100000000,250000000,50000000,1000000000)
+nbrks <- 4
+brks <- c(100000000,250000000,50000000,1000000000)
 
-map+scale_fill_gradientn(colours=brewer.pal(nbrks,"PuBu"), breaks=c(brks))
+map + scale_fill_gradientn(colours = brewer.pal(nbrks,"PuBu"), breaks = c(brks))
 
 ```
 
@@ -205,11 +205,11 @@ If the map's purpose is to clearly communicate data then it is often advisable t
 ```{r Conforming to Colour Convention}
 map2 <- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
   
-blue <- map2+ geom_polygon(fill="light blue") + theme(panel.background = element_rect(fill = "dark green"))
+blue <- map2 + geom_polygon(fill="light blue") + theme(panel.background = element_rect(fill = "dark green"))
   
 green <- map2 + geom_polygon(fill="dark green") + theme(panel.background = element_rect(fill = "light blue"))
 
-grid.arrange(blue, green, ncol=2)
+grid.arrange(blue, green, ncol = 2)
 ```
 
 ### Experimenting with line colour and line widths
@@ -217,17 +217,17 @@ grid.arrange(blue, green, ncol=2)
 In addition to conforming to colour conventions, line colour and width offer important parameters, which are often overlooked tools for increasing the legibility of a graphic. As the code below demonstrates, it is possible to adjust line colour through using the `colour` parameter and the line width using the `lwd` parameter. The impact of different line widths will vary depending on your screen size and resolution. If you save the plot to pdf (or an image) then the size at which you do this will also affect the line widths.
 
 ```{r The Impact of Line Width}
-map3<-map2+theme(panel.background = element_rect(fill = "light blue"))
+map3 <- map2 + theme(panel.background = element_rect(fill = "light blue"))
 
-yellow<-map3+ geom_polygon(fill="dark green", colour="yellow") 
+yellow <- map3 + geom_polygon(fill = "dark green", colour = "yellow") 
   
-black<-map3+geom_polygon(fill="dark green", colour="black") 
+black <- map3 + geom_polygon(fill = "dark green", colour = "black") 
   
-thin<-map3+ geom_polygon(fill="dark green", colour="black", lwd=0.1) 
+thin <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 0.1) 
 
-thick<-map3+ geom_polygon(fill="dark green", colour="black", lwd=1.5)
+thick <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 1.5)
   
-grid.arrange(yellow, black,thick, thin, ncol=2)
+grid.arrange(yellow, black, thick, thin, ncol = 2)
 ```
 
 There are other parameters such as layer transparency (use the `alpha` parameter for this) that can be applied to all aspects of the plot - both points, lines and polygons. Space does not permit their full exploration here but more information is available from the many online examples and the ggplot2 package documentation.
@@ -269,7 +269,7 @@ ggplot2's scale bar capabilities are perhaps the least satisfactory element of t
 ```{r Scale Bar Example}
 load("data/lnd.f.RData")
 ggplot() + geom_polygon(data = lnd.f, aes(long, lat, group = group)) + 
-  geom_line(aes(x = c(505000,515000), y = c(158000, 158000)), lwd=2) + annotate("text",label="10km",x=510000,y=160000) +coord_fixed() 
+  geom_line(aes(x = c(505000,515000), y = c(158000, 158000)), lwd=2) + annotate("text",label="10km",x = 510000,y = 160000) +coord_fixed() 
 ```
 
 ### Legends
@@ -278,16 +278,16 @@ Legends are added automatically but can be customised in a number of ways. A few
 
 ```{r Formatting the Legend}
 #Position
-map+theme(legend.position="top")
+map + theme(legend.position = "top")
 
 #Title
-map+theme(legend.title = element_text(colour="Red", size=16, face="bold"))
+map + theme(legend.title = element_text(colour = "Red", size=16, face= "bold"))
 
 #Label Font Size and Colour
 map+theme(legend.text = element_text(colour="blue", size = 16, face = "italic"))
 
 #Border and background box
-map+ theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"))
+map + theme(legend.background = element_rect(fill = "gray90", size=.5, linetype = "dotted"))
 ```
 
 Adding Basemaps To Your Plots

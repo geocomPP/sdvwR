@@ -19,9 +19,9 @@ library(rgdal)
 library(ggplot2)
 library(png)
 wrld <- readOGR("data/", "ne_110m_admin_0_countries")
-btitle<-readPNG("figure/brit_titles.png")
-compass<-readPNG("figure/windrose.png")
-bdata<-read.csv("data/british_shipping_example.csv")
+btitle <- readPNG("figure/brit_titles.png")
+compass <- readPNG("figure/windrose.png")
+bdata <- read.csv("data/british_shipping_example.csv")
 ```
 
 If you look at the first few lines in the `bdata` object you will see there are 7 columns with each row representing a single point on the ships course. The year of the journey and the nationality of the ship are also included. The final 3 columns are identifiers that are used later to group the coordinate points together into the paths that ggplot2 plots.
@@ -54,7 +54,7 @@ You can see within the `aes()` component we have specified long and
 lat plus pasted together the trp and `group.regroup` variables to identify the unique paths.
 
 ```{r}
-route <- c(geom_path(aes(long,lat,group=paste(bdata$trp, bdata$group.regroup, sep=".")), colour="#0F3B5F", size=0.2, data= bdata, alpha=0.5, lineend="round")) 
+route <- c(geom_path(aes(long,lat,group = paste(bdata$trp, bdata$group.regroup, sep = ".")), colour="#0F3B5F", size = 0.2, data= bdata, alpha = 0.5, lineend = "round")) 
 ```
 
 We now have all we need to generate the final plot by building the layers together with the `+` sign as shown in the code below. The first 3 arguments are the plot layers, and the parameters within `theme()` are changing the background colour to sea blue. `annotation_raster()` plots the png map adornments loaded in earlier- this requires the bounding box of each image to be specified. In this case we use latitude and longitude (in WGS84) and we can use these paramrters to change the png's position and also its size. The final two arguments fix the aspect ratio of the plot and remove the axis labels. 
@@ -76,9 +76,9 @@ the purposes of producing interesting maps. Once you have produced the plot, alt
 to recolour the shipping routes to make them appear more clearly against the blue marble background. 
 
 ```{r World Shipping with raster background}
-earth<-readPNG("figure/earth_raster.png")
+earth <- readPNG("figure/earth_raster.png")
 
-base+annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90)+route+ theme(panel.background = element_rect(fill='#BAC4B9',colour='black')) +annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87)+annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65)+ coord_equal()+quiet
+base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) + route + theme(panel.background = element_rect(fill='#BAC4B9',colour='black')) + annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87) + annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65) + coord_equal() + quiet
 ```
 
 ## Animating your plots
@@ -117,14 +117,14 @@ We then initiate the "for loop". In this case we are using the `unique()` functi
 ```{r, eval=FALSE}
   for (i in unique(bdata$year))
     {
-    route<-c(geom_path(aes(long,lat,group=paste(trp, group.regroup, sep=".")), colour="#0F3B5F", size=0.2, data= bdata[which(bdata$year==i),], alpha=0.5, lineend="round"))
-    print(base+route+wrld + theme(panel.background = element_rect(fill='#BAC4B9',colour='black')) +annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87)+annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65)+ coord_equal()+quiet+ggtitle(i))
+    route <- c(geom_path(aes(long,lat,group=paste(trp, group.regroup, sep = ".")), colour="#0F3B5F", size = 0.2, data = bdata[which(bdata$year == i),], alpha = 0.5, lineend="round"))
+    print(base + route + wrld + theme(panel.background = element_rect(fill = '#BAC4B9',colour = 'black')) + annotation_raster(btitle, xmin = 30, xmax = 140, ymin = 51, ymax = 87) + annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65) + coord_equal() + quiet + ggtitle(i))
 ani.record()
     dev.off()
     }  
 ```
        
-The final step in the process is to save the animation to HTML and view it in your web browser. `ani.replay()` retrieves the animation stored by the `ani.record()` function and `outdir=getwd()` ensures the final file is stored in your working directory.
+The final step in the process is to save the animation to HTML and view it in your web browser. `ani.replay()` retrieves the animation stored by the `ani.record()` function and `outdir = getwd()` ensures the final file is stored in your working directory.
 
 
 ```{r, eval=FALSE}

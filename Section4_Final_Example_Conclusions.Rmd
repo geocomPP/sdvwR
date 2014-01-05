@@ -31,6 +31,7 @@ wrld.f <- fortify(wrld, region="sov_a3")
 base <- ggplot(wrld.f, aes(x = long, y = lat))
 wrld <- c(geom_polygon(aes(group=group), size = 0.1, colour= "black", fill="#D6BF86", data=wrld.f, alpha=1))
 ```
+
 To see the result of this simply type:
 
 ```{r}
@@ -51,7 +52,15 @@ base + route + wrld + theme(panel.background = element_rect(fill='#BAC4B9',colou
   annotation_raster(compass, xmin = 65, xmax = 105, ymin = 25, ymax = 65) + coord_equal() + quiet
 ```
 
-In the plot example we have chosen the colours carefully to give the appearance of a historic map. An alternative approach could be to use a satellite image as a base map. It is possible to use the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the route information is the same projection as the image it is very straightforward to set the image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the shipping data. Producing the plot is accomplished using the code below. This offers a good example of where functionality designed without spatial data in mind can be harnessed for the purposes of producing interesting maps. Once you have produced the plot, alter the code to recolour the shipping routes to make them appear more clearly against the blue marble background. 
+In the plot example we have chosen the colours carefully to give the appearance of a historic map. 
+An alternative approach could be to use a satellite image as a base map. It is possible to use 
+the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the 
+route information is the same projection as the image it is very straightforward to set the 
+image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the 
+shipping data. Producing the plot is accomplished using the code below. This offers a good 
+example of where functionality designed without spatial data in mind can be harnessed for 
+the purposes of producing interesting maps. Once you have produced the plot, alter the code 
+to recolour the shipping routes to make them appear more clearly against the blue marble background. 
 
 ```{r}
 earth<-readPNG("figure/earth_raster.png")
@@ -61,7 +70,21 @@ base+annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90)+ro
 
 ## Animating your plots
 
-R is not designed to produce animated graphics and as such it has very few functions that enable straightforward animation. To produce animated graphics users can use a loop to plot and then export a series of images that can then be stitched together into a video. There are two approaches to this; the first is to create a loop that fills a folder with the desired images and then utilise third party software to stitch the images together, whilst the second uses R's own animation package. The latter option still requires the installation of an additional software package called ImageMagick but it has the benefit of creating the animation for you within R and faciliting the export to a range of formats, not least HTML and GIF. Here we demonstrate the use of the package to produce an HTML animation of the shipping tracks completed in each year of the bdata object. The code snippet below appears extremely dense, but it only contains a few addtions to the plot code utilised above.
+R is not designed to produce animated graphics and as such it has very few functions 
+that enable straightforward animation. To produce animated graphics users can 
+use a loop to plot and then export a series of images that can then be 
+stitched together into a video. There are two approaches to this; the 
+first is to create a loop that fills a folder with the desired images 
+and then utilise third party software to stitch the images together, 
+whilst the second uses R's own animation package. The latter option
+still requires the installation of an additional software package
+called ImageMagick but it has the benefit of creating the animation 
+for you within R and faciliting the export to a range of formats,
+not least HTML and GIF. Here we demonstrate the use of the package
+to produce an HTML animation of the shipping tracks completed in
+each year of the bdata object. The code snippet below appears 
+extremely dense, but it only contains a few addtions to the 
+plot code utilised above.
 
 First load the package:
 

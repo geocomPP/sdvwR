@@ -66,7 +66,9 @@ Endnotes
     `RSiteSearch("spatial statistics")`. Experiment and see which you
     prefer!
     
-3. For more information about this ride, please see 
+3. More information about this ride, and a
+    [video](http://www.youtube.com/watch?v=6a8QLiC4LV8&feature=share)
+    from it, can be found on
     [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
     
 4. A complete list of drivers for importing and exporting spatial data can 

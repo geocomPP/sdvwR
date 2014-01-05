@@ -1,7 +1,16 @@
 A Final Example
 ===============
 
-Here we present a final example that draws upon the many advanced concepts discussed in this tutorial to produce a map of 18th Century Shipping flows. The data have been obtained from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. We are using a very small sample of the the full dataset, which is available from here: http://pendientedemigracion.ucm.es/info/cliwoc/. The example has been chosen to demonstrate a range of capabilities within ggplot2 and the ways in which they can be applied to produce high-quality maps with only a few lines of code. We end by showing how the maps can be animated to show the routes over time and the ability of R to produce many maps very quickly.
+Here we present a final example that draws upon the many advanced concepts discussed in 
+this tutorial to produce a map of 18th Century Shipping flows. The data have been obtained 
+from the CLIWOC project and they represent a sample of digitised ships' logs from the 18th Century. 
+We are using a very small sample of the the full dataset, which is available from here: 
+http://pendientedemigracion.ucm.es/info/cliwoc/. 
+The example has been chosen to demonstrate a range of capabilities 
+within ggplot2 and the ways in which they can be applied to produce 
+high-quality maps with only a few lines of code. 
+We end by showing how the maps can be animated to chart
+the routes over time and the ability of R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and datasets. Here we are using the png package to load in a series of map annotations. These have been created in image editing software and will add a historic feel to the map. We are also loading in a World boundary shapefile and the shipping data itself. 
 
@@ -26,7 +35,8 @@ compass <- readPNG("figure/windrose.png")
 bdata <- read.csv("data/british_shipping_example.csv")
 ```
 
-If you look at the first few lines in the bdata object you will see there are 7 columns with each row representing a single point on the ships course. The year of the journey and the nationality of the ship are also included. The final 3 columns are identifiers that are used later to group the coordinate points together into the paths that ggplot2 plots.
+
+If you look at the first few lines in the `bdata` object you will see there are 7 columns with each row representing a single point on the ships course. The year of the journey and the nationality of the ship are also included. The final 3 columns are identifiers that are used later to group the coordinate points together into the paths that ggplot2 plots.
 
 We first specify some plot parameters that remove the axis labels.
 
@@ -38,7 +48,7 @@ quiet <- list(xquiet, yquiet)
 ```
 
 
-The next step is to "fortify" the World coastlines and create the base plot. This sets the extents of the plot window and provides the blank canvas on which we will build up the layers. The first layer created is the wrld object; the code is wrapped in c() to prevent it from executing by simply storing it as the plot's parameters. 
+The next step is to `fortify` the World coastlines and create the base plot. This sets the extents of the plot window and provides the blank canvas on which we will build up the layers. The first layer created is the wrld object; the code is wrapped in `c()` to prevent it from executing by simply storing it as the plot's parameters. 
 
 
 ```r
@@ -58,6 +68,7 @@ wrld <- c(geom_polygon(aes(group = group), size = 0.1, colour = "black", fill = 
     data = wrld.f, alpha = 1))
 ```
 
+
 To see the result of this simply type:
 
 
@@ -65,10 +76,13 @@ To see the result of this simply type:
 base + wrld
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+![plot of chunk World Map](figure/World_Map.png) 
 
 
-The code snipped below creates the plot layer containing the the shipping routes. The geom_path() function is used to string together the coordinates into the routes. You can see within the aes() component we have specified long and lat plus pasted together the trp and group.regroup variables to identify the unique paths.
+The code snipped below creates the plot layer containing the the shipping routes. The `geom_path()`
+function is used to string together the coordinates into the routes. 
+You can see within the `aes()` component we have specified long and 
+lat plus pasted together the trp and `group.regroup` variables to identify the unique paths.
 
 
 ```r
@@ -78,7 +92,7 @@ route <- c(geom_path(aes(long, lat, group = paste(bdata$trp, bdata$group.regroup
 ```
 
 
-We now have all we need to generate the final plot by building the layers together with the + sign as shown in the code below. The first 3 arguments are the plot layers, and the parameters within theme() are changing the background colour to sea blue. annotation_raster() plots the png map adornments loaded in earlier- this requires the bounding box of each image to be specified. In this case we use latitude and longitude (in WGS84) and we can use these paramrters to change the png's position and also its size. The final two arguments fix the aspect ratio of the plot and remove the axis labels. 
+We now have all we need to generate the final plot by building the layers together with the `+` sign as shown in the code below. The first 3 arguments are the plot layers, and the parameters within `theme()` are changing the background colour to sea blue. `annotation_raster()` plots the png map adornments loaded in earlier- this requires the bounding box of each image to be specified. In this case we use latitude and longitude (in WGS84) and we can use these paramrters to change the png's position and also its size. The final two arguments fix the aspect ratio of the plot and remove the axis labels. 
 
 
 ```r
@@ -88,10 +102,18 @@ base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9",
     ymax = 65) + coord_equal() + quiet
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk World Shipping](figure/World_Shipping.png) 
 
 
-In the plot example we have chosen the colours carefully to give the appearance of a historic map. An alternative approach could be to use a satellite image as a base map. It is possible to use the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the route information is the same projection as the image it is very straightforward to set the image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the shipping data. Producing the plot is accomplished using the code below. This offers a good example of where functionality designed without spatial data in mind can be harnessed for the purposes of producing interesting maps. Once you have produced the plot, alter the code to recolour the shipping routes to make them appear more clearly against the blue marble background. 
+In the plot example we have chosen the colours carefully to give the appearance of a historic map. 
+An alternative approach could be to use a satellite image as a base map. It is possible to use 
+the readPNG function to import NASA's "Blue Marble" image for this purpose. Given that the 
+route information is the same projection as the image it is very straightforward to set the 
+image extent to span -180 to 180 degrees and -90 to 90 degrees and have it align with the 
+shipping data. Producing the plot is accomplished using the code below. This offers a good 
+example of where functionality designed without spatial data in mind can be harnessed for 
+the purposes of producing interesting maps. Once you have produced the plot, alter the code 
+to recolour the shipping routes to make them appear more clearly against the blue marble background. 
 
 
 ```r
@@ -104,12 +126,27 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
     coord_equal() + quiet
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk World Shipping with raster background](figure/World_Shipping_with_raster_background.png) 
 
 
 ## Animating your plots
 
-R is not designed to produce animated graphics and as such it has very few functions that enable straightforward animation. To produce animated graphics users can use a loop to plot and then export a series of images that can then be stitched together into a video. There are two approaches to this; the first is to create a loop that fills a folder with the desired images and then utilise third party software to stitch the images together, whilst the second uses R's own animation package. The latter option still requires the installation of an additional software package called ImageMagick but it has the benefit of creating the animation for you within R and faciliting the export to a range of formats, not least HTML and GIF. Here we demonstrate the use of the package to produce an HTML animation of the shipping tracks completed in each year of the bdata object. The code snippet below appears extremely dense, but it only contains a few addtions to the plot code utilised above.
+
+R is not designed to produce animated graphics and as such it has very few functions 
+that enable straightforward animation. To produce animated graphics users can 
+use a loop to plot and then export a series of images that can then be 
+stitched together into a video. There are two approaches to this; the 
+first is to create a loop that fills a folder with the desired images 
+and then utilise third party software to stitch the images together, 
+whilst the second uses R's own animation package. The latter option
+still requires the installation of an additional software package
+called ImageMagick but it has the benefit of creating the animation 
+for you within R and faciliting the export to a range of formats,
+not least HTML and GIF. Here we demonstrate the use of the package
+to produce an HTML animation of the shipping tracks completed in
+each year of the bdata object. The code snippet below appears 
+extremely dense, but it only contains a few addtions to the 
+plot code utilised above.
 
 First load the package:
 
@@ -127,7 +164,7 @@ ani.record(reset = TRUE)
 ```
 
 
-We then initiate the "for loop". In this case we are using the unique() function to list the unique years within the bdata object. The loop will take the first year, in this case 1791, and assign it to the object i. The code inside the {} brackets will then run with i=1791. You will spot that i is used in a number of places- first to subset the data when creating the route plot and then as the title in the ggtitle() function. We need to force ggplot to create the graphic within the loop so the entire plot call is wrapped in the print() function. Once the plot is called anin.record() is used to save the plot still and dev.off() used to clear the plot window ready for the next iteration. i is then assigned the next year in the list and the code runs again until all years are plotted.
+We then initiate the "for loop". In this case we are using the `unique()` function to list the unique years within the `bdata` object. The loop will take the first year, in this case 1791, and assign it to the object `i`. The code inside the `{}` brackets will then run with `i=1791`. You will spot that `i` is used in a number of places- first to subset the data when creating the route plot and then as the title in the `ggtitle()` function. We need to force ggplot to create the graphic within the loop so the entire plot call is wrapped in the `print()` function. Once the plot is called `ani.record()` is used to save the plot still and `dev.off()` used to clear the plot window ready for the next iteration. `i` is then assigned the next year in the list and the code runs again until all years are plotted.
 
 
 ```r
@@ -145,7 +182,7 @@ for (i in unique(bdata$year)) {
 ```
 
        
-The final step in the process is to save the animation to HTML and view it in your web browser. ani.replay() retrievesanimation stored by the ani.record() function and outdir=getwd() ensures the final file is stored in your working directory.
+The final step in the process is to save the animation to HTML and view it in your web browser. `ani.replay()` retrieves the animation stored by the `ani.record()` function and `outdir=getwd()` ensures the final file is stored in your working directory.
 
 
 

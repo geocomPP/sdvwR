@@ -32,7 +32,7 @@ Cheshire, James\\\\
 Lovelace, Robin\\\\
 \\texttt{r.lovelace@leeds.ac.uk}
 }
-\\title{Spatial data visualisation with R}"
+\\title{Manipulating and visualizing spatial data with R}"
 text_block <- unlist(strsplit(block, split='\n'))
 # concatenate the old file with the new text
 mytext <- c(text[1:idx],text_block,text[(idx+1):length(text)])

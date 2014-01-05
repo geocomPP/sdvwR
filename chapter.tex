@@ -74,7 +74,7 @@ Cheshire, James\\
 Lovelace, Robin\\
 \texttt{r.lovelace@leeds.ac.uk}
 }
-\title{Spatial data visualisation with R}
+\title{Manipulating and visualizing spatial data with R}
 
 \begin{document}
 \maketitle
@@ -102,8 +102,8 @@ time you can do it with a GUI.
 \end{quote}
 The joy of this, when you get accustomed to it, is that any command is
 only ever a few keystrokes away, and the order of the commands sent to R
-can be stored and repeated in scripts, saving even more time in the
-long-term (more on this in section \ldots{}).
+can be stored and repeated in scripts, saving time in the long-term and
+ensuring reproducible results (see ``R and reproducible research'').
 
 Another important attribute of R, related to its command line interface,
 is that it is a fully fledged \emph{programming language}. Other GIS
@@ -141,22 +141,22 @@ disciplines. R has become ``an integrated suite of software facilities
 for data manipulation, calculation and graphical display'' (Venables et
 al. 2013). Spatial data analysis and visualisation is an important
 growth area within this increased functionality. In recent years R has
-really made its mark as a data visualisation tool. Perhaps the first
-truly inspiring graphic to be created in R that reached a global
-audience was the map of Facebook friendships produced by Paul Butler. He
-mapped the linkages between friends by calculating the great circle arcs
-between them (using the ``geosphere'' package) and then plotting them
-using the basic R graphics functionality. The secret to the success of
-this map was the time taken to select the appropriate colour palette,
-line widths and transparency for the plot. As we discuss in Section XXX
-the importance of these cannot be understated and are the difference
-between a stunning graphic and an impenetrable mess of lines.
+really made its mark as a data visualisation tool. The map of Facebook
+friendships produced by Paul Butler is iconic in this regard, and
+reached a global audience. He mapped the linkages between friends by
+calculating the great circle arcs between them (using the
+\texttt{geosphere} package) and plotted the result, displayed in figure
+1. The secret to the success of this map was the time taken to select
+the appropriate colour palette, line widths and transparency for the
+plot. As we discuss in Section 3 the importance of these cannot be
+understated and are the difference between a stunning graphic and an
+impenetrable mess.
 
-The impact of the graphic was to inspire the R community to produce more
-ambitious graphics; a process fuelled by the increased demand for data
-visualisation and the development of sophisticated packages, such as
-ggplot2, that augment the basic plot functions of R. It is now the case
-that R has become a key analysis and visualisation tool used by the
+ The impact of the graphic was to inspire the R community to produce
+more ambitious graphics; a process fuelled by the increased demand for
+data visualisation and the development of sophisticated packages, such
+as ggplot2, that augment the basic plot functions of R. It is now the
+case that R has become a key analysis and visualisation tool used by the
 likes of Twitter, the New York Times and Facebook and thousands of
 consultants, design houses and journalists. It is not longer the
 preserve of academic research, with many graduate jobs listing R as a
@@ -175,7 +175,7 @@ feature that we will be using to great effect in this tutorial.
 There is a drive towards transparency in data and methods datasets in
 academic publishing. R encourages truly transparent and reproducible
 research by enabling anyone with an R installation reproduce results
-described in previous paper. This process is eased by the RStudio
+described in a previous paper. This process is eased by the RStudio
 integrated development environment (IDE) that allows `live' R code and
 results to be embedded in documents. In fact, this tutorial was written
 in RStudio and can be recompiled on any computer by downloading the
@@ -899,13 +899,12 @@ and straightforward to use. Data and software, however, only offer the
 starting points of good spatial data visualisation since they need to be
 refined and calibrated by the researchers seeking to communicate their
 findings. In this section we will run through the features of a good
-map. We will then seek to emulate them with R in Section XX. It is worth
-noting that not all good maps and graphics contain all the features
-below -- they should simply be seen as suggestions rather than firm
-principles.
+map. It is worth noting that not all good maps and graphics contain all
+the features below -- they should simply be seen as suggestions rather
+than firm principles.
 
 Effective map making is hard process -- as Krygier and Wood (2011) put
-it ``there is a lot to see, think about, and do'' (p6). It often comes
+it ``there is a lot to see, think about, and do''" (p6). It often comes
 at the end of a period of intense data analysis and perhaps when the
 priority is to get a paper finished or results published and can
 therefore be rushed as a result. The beauty of R (and other scripting
@@ -916,8 +915,8 @@ script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of our
 maps and spatial data visualisations because it has a number of these
-elements at its core. The ``gg'' in its slightly odd name stands for
-``Grammar of Graphics'', which is a set of rules developed by Leland
+elements at its core. The ``gg''" in its slightly odd name stands for
+``Grammar of Graphics''", which is a set of rules developed by Leland
 Wilkinson (2005) in a book of the same name. Grammar in the context of
 graphics works in much the same way as it does in language - it provides
 a structure. The structure is informed by both human perception and also
@@ -968,8 +967,8 @@ already saved in the data folder, we can proceed to load the data.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-3.png}
-\caption{unnamed-chunk-3}
+\includegraphics{figure/A_Basic_Map_of_the_World.png}
+\caption{A Basic Map of the World}
 \end{figure}
 
 To see the first ten rows of attribute information assocuiated with each
@@ -1010,17 +1009,17 @@ preservation. We therefore project it as follows.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-5.png}
-\caption{unnamed-chunk-5}
+\includegraphics{figure/The_Robinson_Projection.png}
+\caption{The Robinson Projection}
 \end{figure}
 
-``+proj=robin'' refers to the Robinson prjection. You will have spotted
-from the plot that the countries in the world map are much better
-proportioned.
+\texttt{+proj=robin} refers to the Robinson prjection. You will have
+spotted from the plot that the countries in the world map are much
+better proportioned.
 
-We now need to ``fortify'' this spatial data to convert it into a format
-that ggplot2 understands, we also use ``merge'' to re-attach the
-attribute data that is lost in the fortify operation.
+We now need to \texttt{fortify} this spatial data to convert it into a
+format that ggplot2 understands, we also use \texttt{merge} to re-attach
+the attribute data that is lost in the fortify operation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1061,8 +1060,8 @@ to produce different looking maps.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-7.png}
-\caption{unnamed-chunk-7}
+\includegraphics{figure/World_Population_Map.png}
+\caption{World Population Map}
 \end{figure}
 
 \subsection{Colour and other aesthetics}
@@ -1095,8 +1094,8 @@ useful command:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-81.png}
-\caption{unnamed-chunk-8}
+\includegraphics{figure/A_Map_of_the_Continents_Using_Default_Colours1.png}
+\caption{A Map of the Continents Using Default Colours}
 \end{figure}
 
 \begin{Shaded}
@@ -1109,11 +1108,12 @@ useful command:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-82.png}
-\caption{unnamed-chunk-8}
+\includegraphics{figure/A_Map_of_the_Continents_Using_Default_Colours2.png}
+\caption{A Map of the Continents Using Default Colours}
 \end{figure}
 
-Whilst, `scale\_fill\_continuous()' works with continuous datasets:
+Whilst, \texttt{scale\_fill\_continuous()} works with continuous
+datasets:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1124,8 +1124,8 @@ Whilst, `scale\_fill\_continuous()' works with continuous datasets:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-9.png}
-\caption{unnamed-chunk-9}
+\includegraphics{figure/Black_and_White_Population_Map.png}
+\caption{Black and White Population Map}
 \end{figure}
 
 It is well worth looking at the \emph{Color Brewer} palettes developed
@@ -1151,8 +1151,9 @@ these can be easily utlised by ggplot2.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-10.png}
-\caption{unnamed-chunk-10}
+\includegraphics{figure/World_Map_with_Yellow_Green_Colour_Brewer_Palette.png}
+\caption{World Map with Yellow Green Colour Brewer
+Palette}
 \end{figure}
 
 In addition to altering the colour scale used to represent continuous
@@ -1160,7 +1161,8 @@ data it may also be desirable to adjust the breaks at which the colour
 transitions occur. There are many ways to select both the optimum number
 of breaks (i.e colour transtions) and the locations in the dataset at
 which they occur. The \texttt{classINT} package contains many ways to
-automatically create these breaks.
+automatically create these breaks. We use the \texttt{grid.arrange}
+function from the gridExtra package to display the maps side by side.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1199,8 +1201,8 @@ automatically create these breaks.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-11.png}
-\caption{unnamed-chunk-11}
+\includegraphics{figure/Different_Colour_Palettes_with_Bespoke_Breaks.png}
+\caption{Different Colour Palettes with Bespoke Breaks}
 \end{figure}
 
 If you are not happy with the automatic methods of specifying breaks it
@@ -1216,8 +1218,8 @@ can also be done manually:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-12.png}
-\caption{unnamed-chunk-12}
+\includegraphics{figure/unnamed-chunk-5.png}
+\caption{unnamed-chunk-5}
 \end{figure}
 
 There are many other ways to specify and alter the colours in ggplot2
@@ -1231,8 +1233,7 @@ example of this is the use of blue for bodies of water and green for
 landmasses. The code example below generates two plots with our
 wrld.pop.f object. The first colours the land blue and the sea (in this
 case the background to the map) green and the second is more
-conventional. We use the ``grid.arrange'' function from the
-``gridExtra'' package to display the maps side by side.
+conventional.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1247,8 +1248,8 @@ conventional. We use the ``grid.arrange'' function from the
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-13.png}
-\caption{unnamed-chunk-13}
+\includegraphics{figure/Conforming_to_Colour_Convention.png}
+\caption{Conforming to Colour Convention}
 \end{figure}
 
 \subsubsection{Experimenting with line colour and line widths}
@@ -1256,11 +1257,11 @@ conventional. We use the ``grid.arrange'' function from the
 In addition to conforming to colour conventions, line colour and width
 offer important parameters, which are often overlooked tools for
 increasing the legibility of a graphic. As the code below demonstrates,
-it is possible to adjust line colour through using the ``colour''
-parameter and the line width using the ``lwd'' parameter. The impact of
-different line widths will vary depending on your screen size and
-resolution. If you save the plot to pdf (or an image) then the size at
-which you do this will also affect the line widths.
+it is possible to adjust line colour through using the \texttt{colour}
+parameter and the line width using the \texttt{lwd} parameter. The
+impact of different line widths will vary depending on your screen size
+and resolution. If you save the plot to pdf (or an image) then the size
+at which you do this will also affect the line widths.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1279,15 +1280,15 @@ which you do this will also affect the line widths.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-14.png}
-\caption{unnamed-chunk-14}
+\includegraphics{figure/The_Impact_of_Line_Width.png}
+\caption{The Impact of Line Width}
 \end{figure}
 
 There are other parameters such as layer transparency (use the
 \texttt{alpha} parameter for this) that can be applied to all aspects of
 the plot - both points, lines and polygons. Space does not permit their
 full exploration here but more information is available from the many
-online examples and the \texttt{ggplot2} package documentation.
+online examples and the ggplot2 package documentation.
 
 \subsection{Map Adornments and Annotations}
 
@@ -1301,8 +1302,8 @@ automatically but they can be customised.
 \subsubsection{North arrow}
 
 In the maps created so far, we have defined the \emph{aesthetics} of the
-map in the foundation function \texttt{ggplot}. The result of this is
-that all subsequent layers are expected to have the same variables and
+map in the foundation function ggplot. The result of this is that all
+subsequent layers are expected to have the same variables and
 essentially contain data with the same dimensions as original dataset.
 But what if we want to add a new layer from a completely different
 dataset, e.g.~to add an arrow? To do this, we must not add any arguments
@@ -1312,7 +1313,7 @@ time:
 Here we create an empty plot, meaning that each new layer must be given
 its own dataset. While more code is needed in this example, it enables
 much greater flexibility with regards to what can be included in new
-layer contents. Another possibility is to use the \texttt{segment} geom
+layer contents. Another possibility is to use \texttt{geom\_segment()}
 to add a rudimentary arrow (see \texttt{?geom\_segment} for
 refinements):
 
@@ -1326,24 +1327,24 @@ refinements):
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-15.png}
-\caption{unnamed-chunk-15}
+\includegraphics{figure/North_Arrow_Example.png}
+\caption{North Arrow Example}
 \end{figure}
 
 \subsubsection{Scale bar}
 
-\texttt{ggplot2's} scale bar capabilities are perhaps the least
-satisfactory element of the package. For this example we use the
+ggplot2's scale bar capabilities are perhaps the least satisfactory
+element of the package. For this example we use the
 \texttt{geom\_line()} function to draw a line of approximately 1km in
 length using the \texttt{lnd.f} object containing the London Boroughs
 discussed in Section 2. The reason for this is that it is in a projected
 coordinate system - British National Grid - so each map unit is worth
-1m. In the case of the world map the distances at the equator east to
-west are very different from those further north or south. Any line
-drawn using the the simple approach below would therefore be inaccurate.
-For maps covering large areas - such as the entire world - leaving the
-axis labels on will enable them to act as a graticule which will
-indicate distance.
+1m. In the case of the world map the distances at the equator in terms
+of degrees east to west are very different from those further north or
+south. Any line drawn using the the simple approach below would
+therefore be inaccurate. For maps covering large areas - such as the
+entire world - leaving the axis labels on will enable them to act as a
+graticule which will indicate distance.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1355,8 +1356,8 @@ indicate distance.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-16.png}
-\caption{unnamed-chunk-16}
+\includegraphics{figure/Scale_Bar_Example.png}
+\caption{Scale Bar Example}
 \end{figure}
 
 \subsubsection{Legends}
@@ -1373,8 +1374,8 @@ the \texttt{ggplot2} documentation.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-171.png}
-\caption{unnamed-chunk-17}
+\includegraphics{figure/Formatting_the_Legend1.png}
+\caption{Formatting the Legend}
 \end{figure}
 
 \begin{Shaded}
@@ -1386,8 +1387,8 @@ the \texttt{ggplot2} documentation.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-172.png}
-\caption{unnamed-chunk-17}
+\includegraphics{figure/Formatting_the_Legend2.png}
+\caption{Formatting the Legend}
 \end{figure}
 
 \begin{Shaded}
@@ -1399,8 +1400,8 @@ the \texttt{ggplot2} documentation.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-173.png}
-\caption{unnamed-chunk-17}
+\includegraphics{figure/Formatting_the_Legend3.png}
+\caption{Formatting the Legend}
 \end{figure}
 
 \begin{Shaded}
@@ -1412,17 +1413,17 @@ the \texttt{ggplot2} documentation.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-174.png}
-\caption{unnamed-chunk-17}
+\includegraphics{figure/Formatting_the_Legend4.png}
+\caption{Formatting the Legend}
 \end{figure}
 
 \subsection{Adding Basemaps To Your Plots}
 
-The development of the \texttt{ggmap} package has enabled the simple use
-of online mapping services such as Google Maps and OpenStreetMap for
-base maps. Using image tiles from these services spatial data can be
-placed in context as users can easily orientate themselves to streets
-and landmarks.
+The development of the ggmap package has enabled the simple use of
+online mapping services such as Google Maps and OpenStreetMap for base
+maps. Using image tiles from these services spatial data can be placed
+in context as users can easily orientate themselves to streets and
+landmarks.
 
 For this example we are going to use the shapefile of London sports
 participation introduced in Section 2. The data were originally
@@ -1431,6 +1432,11 @@ the online map services used in the following examples. It therefore
 needs reprojecting - a step we completed earlier. The reprojected file
 can be loaded as follows:
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"data/lnd.wgs84.RData"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 The first job is to calculate the bounding box (bb for short) of the
 \texttt{lnd.wgs84} object to identify the geographic extent of the map.
 This information is used to request the appropriate map tiles from the
@@ -1465,8 +1471,8 @@ required to produce the plot and provides the base map data.
 \end{verbatim}
 \texttt{ggmap} follows the same syntax structures as ggplot2 and so can
 easily be integrated with the other examples included here. First
-fortify the lnd.wgs84 object and then merge with the required attribute
-data.
+\texttt{fortify} the \texttt{lnd.wgs84} object and then merge with the
+required attribute data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1474,8 +1480,8 @@ data.
 \NormalTok{lnd.wgs84.f <- }\KeywordTok{merge}\NormalTok{(lnd.wgs84.f, lnd.wgs84@data, }\DataTypeTok{by.x =} \StringTok{"id"}\NormalTok{, }\DataTypeTok{by.y =} \StringTok{"ons_label"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-We can now overlay this on our base map using the `geom\_polugon()
-function.
+We can now overlay this on our base map using the
+\texttt{geom\_polygon()} function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1484,8 +1490,8 @@ function.
 \end{Highlighting}
 \end{Shaded}
 The resulting map looks reasonable, but it would be improved with a
-simpler base map in black and white. A design firm called stamen provide
-the tiles we need and they can be brought into the plot with the
+simpler base map in black and white. A design firm called \emph{stamen}
+provide the tiles we need and they can be brought into the plot with the
 \texttt{get\_map} function:
 
 \begin{Shaded}
@@ -1502,8 +1508,8 @@ We can then produce the plot as before.
     \DataTypeTok{fill =} \NormalTok{Partic_Per), }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-Finally, if we want to increase the detail of the base map, get\_map has
-a zoom parameter.
+Finally, if we want to increase the detail of the base map,
+\texttt{get\_map} has a zoom parameter.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1516,22 +1522,22 @@ a zoom parameter.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/Basemap_3.png}
-\caption{Basemap 3}
+\includegraphics{figure/Using_the_Stamen_Toner_basemap.png}
+\caption{Using the Stamen Toner basemap}
 \end{figure}
 
 Spatial polygons are not the only data types compatible with
-\texttt{ggmap}- you can use any plot type and set of parameters
+\texttt{ggmap} - you can use any plot type and set of parameters
 available in \texttt{ggplot2}, making it an ideal companion package for
 spatial data visualisation.
 
 \subsection{Summary}
 
-There is an almost infinite number of different combinations colours,
-adornments and line widths that could be applied to a map so take
+There are an almost infinite number of different combinations colours,
+adornments and line widths that could be applied to a map, so take
 inspiration from maps and graphics you have seen and liked. The process
 is an iterative one, it will take multiple attempts to get right. Show
-your map to friends and colleagues- all will have an opinion but don't
+your map to friends and colleagues - all will have an opinion but don't
 be afraid to stand by the decisions you have taken. To give your maps a
 final polish you may wish to export them as a pdf using the
 \texttt{ggsave()} function and importing them into a vector graphics
@@ -1556,8 +1562,8 @@ available from here: http://pendientedemigracion.ucm.es/info/cliwoc/.
 The example has been chosen to demonstrate a range of capabilities
 within ggplot2 and the ways in which they can be applied to produce
 high-quality maps with only a few lines of code. We end by showing how
-the maps can be animated to show the routes over time and the ability of
-R to produce many maps very quickly.
+the maps can be animated to chart the routes over time and the ability
+of R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and
 datasets. Here we are using the png package to load in a series of map
@@ -1586,8 +1592,8 @@ shapefile and the shipping data itself.
 \NormalTok{bdata <- }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"data/british_shipping_example.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-If you look at the first few lines in the bdata object you will see
-there are 7 columns with each row representing a single point on the
+If you look at the first few lines in the \texttt{bdata} object you will
+see there are 7 columns with each row representing a single point on the
 ships course. The year of the journey and the nationality of the ship
 are also included. The final 3 columns are identifiers that are used
 later to group the coordinate points together into the paths that
@@ -1602,11 +1608,11 @@ We first specify some plot parameters that remove the axis labels.
 \NormalTok{quiet <- }\KeywordTok{list}\NormalTok{(xquiet, yquiet)}
 \end{Highlighting}
 \end{Shaded}
-The next step is to ``fortify'' the World coastlines and create the base
-plot. This sets the extents of the plot window and provides the blank
-canvas on which we will build up the layers. The first layer created is
-the wrld object; the code is wrapped in c() to prevent it from executing
-by simply storing it as the plot's parameters.
+The next step is to \texttt{fortify} the World coastlines and create the
+base plot. This sets the extents of the plot window and provides the
+blank canvas on which we will build up the layers. The first layer
+created is the wrld object; the code is wrapped in \texttt{c()} to
+prevent it from executing by simply storing it as the plot's parameters.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1635,15 +1641,16 @@ To see the result of this simply type:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-4.png}
-\caption{unnamed-chunk-4}
+\includegraphics{figure/World_Map.png}
+\caption{World Map}
 \end{figure}
 
 The code snipped below creates the plot layer containing the the
-shipping routes. The geom\_path() function is used to string together
-the coordinates into the routes. You can see within the aes() component
-we have specified long and lat plus pasted together the trp and
-group.regroup variables to identify the unique paths.
+shipping routes. The \texttt{geom\_path()} function is used to string
+together the coordinates into the routes. You can see within the
+\texttt{aes()} component we have specified long and lat plus pasted
+together the trp and \texttt{group.regroup} variables to identify the
+unique paths.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1653,14 +1660,15 @@ group.regroup variables to identify the unique paths.
 \end{Highlighting}
 \end{Shaded}
 We now have all we need to generate the final plot by building the
-layers together with the + sign as shown in the code below. The first 3
-arguments are the plot layers, and the parameters within theme() are
-changing the background colour to sea blue. annotation\_raster() plots
-the png map adornments loaded in earlier- this requires the bounding box
-of each image to be specified. In this case we use latitude and
-longitude (in WGS84) and we can use these paramrters to change the png's
-position and also its size. The final two arguments fix the aspect ratio
-of the plot and remove the axis labels.
+layers together with the \texttt{+} sign as shown in the code below. The
+first 3 arguments are the plot layers, and the parameters within
+\texttt{theme()} are changing the background colour to sea blue.
+\texttt{annotation\_raster()} plots the png map adornments loaded in
+earlier- this requires the bounding box of each image to be specified.
+In this case we use latitude and longitude (in WGS84) and we can use
+these paramrters to change the png's position and also its size. The
+final two arguments fix the aspect ratio of the plot and remove the axis
+labels.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1672,8 +1680,8 @@ of the plot and remove the axis labels.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-6.png}
-\caption{unnamed-chunk-6}
+\includegraphics{figure/World_Shipping.png}
+\caption{World Shipping}
 \end{figure}
 
 In the plot example we have chosen the colours carefully to give the
@@ -1703,8 +1711,8 @@ background.
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-7.png}
-\caption{unnamed-chunk-7}
+\includegraphics{figure/World_Shipping_with_raster_background.png}
+\caption{World Shipping with raster background}
 \end{figure}
 
 \subsection{Animating your plots}
@@ -1741,17 +1749,19 @@ it is unnecessary, but it is a good habit to get into.
 \end{Highlighting}
 \end{Shaded}
 We then initiate the ``for loop''. In this case we are using the
-unique() function to list the unique years within the bdata object. The
-loop will take the first year, in this case 1791, and assign it to the
-object i. The code inside the \{\} brackets will then run with i=1791.
-You will spot that i is used in a number of places- first to subset the
-data when creating the route plot and then as the title in the ggtitle()
-function. We need to force ggplot to create the graphic within the loop
-so the entire plot call is wrapped in the print() function. Once the
-plot is called anin.record() is used to save the plot still and
-dev.off() used to clear the plot window ready for the next iteration. i
-is then assigned the next year in the list and the code runs again until
-all years are plotted.
+\texttt{unique()} function to list the unique years within the
+\texttt{bdata} object. The loop will take the first year, in this case
+1791, and assign it to the object \texttt{i}. The code inside the
+\texttt{\{\}} brackets will then run with \texttt{i=1791}. You will spot
+that \texttt{i} is used in a number of places- first to subset the data
+when creating the route plot and then as the title in the
+\texttt{ggtitle()} function. We need to force ggplot to create the
+graphic within the loop so the entire plot call is wrapped in the
+\texttt{print()} function. Once the plot is called \texttt{ani.record()}
+is used to save the plot still and \texttt{dev.off()} used to clear the
+plot window ready for the next iteration. \texttt{i} is then assigned
+the next year in the list and the code runs again until all years are
+plotted.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1769,9 +1779,9 @@ all years are plotted.
 \end{Highlighting}
 \end{Shaded}
 The final step in the process is to save the animation to HTML and view
-it in your web browser. ani.replay() retrievesanimation stored by the
-ani.record() function and outdir=getwd() ensures the final file is
-stored in your working directory.
+it in your web browser. \texttt{ani.replay()} retrieves the animation
+stored by the \texttt{ani.record()} function and \texttt{outdir=getwd()}
+ensures the final file is stored in your working directory.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1873,7 +1883,9 @@ Statistics. 19, 1: 3-28
   \texttt{RSiteSearch("spatial statistics")}. Experiment and see which
   you prefer!
 \item
-  For more information about this ride, please see
+  More information about this ride, and a
+  \href{http://www.youtube.com/watch?v=6a8QLiC4LV8\&feature=share}{video}
+  from it, can be found on
   \href{http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html}{robinlovelace.net}.
 \item
   A complete list of drivers for importing and exporting spatial data

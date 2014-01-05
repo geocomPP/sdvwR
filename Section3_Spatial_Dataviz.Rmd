@@ -1,11 +1,43 @@
 Fundamentals of Spatial Data Visualisation
 ==========================================
 
-Good maps depend on sound analysis and can have an enormous impact on the understanding and communication of results. It has never been easier to produce a map. The underlying data required are available in unprecedented volumes and the technological capabilities of transforming them into compelling maps and graphics are increasingly sophisticated and straightforward to use. Data and software, however, only offer the starting points of good spatial data visualisation since they need to be refined and calibrated by the researchers seeking to communicate their findings.  In this section we will run through the features of a good map. It is worth noting that not all good maps and graphics contain all the features below – they should simply be seen as suggestions rather than firm principles.
+Good maps depend on sound analysis and can have an enormous impact on the 
+understanding and communication of results. 
+It has never been easier to produce a map. 
+The underlying data required are available in unprecedented volumes 
+and the technological capabilities of transforming them into compelling
+maps and graphics are increasingly sophisticated and straightforward to use. 
+Data and software, however, only offer the starting points of good spatial 
+data visualisation since they need to be refined and calibrated by the researchers
+seeking to communicate their findings.  In this section we will run through the
+features of a good map. It is worth noting that not all good maps and 
+graphics contain all the features below – they should simply be seen 
+as suggestions rather than firm principles.
 
-Effective map making is hard process – as Krygier and Wood (2011) put it “there is a lot to see, think about, and do” (p6). It often comes at the end of a period of intense data analysis and perhaps when the priority is to get a paper finished or results published and can therefore be rushed as a result. The beauty of R (and other scripting languages) is the ability to save code and simply re-run it with different data. Colours, map adornments and other parameters can therefore be quickly applied, so it is well worth creating a template script that adheres to best practice.
+Effective map making is hard process – as Krygier and Wood (2011)
+put it "there is a lot to see, think about, and do"" (p6). 
+It often comes at the end of a period of intense data analysis
+and perhaps when the priority is to get a paper finished or results
+published and can therefore be rushed as a result. 
+The beauty of R (and other scripting languages) is the ability to 
+save code and simply re-run it with different data. 
+Colours, map adornments and other parameters can therefore be quickly applied, 
+so it is well worth creating a template script that adheres to best practice.
 
-We have selected ggplot2 as our package of choice for the bulk of our maps and spatial data visualisations because it has a number of these elements at its core. The “gg” in its slightly odd name stands for “Grammar of Graphics”, which is a set of rules developed by Leland Wilkinson (2005) in a book of the same name. Grammar in the context of graphics works in much the same way as it does in language - it provides a structure. The structure is informed by both human perception and also mathematics to ensure that the resulting visualisations are both technically sound and comprehensible. By creating ggplot2, Hadley Wickham, implemented these rules as well as developing ways in which plots can be built up in layers (see Wickham, 2010). This layering component is especially useful in the context of spatial data since it is conceptually the same as map layers in Geographical Information Systems (GIS).
+We have selected ggplot2 as our package of choice for the bulk of 
+our maps and spatial data visualisations because it has a number 
+of these elements at its core. The "gg"" in its slightly odd name stands for
+"Grammar of Graphics"", which is a set of rules developed 
+by Leland Wilkinson (2005) in a book of the same name. 
+Grammar in the context of graphics works in much the same way as it does in language - 
+it provides a structure. The structure is informed by both human perception 
+and also mathematics to ensure that the resulting visualisations are 
+both technically sound and comprehensible. By creating ggplot2, 
+Hadley Wickham, implemented these rules as well as developing ways
+in which plots can be built up in layers (see Wickham, 2010).
+This layering component is especially useful in the context of
+spatial data since it is conceptually the same as map layers in
+Geographical Information Systems (GIS).
 
 First load the libraries required for this section:
 ```{r, message=FALSE}
@@ -20,7 +52,9 @@ Set your working directory as before:
 setwd("C:/Users/Uname/Desktop/sdvwR")
 ```
 
-For this section we are going to use a map of the world to demonstrate some of the cartographic principles as they are introduced. The world map used is available from the Natural Earth website. 
+For this section we are going to use a map of the world to demonstrate 
+some of the cartographic principles as they are introduced. 
+The world map used is available from the Natural Earth website. 
 Because these are already saved in the data folder, we can proceed to load the data. 
 
 ```{r A Basic Map of the World}
@@ -34,16 +68,30 @@ To see the first ten rows of attribute information assocuiated with each of the 
 head(wrld@data)[,1:5]
 ```
 
-You can see there are a lot of columns associated with this file. Although we will keep all of them, we are only really interested in the population estimate ("pop_est") field. Before progressing it is is worth reprojecting the data in order that the population data can be seen better. The coordinate reference system of the wrld shapefile is currently WGS84. This is the common latitude and longitude format that all spatial software packages understand. From a cartographic perspective the standard plots of this projection, of the kind produced above, are not suitable since they heavily distort the shapes of those countries further from the equator. Instead the Robinson projection provides a good compromise between areal distortion and shape preservation. We therefore project it as follows.
+You can see there are a lot of columns associated with this file.
+Although we will keep all of them, we are only really interested in
+the population estimate ("pop_est") field. 
+Before progressing it is is worth reprojecting the data in order that the
+population data can be seen better. The coordinate reference system of 
+the wrld shapefile is currently WGS84. This is the common latitude and 
+longitude format that all spatial software packages understand. 
+From a cartographic perspective the standard plots of this projection, 
+of the kind produced above, are not suitable since they heavily distort
+the shapes of those countries further from the equator. 
+Instead the Robinson projection provides a good compromise
+between areal distortion and shape preservation. We therefore project it as follows.
 
 ```{r The Robinson Projection, message=FALSE}
 wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
 plot(wrld.rob)
 ```
 
-`+proj=robin` refers to the Robinson prjection. You will have spotted from the plot that the countries in the world map are much better proportioned.
+`+proj=robin` refers to the Robinson prjection. You will have spotted
+from the plot that the countries in the world map are much better proportioned.
 
-We now need to `fortify` this spatial data to convert it into a format that ggplot2 understands, we also use `merge` to re-attach the attribute data that is lost in the fortify operation.
+We now need to `fortify` this spatial data to convert it into a format
+that ggplot2 understands, we also use `merge` to re-attach the
+attribute data that is lost in the fortify operation.
 
 ```{r}
 wrld.rob.f<-fortify(wrld.rob, region="sov_a3")
@@ -51,7 +99,16 @@ wrld.rob.f<-fortify(wrld.rob, region="sov_a3")
 wrld.pop.f <- merge(wrld.rob.f, wrld.rob@data, by.x = "id", by.y = "sov_a3")
 ```
 
-The code below produces a map coloured by the population variable. It demonstrates the sophistication of ggplot2 by first stringing together a series of plot commands and assigning them to a single R object called `map`. If you type `map` into the command line, R will then execute the code and generate the plot. By simple specifing our `fill` variable within the `aes()` part of the code and then using the `geom_polygon()` command ggplot2 will fill colour the countries using a default colour pallette and auto-generated key. As will be shown in the next section these defaults can be easily altered to produce different looking maps.
+The code below produces a map coloured by the population variable.
+It demonstrates the sophistication of ggplot2 by first stringing 
+together a series of plot commands and assigning them to a single R 
+object called `map`. If you type `map` into the command line, 
+R will then execute the code and generate the plot. By simple 
+specifing our `fill` variable within the `aes()` part of the 
+code and then using the `geom_polygon()` command ggplot2 will 
+fill colour the countries using a default colour pallette and 
+auto-generated key. As will be shown in the next section these
+defaults can be easily altered to produce different looking maps.
 
 ```{r World Population Map}
 map<-ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + 
@@ -65,7 +122,8 @@ map
 
 ## Colour and other aesthetics
 
-Colour has an enormous impact on how people will percieve a graphic. Readers of a map come to it with a range of pre-conceptions about how the world looks. 
+Colour has an enormous impact on how people will percieve a graphic. 
+Readers of a map come to it with a range of pre-conceptions about how the world looks. 
 
 ### Choropleth Maps
 
@@ -300,7 +358,7 @@ lnd.b2 +
 
 Finally, if we want to increase the detail of the base map, `get_map` has a zoom parameter.
 
-```{r Using Stamen's Toner basemap}
+```{r Using the Stamen Toner basemap}
 lnd.b3 <- ggmap(get_map(location = b, source = "stamen", maptype = "toner", crop = T, zoom = 11))
 
 lnd.b3 + 

@@ -21,8 +21,8 @@ developer of the popular Geographical Information System (GIS) QGIS:
 
 The joy of this, when you get accustomed to it, is that any command is
 only ever a few keystrokes away, and the order of the commands sent to R
-can be stored and repeated in scripts, saving even more time in the
-long-term (more on this in section ...).
+can be stored and repeated in scripts, saving time in the long-term and
+ensuring reproducible results (see "R and reproducible research").
 
 Another important attribute of R, related to its command line interface,
 is that it is a fully fledged *programming language*. Other GIS programs
@@ -61,17 +61,17 @@ disciplines. R has become "an integrated suite of software facilities
 for data manipulation, calculation and graphical display" (Venables et
 al. 2013). Spatial data analysis and visualisation is an important
 growth area within this increased functionality. In recent years R has
-really made its mark as a data visualisation tool. Perhaps the first
-truly inspiring graphic to be created in R that reached a global
-audience was the map of Facebook friendships produced by Paul Butler. He
-mapped the linkages between friends by calculating the great circle arcs
-between them (using the “geosphere” package) and then plotting them
-using the basic R graphics functionality. The secret to the success of
-this map was the time taken to select the appropriate colour palette,
-line widths and transparency for the plot. As we discuss in Section XXX
-the importance of these cannot be understated and are the difference
-between a stunning graphic and an impenetrable mess of lines.
+really made its mark as a data visualisation tool. The map of Facebook
+friendships produced by Paul Butler is iconic in this regard, and
+reached a global audience. He mapped the linkages between friends by
+calculating the great circle arcs between them (using the `geosphere`
+package) and plotted the result, displayed in figure 1. The secret to
+the success of this map was the time taken to select the appropriate
+colour palette, line widths and transparency for the plot. As we discuss
+in Section 3 the importance of these cannot be understated and are the
+difference between a stunning graphic and an impenetrable mess.
 
+<img src="figure/butler_facebook.jpg" alt="Iconic plot of Facebook freindship networks worldwide, by Paul Butler" width="900">
 The impact of the graphic was to inspire the R community to produce more
 ambitious graphics; a process fuelled by the increased demand for data
 visualisation and the development of sophisticated packages, such as
@@ -95,7 +95,7 @@ that we will be using to great effect in this tutorial.
 There is a drive towards transparency in data and methods datasets in
 academic publishing. R encourages truly transparent and reproducible
 research by enabling anyone with an R installation reproduce results
-described in previous paper. This process is eased by the RStudio
+described in a previous paper. This process is eased by the RStudio
 integrated development environment (IDE) that allows 'live' R code and
 results to be embedded in documents. In fact, this tutorial was written
 in RStudio and can be recompiled on any computer by downloading the
@@ -742,25 +742,24 @@ and straightforward to use. Data and software, however, only offer the
 starting points of good spatial data visualisation since they need to be
 refined and calibrated by the researchers seeking to communicate their
 findings. In this section we will run through the features of a good
-map. We will then seek to emulate them with R in Section XX. It is worth
-noting that not all good maps and graphics contain all the features
-below – they should simply be seen as suggestions rather than firm
-principles.
+map. It is worth noting that not all good maps and graphics contain all
+the features below – they should simply be seen as suggestions rather
+than firm principles.
 
 Effective map making is hard process – as Krygier and Wood (2011) put it
-“there is a lot to see, think about, and do” (p6). It often comes at the
-end of a period of intense data analysis and perhaps when the priority
-is to get a paper finished or results published and can therefore be
-rushed as a result. The beauty of R (and other scripting languages) is
-the ability to save code and simply re-run it with different data.
-Colours, map adornments and other parameters can therefore be quickly
-applied, so it is well worth creating a template script that adheres to
-best practice.
+"there is a lot to see, think about, and do"" (p6). It often comes at
+the end of a period of intense data analysis and perhaps when the
+priority is to get a paper finished or results published and can
+therefore be rushed as a result. The beauty of R (and other scripting
+languages) is the ability to save code and simply re-run it with
+different data. Colours, map adornments and other parameters can
+therefore be quickly applied, so it is well worth creating a template
+script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of our
 maps and spatial data visualisations because it has a number of these
-elements at its core. The “gg” in its slightly odd name stands for
-“Grammar of Graphics”, which is a set of rules developed by Leland
+elements at its core. The "gg"" in its slightly odd name stands for
+"Grammar of Graphics"", which is a set of rules developed by Leland
 Wilkinson (2005) in a book of the same name. Grammar in the context of
 graphics works in much the same way as it does in language - it provides
 a structure. The structure is informed by both human perception and also
@@ -804,7 +803,8 @@ wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 plot(wrld)
 ~~~~
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png)
+![plot of chunk A Basic Map of the
+World](figure/A_Basic_Map_of_the_World.png)
 
 To see the first ten rows of attribute information assocuiated with each
 of the country boundaries type the following:
@@ -839,14 +839,15 @@ wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
 plot(wrld.rob)
 ~~~~
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png)
+![plot of chunk The Robinson
+Projection](figure/The_Robinson_Projection.png)
 
-"+proj=robin" refers to the Robinson prjection. You will have spotted
+`+proj=robin` refers to the Robinson prjection. You will have spotted
 from the plot that the countries in the world map are much better
 proportioned.
 
-We now need to "fortify" this spatial data to convert it into a format
-that ggplot2 understands, we also use "merge" to re-attach the attribute
+We now need to `fortify` this spatial data to convert it into a format
+that ggplot2 understands, we also use `merge` to re-attach the attribute
 data that is lost in the fortify operation.
 
 ~~~~ {.r}
@@ -881,7 +882,7 @@ map <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = pop_est)) + geom_
 map
 ~~~~
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png)
+![plot of chunk World Population Map](figure/World_Population_Map.png)
 
 Colour and other aesthetics
 ---------------------------
@@ -911,7 +912,8 @@ map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) 
 map.cont
 ~~~~
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-81.png)
+![plot of chunk A Map of the Continents Using Default
+Colours](figure/A_Map_of_the_Continents_Using_Default_Colours1.png)
 
 ~~~~ {.r}
 
@@ -920,9 +922,10 @@ map.cont + scale_fill_manual(values = c("yellow", "red", "purple", "white",
     "orange", "blue", "green", "black"))
 ~~~~
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-82.png)
+![plot of chunk A Map of the Continents Using Default
+Colours](figure/A_Map_of_the_Continents_Using_Default_Colours2.png)
 
-Whilst, \`scale\_fill\_continuous()' works with continuous datasets:
+Whilst, `scale_fill_continuous()` works with continuous datasets:
 
 ~~~~ {.r}
 # note the use of the 'map' object created earler
@@ -930,7 +933,8 @@ Whilst, \`scale\_fill\_continuous()' works with continuous datasets:
 map + scale_fill_continuous(low = "white", high = "black")
 ~~~~
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png)
+![plot of chunk Black and White Population
+Map](figure/Black_and_White_Population_Map.png)
 
 It is well worth looking at the *Color Brewer* palettes developed by
 Cynthia Brewer. These are designed to be colour blind safe and
@@ -952,14 +956,16 @@ library(RColorBrewer)
 map + scale_fill_gradientn(colours = brewer.pal(7, "YlGn"))
 ~~~~
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png)
+![plot of chunk World Map with Yellow Green Colour Brewer
+Palette](figure/World_Map_with_Yellow_Green_Colour_Brewer_Palette.png)
 
 In addition to altering the colour scale used to represent continuous
 data it may also be desirable to adjust the breaks at which the colour
 transitions occur. There are many ways to select both the optimum number
 of breaks (i.e colour transtions) and the locations in the dataset at
 which they occur. The `classINT` package contains many ways to
-automatically create these breaks.
+automatically create these breaks. We use the `grid.arrange` function
+from the gridExtra package to display the maps side by side.
 
 ~~~~ {.r}
 library(classInt)
@@ -993,7 +999,8 @@ PuBu <- map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks =
 grid.arrange(YlGn, PuBu, ncol = 2)
 ~~~~
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png)
+![plot of chunk Different Colour Palettes with Bespoke
+Breaks](figure/Different_Colour_Palettes_with_Bespoke_Breaks.png)
 
 If you are not happy with the automatic methods of specifying breaks it
 can also be done manually:
@@ -1005,7 +1012,7 @@ brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
 ~~~~
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png)
 
 There are many other ways to specify and alter the colours in ggplot2
 and these are outlined in the help documentation. There are also many
@@ -1018,8 +1025,7 @@ example of this is the use of blue for bodies of water and green for
 landmasses. The code example below generates two plots with our
 wrld.pop.f object. The first colours the land blue and the sea (in this
 case the background to the map) green and the second is more
-conventional. We use the "grid.arrange" function from the "gridExtra"
-package to display the maps side by side.
+conventional.
 
 ~~~~ {.r}
 map2 <- ggplot(wrld.pop.f, aes(long, lat, group = group)) + coord_equal()
@@ -1031,15 +1037,16 @@ green <- map2 + geom_polygon(fill = "dark green") + theme(panel.background = ele
 grid.arrange(blue, green, ncol = 2)
 ~~~~
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png)
+![plot of chunk Conforming to Colour
+Convention](figure/Conforming_to_Colour_Convention.png)
 
 ### Experimenting with line colour and line widths
 
 In addition to conforming to colour conventions, line colour and width
 offer important parameters, which are often overlooked tools for
 increasing the legibility of a graphic. As the code below demonstrates,
-it is possible to adjust line colour through using the "colour"
-parameter and the line width using the "lwd" parameter. The impact of
+it is possible to adjust line colour through using the `colour`
+parameter and the line width using the `lwd` parameter. The impact of
 different line widths will vary depending on your screen size and
 resolution. If you save the plot to pdf (or an image) then the size at
 which you do this will also affect the line widths.
@@ -1058,13 +1065,14 @@ thick <- map3 + geom_polygon(fill = "dark green", colour = "black", lwd = 1.5)
 grid.arrange(yellow, black, thick, thin, ncol = 2)
 ~~~~
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png)
+![plot of chunk The Impact of Line
+Width](figure/The_Impact_of_Line_Width.png)
 
 There are other parameters such as layer transparency (use the `alpha`
 parameter for this) that can be applied to all aspects of the plot -
 both points, lines and polygons. Space does not permit their full
 exploration here but more information is available from the many online
-examples and the `ggplot2` package documentation.
+examples and the ggplot2 package documentation.
 
 Map Adornments and Annotations
 ------------------------------
@@ -1079,7 +1087,7 @@ automatically but they can be customised.
 ### North arrow
 
 In the maps created so far, we have defined the *aesthetics* of the map
-in the foundation function `ggplot`. The result of this is that all
+in the foundation function ggplot. The result of this is that all
 subsequent layers are expected to have the same variables and
 essentially contain data with the same dimensions as original dataset.
 But what if we want to add a new layer from a completely different
@@ -1089,8 +1097,8 @@ to the `ggplot` function, only adding data sources one layer at a time:
 Here we create an empty plot, meaning that each new layer must be given
 its own dataset. While more code is needed in this example, it enables
 much greater flexibility with regards to what can be included in new
-layer contents. Another possibility is to use the `segment` geom to add
-a rudimentary arrow (see `?geom_segment` for refinements):
+layer contents. Another possibility is to use `geom_segment()` to add a
+rudimentary arrow (see `?geom_segment` for refinements):
 
 ~~~~ {.r}
 library(grid)  # needed for arrow
@@ -1099,21 +1107,22 @@ ggplot() + geom_polygon(data = wrld.pop.f, aes(long, lat, group = group, fill = 
     coord_fixed()  # correct aspect ratio
 ~~~~
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png)
+![plot of chunk North Arrow Example](figure/North_Arrow_Example.png)
 
 ### Scale bar
 
-`ggplot2's` scale bar capabilities are perhaps the least satisfactory
+ggplot2's scale bar capabilities are perhaps the least satisfactory
 element of the package. For this example we use the `geom_line()`
 function to draw a line of approximately 1km in length using the `lnd.f`
 object containing the London Boroughs discussed in Section 2. The reason
 for this is that it is in a projected coordinate system - British
 National Grid - so each map unit is worth 1m. In the case of the world
-map the distances at the equator east to west are very different from
-those further north or south. Any line drawn using the the simple
-approach below would therefore be inaccurate. For maps covering large
-areas - such as the entire world - leaving the axis labels on will
-enable them to act as a graticule which will indicate distance.
+map the distances at the equator in terms of degrees east to west are
+very different from those further north or south. Any line drawn using
+the the simple approach below would therefore be inaccurate. For maps
+covering large areas - such as the entire world - leaving the axis
+labels on will enable them to act as a graticule which will indicate
+distance.
 
 ~~~~ {.r}
 load("data/lnd.f.RData")
@@ -1122,7 +1131,7 @@ ggplot() + geom_polygon(data = lnd.f, aes(long, lat, group = group)) + geom_line
     x = 510000, y = 160000) + coord_fixed()
 ~~~~
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png)
+![plot of chunk Scale Bar Example](figure/Scale_Bar_Example.png)
 
 ### Legends
 
@@ -1135,7 +1144,8 @@ the `ggplot2` documentation.
 map + theme(legend.position = "top")
 ~~~~
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-171.png)
+![plot of chunk Formatting the
+Legend](figure/Formatting_the_Legend1.png)
 
 ~~~~ {.r}
 
@@ -1143,7 +1153,8 @@ map + theme(legend.position = "top")
 map + theme(legend.title = element_text(colour = "Red", size = 16, face = "bold"))
 ~~~~
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-172.png)
+![plot of chunk Formatting the
+Legend](figure/Formatting_the_Legend2.png)
 
 ~~~~ {.r}
 
@@ -1151,7 +1162,8 @@ map + theme(legend.title = element_text(colour = "Red", size = 16, face = "bold"
 map + theme(legend.text = element_text(colour = "blue", size = 16, face = "italic"))
 ~~~~
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-173.png)
+![plot of chunk Formatting the
+Legend](figure/Formatting_the_Legend3.png)
 
 ~~~~ {.r}
 
@@ -1159,12 +1171,13 @@ map + theme(legend.text = element_text(colour = "blue", size = 16, face = "itali
 map + theme(legend.background = element_rect(fill = "gray90", size = 0.5, linetype = "dotted"))
 ~~~~
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-174.png)
+![plot of chunk Formatting the
+Legend](figure/Formatting_the_Legend4.png)
 
 Adding Basemaps To Your Plots
 -----------------------------
 
-The development of the `ggmap` package has enabled the simple use of
+The development of the ggmap package has enabled the simple use of
 online mapping services such as Google Maps and OpenStreetMap for base
 maps. Using image tiles from these services spatial data can be placed
 in context as users can easily orientate themselves to streets and
@@ -1176,6 +1189,10 @@ projected to British National Grid (BNG) which is not compatible with
 the online map services used in the following examples. It therefore
 needs reprojecting - a step we completed earlier. The reprojected file
 can be loaded as follows:
+
+~~~~ {.r}
+load("data/lnd.wgs84.RData")
+~~~~
 
 The first job is to calculate the bounding box (bb for short) of the
 `lnd.wgs84` object to identify the geographic extent of the map. This
@@ -1207,15 +1224,15 @@ lnd.b1 <- ggmap(get_map(location = b))
     ## Warning: bounding box given to google - spatial extent only approximate.
 
 `ggmap` follows the same syntax structures as ggplot2 and so can easily
-be integrated with the other examples included here. First fortify the
-lnd.wgs84 object and then merge with the required attribute data.
+be integrated with the other examples included here. First `fortify` the
+`lnd.wgs84` object and then merge with the required attribute data.
 
 ~~~~ {.r}
 lnd.wgs84.f <- fortify(lnd.wgs84, region = "ons_label")
 lnd.wgs84.f <- merge(lnd.wgs84.f, lnd.wgs84@data, by.x = "id", by.y = "ons_label")
 ~~~~
 
-We can now overlay this on our base map using the \`geom\_polugon()
+We can now overlay this on our base map using the `geom_polygon()`
 function.
 
 ~~~~ {.r}
@@ -1224,8 +1241,8 @@ lnd.b1 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group,
 ~~~~
 
 The resulting map looks reasonable, but it would be improved with a
-simpler base map in black and white. A design firm called stamen provide
-the tiles we need and they can be brought into the plot with the
+simpler base map in black and white. A design firm called *stamen*
+provide the tiles we need and they can be brought into the plot with the
 `get_map` function:
 
 ~~~~ {.r}
@@ -1240,8 +1257,8 @@ lnd.b2 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group,
     fill = Partic_Per), alpha = 0.5)
 ~~~~
 
-Finally, if we want to increase the detail of the base map, get\_map has
-a zoom parameter.
+Finally, if we want to increase the detail of the base map, `get_map`
+has a zoom parameter.
 
 ~~~~ {.r}
 lnd.b3 <- ggmap(get_map(location = b, source = "stamen", maptype = "toner", 
@@ -1251,20 +1268,21 @@ lnd.b3 + geom_polygon(data = lnd.wgs84.f, aes(x = long, y = lat, group = group,
     fill = Partic_Per), alpha = 0.5)
 ~~~~
 
-![plot of chunk Basemap 3](figure/Basemap_3.png)
+![plot of chunk Using the Stamen Toner
+basemap](figure/Using_the_Stamen_Toner_basemap.png)
 
-Spatial polygons are not the only data types compatible with `ggmap`-
+Spatial polygons are not the only data types compatible with `ggmap` -
 you can use any plot type and set of parameters available in `ggplot2`,
 making it an ideal companion package for spatial data visualisation.
 
 Summary
 -------
 
-There is an almost infinite number of different combinations colours,
-adornments and line widths that could be applied to a map so take
+There are an almost infinite number of different combinations colours,
+adornments and line widths that could be applied to a map, so take
 inspiration from maps and graphics you have seen and liked. The process
 is an iterative one, it will take multiple attempts to get right. Show
-your map to friends and colleagues- all will have an opinion but don’t
+your map to friends and colleagues - all will have an opinion but don’t
 be afraid to stand by the decisions you have taken. To give your maps a
 final polish you may wish to export them as a pdf using the `ggsave()`
 function and importing them into a vector graphics package such as Adobe
@@ -1290,8 +1308,8 @@ available from here: http://pendientedemigracion.ucm.es/info/cliwoc/.
 The example has been chosen to demonstrate a range of capabilities
 within ggplot2 and the ways in which they can be applied to produce
 high-quality maps with only a few lines of code. We end by showing how
-the maps can be animated to show the routes over time and the ability of
-R to produce many maps very quickly.
+the maps can be animated to chart the routes over time and the ability
+of R to produce many maps very quickly.
 
 As always, the first step is to load in the required packages and
 datasets. Here we are using the png package to load in a series of map
@@ -1317,7 +1335,7 @@ compass <- readPNG("figure/windrose.png")
 bdata <- read.csv("data/british_shipping_example.csv")
 ~~~~
 
-If you look at the first few lines in the bdata object you will see
+If you look at the first few lines in the `bdata` object you will see
 there are 7 columns with each row representing a single point on the
 ships course. The year of the journey and the nationality of the ship
 are also included. The final 3 columns are identifiers that are used
@@ -1332,11 +1350,11 @@ yquiet <- scale_y_continuous("", breaks = NULL)
 quiet <- list(xquiet, yquiet)
 ~~~~
 
-The next step is to "fortify" the World coastlines and create the base
+The next step is to `fortify` the World coastlines and create the base
 plot. This sets the extents of the plot window and provides the blank
 canvas on which we will build up the layers. The first layer created is
-the wrld object; the code is wrapped in c() to prevent it from executing
-by simply storing it as the plot's parameters.
+the wrld object; the code is wrapped in `c()` to prevent it from
+executing by simply storing it as the plot's parameters.
 
 ~~~~ {.r}
 wrld.f <- fortify(wrld, region = "sov_a3")
@@ -1359,13 +1377,13 @@ To see the result of this simply type:
 base + wrld
 ~~~~
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png)
+![plot of chunk World Map](figure/World_Map.png)
 
 The code snipped below creates the plot layer containing the the
-shipping routes. The geom\_path() function is used to string together
-the coordinates into the routes. You can see within the aes() component
-we have specified long and lat plus pasted together the trp and
-group.regroup variables to identify the unique paths.
+shipping routes. The `geom_path()` function is used to string together
+the coordinates into the routes. You can see within the `aes()`
+component we have specified long and lat plus pasted together the trp
+and `group.regroup` variables to identify the unique paths.
 
 ~~~~ {.r}
 route <- c(geom_path(aes(long, lat, group = paste(bdata$trp, bdata$group.regroup, 
@@ -1374,9 +1392,9 @@ route <- c(geom_path(aes(long, lat, group = paste(bdata$trp, bdata$group.regroup
 ~~~~
 
 We now have all we need to generate the final plot by building the
-layers together with the + sign as shown in the code below. The first 3
-arguments are the plot layers, and the parameters within theme() are
-changing the background colour to sea blue. annotation\_raster() plots
+layers together with the `+` sign as shown in the code below. The first
+3 arguments are the plot layers, and the parameters within `theme()` are
+changing the background colour to sea blue. `annotation_raster()` plots
 the png map adornments loaded in earlier- this requires the bounding box
 of each image to be specified. In this case we use latitude and
 longitude (in WGS84) and we can use these paramrters to change the png's
@@ -1390,7 +1408,7 @@ base + route + wrld + theme(panel.background = element_rect(fill = "#BAC4B9",
     ymax = 65) + coord_equal() + quiet
 ~~~~
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png)
+![plot of chunk World Shipping](figure/World_Shipping.png)
 
 In the plot example we have chosen the colours carefully to give the
 appearance of a historic map. An alternative approach could be to use a
@@ -1416,7 +1434,8 @@ base + annotation_raster(earth, xmin = -180, xmax = 180, ymin = -90, ymax = 90) 
     coord_equal() + quiet
 ~~~~
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png)
+![plot of chunk World Shipping with raster
+background](figure/World_Shipping_with_raster_background.png)
 
 Animating your plots
 --------------------
@@ -1450,18 +1469,18 @@ it is unnecessary, but it is a good habit to get into.
 ani.record(reset = TRUE)
 ~~~~
 
-We then initiate the "for loop". In this case we are using the unique()
-function to list the unique years within the bdata object. The loop will
-take the first year, in this case 1791, and assign it to the object i.
-The code inside the {} brackets will then run with i=1791. You will spot
-that i is used in a number of places- first to subset the data when
-creating the route plot and then as the title in the ggtitle() function.
-We need to force ggplot to create the graphic within the loop so the
-entire plot call is wrapped in the print() function. Once the plot is
-called anin.record() is used to save the plot still and dev.off() used
-to clear the plot window ready for the next iteration. i is then
-assigned the next year in the list and the code runs again until all
-years are plotted.
+We then initiate the "for loop". In this case we are using the
+`unique()` function to list the unique years within the `bdata` object.
+The loop will take the first year, in this case 1791, and assign it to
+the object `i`. The code inside the `{}` brackets will then run with
+`i=1791`. You will spot that `i` is used in a number of places- first to
+subset the data when creating the route plot and then as the title in
+the `ggtitle()` function. We need to force ggplot to create the graphic
+within the loop so the entire plot call is wrapped in the `print()`
+function. Once the plot is called `ani.record()` is used to save the
+plot still and `dev.off()` used to clear the plot window ready for the
+next iteration. `i` is then assigned the next year in the list and the
+code runs again until all years are plotted.
 
 ~~~~ {.r}
 for (i in unique(bdata$year)) {
@@ -1478,9 +1497,9 @@ for (i in unique(bdata$year)) {
 ~~~~
 
 The final step in the process is to save the animation to HTML and view
-it in your web browser. ani.replay() retrievesanimation stored by the
-ani.record() function and outdir=getwd() ensures the final file is
-stored in your working directory.
+it in your web browser. `ani.replay()` retrieves the animation stored by
+the `ani.record()` function and `outdir=getwd()` ensures the final file
+is stored in your working directory.
 
 ~~~~ {.r}
 saveHTML(ani.replay(), img.name = "record_plot", outdir = getwd())
@@ -1582,7 +1601,9 @@ Endnotes
     `RSiteSearch("spatial statistics")`. Experiment and see which you
     prefer!
 
-3.  For more information about this ride, please see
+3.  More information about this ride, and a
+    [video](http://www.youtube.com/watch?v=6a8QLiC4LV8&feature=share)
+    from it, can be found on
     [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
 
 4.  A complete list of drivers for importing and exporting spatial data

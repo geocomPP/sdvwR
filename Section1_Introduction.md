@@ -6,7 +6,8 @@ What is R?
 
 R is a free and open source computer program that runs on all major
 operating systems. It relies primarily on the *command line* for data
-input: instead of interacting with the program by clicking on different parts of the screen, so users enter commands
+input: instead of interacting with the program by clicking on different 
+parts of the screen, so users enter commands
 via the keyboard. This will seem to strange to people accustomed to
 relying on a graphical user interface (GUI) for most of their computing, yet the
 approach has a number of benefits, as highlighted by Gary Sherman (2008,
@@ -20,8 +21,8 @@ p. 283), developer of the popular Geographical Information System (GIS) QGIS:
 
 The joy of this, when you get accustomed to it, is that any command is
 only ever a few keystrokes away, and the order of the commands sent to R
-can be stored and repeated in scripts, saving even more time in the
-long-term (more on this in section ...).
+can be stored and repeated in scripts, saving time in the
+long-term and ensuring reproducible results (see "R and reproducible research").
 
 Another important attribute of R, related to its command line interface,
 is that it is a fully fledged *programming language*. Other GIS programs
@@ -63,9 +64,26 @@ R has become "an integrated suite of software facilities for data manipulation,
 calculation and graphical display" (Venables et al. 2013). 
 Spatial data analysis and visualisation is an important growth area within this 
 increased functionality.
-In recent years R has really made its mark as a data visualisation tool. Perhaps the first truly inspiring graphic to be created in R that reached a global audience was the map of Facebook friendships produced by Paul Butler. He mapped the linkages between friends by calculating the great circle arcs between them (using the “geosphere” package) and then plotting them using the basic R graphics functionality. The secret to the success of this map was the time taken to select the appropriate colour palette, line widths and transparency for the plot. As we discuss in Section XXX the importance of these cannot be understated and are the difference between a stunning graphic and an impenetrable mess of lines.
+In recent years R has really made its mark as a data visualisation tool. 
+The map of Facebook friendships produced by Paul Butler is iconic in this regard, 
+and reached a global audience. 
+He mapped the linkages between friends by calculating the great 
+circle arcs between them (using the `geosphere` package) 
+and plotted the result, displayed in figure 1. The secret to the success of this map
+was the time taken to select the appropriate colour palette,
+line widths and transparency for the plot. 
+As we discuss in Section 3 the importance of these cannot be understated 
+and are the difference between a stunning graphic and an impenetrable mess.
 
-The impact of the graphic was to inspire the R community to produce more ambitious graphics; a process fuelled by the increased demand for data visualisation and the development of sophisticated packages, such as ggplot2, that augment the basic plot functions of R. It is now the case that R has become a key analysis and visualisation tool used by the likes of Twitter, the New York Times and Facebook and thousands of consultants, design houses and journalists. It is not longer the preserve of academic research, with many graduate jobs listing R as a desirable skill. 
+<img src="figure/butler_facebook.jpg" alt="Iconic plot of Facebook freindship networks worldwide, by Paul Butler" width="900">
+
+The impact of the graphic was to inspire the R community to produce more ambitious
+graphics; a process fuelled by the increased demand for data visualisation and the
+development of sophisticated packages, such as ggplot2, that augment the basic plot
+functions of R. It is now the case that R has become a key analysis and visualisation
+tool used by the likes of Twitter, the New York Times and Facebook and thousands of
+consultants, design houses and journalists. It is not longer the preserve of academic 
+research, with many graduate jobs listing R as a desirable skill. 
 
 Finally, it is worth noting that while dedicated GIS programs handle spatial data by default and
 display the results in a single way, there are various options in R that
@@ -79,7 +97,7 @@ great effect in this tutorial.
 
 There is a drive towards transparency in data and methods datasets in academic publishing. 
 R encourages truly transparent and reproducible research by enabling anyone with an 
-R installation reproduce results described in previous paper. 
+R installation reproduce results described in a previous paper. 
 This process is eased by the RStudio integrated development environment (IDE) 
 that allows 'live' R code and results to be embedded in documents. 
 In fact, this tutorial was written in RStudio and can be recompiled on 
@@ -95,7 +113,17 @@ especially those from the sub-folder entitled "data": these are the input datase
 
 For the purpose of this practical we will be using the RStudio software installed on a server. This marks a real step forward in terms of the use of R "in the cloud" by enabling users to access the software from their web browser. This is the first time we have tried this so lets hope it goes smoothly!
 
-In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio (this is only accessible if you are part of the UCL network). Enter the log in details you have been given and you should see the RStudio interface. In the bottom right window you should see an "Upload" button. Click on this and upload the zipfile you have just downloaded from github. RStudio will automatically uncompress this and you should see the list of files and folders appear. At the end of today you can tick the boxes next to the files/ folders you want and then under the "More" menu export them to a zipfile that you can email to yourself or take on a memory stick.
+In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio 
+(this is only accessible if you are part of the UCL network). 
+Enter the log in details you have been given and you should 
+see the RStudio interface. In the bottom right window you 
+should see an "Upload" button. Click on this and upload the 
+zipfile you have just downloaded from github. RStudio will 
+automatically uncompress this and you should see the list of 
+files and folders appear. At the end of today you can tick 
+the boxes next to the files/ folders you want and then under 
+the "More" menu export them to a zipfile that you can email 
+to yourself or take on a memory stick.
 
 
 

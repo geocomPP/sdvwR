@@ -393,7 +393,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-Figure 5 below, and can performed using the same technique 
+Figure 6 below, and can performed using the same technique 
 as described in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
@@ -490,7 +490,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in Figure 8 below. The code used below involves a number of steps that we have not yet covered. Copy these to create the map and they will be explained in Section 3 of the tutorial.
+colours added, are presented in Figure 9 below. The code used below involves a number of steps that we have not yet covered. Copy these to create the map and they will be explained in Section 3 of the tutorial.
 
 ```{r Choropleth map of number of transport nodes in London boroughs, echo=F, eval=FALSE}
 library(RColorBrewer)

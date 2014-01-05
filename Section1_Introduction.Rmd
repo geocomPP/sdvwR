@@ -63,7 +63,7 @@ R has become "an integrated suite of software facilities for data manipulation,
 calculation and graphical display" (Venables et al. 2013). 
 Spatial data analysis and visualisation is an important growth area within this 
 increased functionality.
-In recent years R has really made its mark as a data visualisation tool. Perhaps the first truly inspiring graphic to be created in R that reached a global audience was the map of Facebook friendships produced by Paul Butler. He mapped the linkages between friends by calculating the great circle arcs between them (using the “geosphere” package) and then plotting them using the basic R graphics functionality. The secret to the success of this map was the time taken to select the appropriate colour palette, line widths and transparency for the plot. As we discuss in Section XXX the importance of these cannot be understated and are the difference between a stunning graphic and an impenetrable mess of lines.
+In recent years R has really made its mark as a data visualisation tool. Perhaps the first truly inspiring graphic to be created in R that reached a global audience was the map of Facebook friendships produced by Paul Butler. He mapped the linkages between friends by calculating the great circle arcs between them (using the “geosphere” package) and then plotting them using the basic R graphics functionality. The secret to the success of this map was the time taken to select the appropriate colour palette, line widths and transparency for the plot. As we discuss in Section 3 the importance of these cannot be understated and are the difference between a stunning graphic and an impenetrable mess of lines.
 
 The impact of the graphic was to inspire the R community to produce more ambitious graphics; a process fuelled by the increased demand for data visualisation and the development of sophisticated packages, such as ggplot2, that augment the basic plot functions of R. It is now the case that R has become a key analysis and visualisation tool used by the likes of Twitter, the New York Times and Facebook and thousands of consultants, design houses and journalists. It is not longer the preserve of academic research, with many graduate jobs listing R as a desirable skill. 
 
@@ -79,7 +79,7 @@ great effect in this tutorial.
 
 There is a drive towards transparency in data and methods datasets in academic publishing. 
 R encourages truly transparent and reproducible research by enabling anyone with an 
-R installation reproduce results described in previous paper. 
+R installation reproduce results described in a previous paper. 
 This process is eased by the RStudio integrated development environment (IDE) 
 that allows 'live' R code and results to be embedded in documents. 
 In fact, this tutorial was written in RStudio and can be recompiled on 

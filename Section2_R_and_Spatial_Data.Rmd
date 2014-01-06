@@ -44,7 +44,8 @@ load in the datasets. These may originate from government
 agencies, remote sensing devices or 'volunteered geographical
 information' (Goodchild 2007). R is able to import a very wide range of spatial data formats thanks to
 its interface with the Geospatial Data Abstraction Library (GDAL), which
-is enabled by the package `rgdal`. Below we will load
+is enabled by the package `rgdal`. Below we will install the rgdal package
+using the function `install.packages` (this can be used to install any packages) and then load
 data from two spatial data formats: GPS eXchange (`.gpx`) and ESRI's
 Shapefile.
 
@@ -54,6 +55,7 @@ Let's start with a `.gpx` file, a tracklog recording a bicycle
 ride from Sheffield to Wakefield uploaded OpenStreetMap [3].
 
 ```{r, message=FALSE, results='hide', fig.keep='none'}
+install.packages("rgdal")
 # download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 ogrListLayers(dsn = "data/gps-trace.gpx")
@@ -90,7 +92,8 @@ that various layers are available, including `tracks` and
 Finally, the basic
 `plot` function is used to visualize the newly imported objects, ensuring
 they make sense. In the second plot function (`points`), we 
-add points for a subset of the object. To see how to add axes, enter `?axis`
+add points for a subset of the object. There will be no axes in the plot;
+to see how to add them, enter `?axis`
 
 Try discovering more about the function by typing `?readOGR`.
 The documentation explains that the `dsn =` argument is 
@@ -138,7 +141,8 @@ object.size(lnd)
 In fact, the objects have similar sizes: the GPS dataset is surprisingly large.
 To see why, we can find out how
 many *vertices* (points connected by lines) are contained in each
-dataset:
+dataset. To do this we use `fortify` from the ggplot2 package
+(use the same method used for rgdal, described above, to install it).
 
 ```{r}
 shf2lds.f <- fortify(shf2lds)

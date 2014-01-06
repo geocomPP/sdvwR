@@ -39,20 +39,17 @@ This layering component is especially useful in the context of
 spatial data since it is conceptually the same as map layers in
 Geographical Information Systems (GIS).
 
-First load the libraries required for this section:
+First ensure that the necessary packages are installed and 
+that R is in the correct working directory (see above).
+Then load the packages used in this section.
+
 ```{r, message=FALSE}
 library(rgdal)
 library(ggplot2)
 library(gridExtra)
 ```
 
-Set your working directory as before:
-
-```{r, eval=FALSE}
-setwd("C:/Users/Uname/Desktop/sdvwR")
-```
-
-For this section we are going to use a map of the world to demonstrate 
+We are going to use a map of the world to demonstrate 
 some of the cartographic principles as they are introduced. 
 The world map used is available from the Natural Earth website. 
 Because these are already saved in the data folder, we can proceed to load the data. 

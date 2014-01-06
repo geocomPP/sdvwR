@@ -139,8 +139,22 @@ Preliminaries
 R has a unique syntax that is worth learning in basic terms before
 loading spatial data: to R spatial and non-spatial data are treated in
 the same way, although they have different underlying data structures.
-Try typing and running (by pressing `ctl-Enter` in an RStudio script)
-the following calculations to see how R works and plot the result.
+
+The first step is to ensure that you are in the correct working
+directory. Use `setwd` to select the correct folder. Assuming the folder
+has been downloaded from GitHub and unpacked into the desktop on a
+Windows computer, you would type the following:
+
+~~~~ {.r}
+setwd("C:/Users/Uname/Desktop/sdvwR-master")
+~~~~
+
+In RStudio, it is recommended to work from *script files*. To open a new
+R script, click `File > New File` (see the [RStudio
+website](http://www.rstudio.com/ide/docs/using/keyboard_shortcuts) for
+shortcuts.) Try typing and running (by pressing `ctl-Enter` in an
+RStudio script) the following calculations to see how R works and plot
+the result.
 
 ~~~~ {.r}
 t <- seq(from = 0, to = 20, by = 0.1)
@@ -177,13 +191,14 @@ data in R.
 ### Loading spatial data in R
 
 In most situations, the starting point of a spatial analysis project is
-to load in a datasets. These may originate from government agencies,
+to load in the datasets. These may originate from government agencies,
 remote sensing devices or 'volunteered geographical information'
 (Goodchild 2007). R is able to import a very wide range of spatial data
 formats thanks to its interface with the Geospatial Data Abstraction
 Library (GDAL), which is enabled by the package `rgdal`. Below we will
-load data from two spatial data formats: GPS eXchange (`.gpx`) and
-ESRI's Shapefile.
+install the rgdal package using the function `install.packages` (this
+can be used to install any packages) and then load data from two spatial
+data formats: GPS eXchange (`.gpx`) and ESRI's Shapefile.
 
 `readOGR` is in fact capable of loading dozens more file formats, so the
 focus is on the *method* rather than the specific formats. Let's start
@@ -191,8 +206,12 @@ with a `.gpx` file, a tracklog recording a bicycle ride from Sheffield
 to Wakefield uploaded OpenStreetMap [3].
 
 ~~~~ {.r}
-# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile
-# = 'data/gps-trace.gpx')
+install.packages("rgdal")
+~~~~
+
+    ## Error: trying to use CRAN without setting a mirror
+
+~~~~ {.r}
 library(rgdal)  # load the gdal package
 ogrListLayers(dsn = "data/gps-trace.gpx")
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks")  # load track
@@ -219,8 +238,8 @@ imported into R's *workspace* using `readOGR`.
 
 Finally, the basic `plot` function is used to visualize the newly
 imported objects, ensuring they make sense. In the second plot function
-(`points`), we add points for a subset of the object. To see how to add
-axes, enter `?axis`
+(`points`), we add points for a subset of the object. There will be no
+axes in the plot; to see how to add them, enter `?axis`
 
 Try discovering more about the function by typing `?readOGR`. The
 documentation explains that the `dsn =` argument is interpreted
@@ -275,7 +294,9 @@ object.size(lnd)
 
 In fact, the objects have similar sizes: the GPS dataset is surprisingly
 large. To see why, we can find out how many *vertices* (points connected
-by lines) are contained in each dataset:
+by lines) are contained in each dataset. To do this we use `fortify`
+from the ggplot2 package (use the same method used for rgdal, described
+above, to install it).
 
 ~~~~ {.r}
 shf2lds.f <- fortify(shf2lds)
@@ -304,15 +325,14 @@ In the above block of code we performed two functions for each object:
 It is clear that the GPS data has almost 6 times the number of vertices
 compared to the London data, explaining its large size. Yet when
 plotted, the GPS data does not seem more detailed, implying that some of
-the vertices in the object are not needed for visualisation at the scale
-of the object's *bounding box*.
+the vertices in the object are not needed for effective visualisation
+since the nodes of the line are imperceptible.
 
 ### Simplifying geometries
 
-In many cases the spatial data we have are too detailed for effective
-data visualisation. Simplifcation can help to make a graphic more
-readable and less cluttered. Within the 'rgeos' package it is possible
-to use the `gSimplify` function to simplify spatial R objects:
+Simplifcation can help to make a graphic more readable and less
+cluttered. Within the 'rgeos' package it is possible to use the
+`gSimplify` function to simplify spatial R objects:
 
 ~~~~ {.r}
 library(rgeos)
@@ -555,7 +575,7 @@ added, meaning the attribute join was successful.
 Spatial joins
 -------------
 
-A spatial join, like attribute joins, is used to transfer information
+A spatial join, like an attribute join, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
 spatial joins, with the *target layer* receiving information from
 another spatial layer based on the proximity of elements from both
@@ -568,7 +588,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure 5 below, and can performed using the same technique as described
+Figure 6 below, and can performed using the same technique as described
 in the section on spatial aggregation.
 
 ![plot of chunk Illustration of a one-to-one spatial
@@ -606,8 +626,8 @@ of 500 of these over the previously loaded borough level administrative
 boundaries. The reason for plotting a sample of the points rather than
 all of them is that the boundary data becomes difficult to see if all of
 the points are plotted. It is also useful to see and practice sampling
-techniques in practice; try to plot only the first 500 points, rather
-than a random selection, and spot the difference.
+techniques; try to plot only the first 500 points, rather than a random
+selection, and spot the difference.
 
 The most obvious issue with the point data from the perspective of a
 spatial join with the borough data we have is that many of the points in
@@ -632,10 +652,9 @@ this to happen: the first line ensured that the CRS associated with each
 layer is *exactly* the same: this step should not be required in most
 cases, but it is worth knowing about. Of course, if the coordinate
 systems are *actually* different in each layer, the function
-`spTransform` will be needed to make them compatible. This procedure is
-discussed in section !!!. In this case, only the name was slightly
-different hence direct alteration of the CRS name via the function
-`proj4string`.
+`spTransform` will be needed to make them compatible. In this case, only
+the name was slightly different hence direct alteration of the CRS name
+via the function `proj4string`.
 
 The second line of code is where power of R's sp package becomes clear:
 all that was needed was to place another spatial object in the row index
@@ -679,7 +698,7 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in Figure 8 below. The code used below
+colours added, are presented in Figure 9 below. The code used below
 involves a number of steps that we have not yet covered. Copy these to
 create the map and they will be explained in Section 3 of the tutorial.
 
@@ -773,7 +792,9 @@ component is especially useful in the context of spatial data since it
 is conceptually the same as map layers in Geographical Information
 Systems (GIS).
 
-First load the libraries required for this section:
+First ensure that the necessary packages are installed and that R is in
+the correct working directory (see above). Then load the packages used
+in this section.
 
 ~~~~ {.r}
 library(rgdal)
@@ -781,16 +802,10 @@ library(ggplot2)
 library(gridExtra)
 ~~~~
 
-Set your working directory as before:
-
-~~~~ {.r}
-setwd("C:/Users/Uname/Desktop/sdvwR")
-~~~~
-
-For this section we are going to use a map of the world to demonstrate
-some of the cartographic principles as they are introduced. The world
-map used is available from the Natural Earth website. Because these are
-already saved in the data folder, we can proceed to load the data.
+We are going to use a map of the world to demonstrate some of the
+cartographic principles as they are introduced. The world map used is
+available from the Natural Earth website. Because these are already
+saved in the data folder, we can proceed to load the data.
 
 ~~~~ {.r}
 wrld <- readOGR("data/", "ne_110m_admin_0_countries")
@@ -999,7 +1014,7 @@ brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
 ~~~~
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png)
 
 There are many other ways to specify and alter the colours in ggplot2
 and these are outlined in the help documentation. There are also many

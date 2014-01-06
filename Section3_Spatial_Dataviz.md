@@ -39,7 +39,10 @@ This layering component is especially useful in the context of
 spatial data since it is conceptually the same as map layers in
 Geographical Information Systems (GIS).
 
-First load the libraries required for this section:
+First ensure that the necessary packages are installed and 
+that R is in the correct working directory (see above).
+Then load the packages used in this section.
+
 
 ```r
 library(rgdal)
@@ -48,15 +51,7 @@ library(gridExtra)
 ```
 
 
-Set your working directory as before:
-
-
-```r
-setwd("C:/Users/Uname/Desktop/sdvwR")
-```
-
-
-For this section we are going to use a map of the world to demonstrate 
+We are going to use a map of the world to demonstrate 
 some of the cartographic principles as they are introduced. 
 The world map used is available from the Natural Earth website. 
 Because these are already saved in the data folder, we can proceed to load the data. 
@@ -273,7 +268,7 @@ brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 
 There are many other ways to specify and alter the colours in ggplot2 and these are outlined in the help documentation. There are also many examples online.

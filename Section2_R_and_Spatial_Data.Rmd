@@ -6,6 +6,19 @@ R and Spatial Data
 R has a unique syntax that is worth learning in basic terms before 
 loading spatial data: to R spatial and non-spatial data are 
 treated in the same way, although they have different underlying data structures. 
+
+The first step is to ensure that you are in the correct working directory. 
+Use `setwd` to select the correct folder. Assuming the folder has been downloaded
+from GitHub and unpacked into the desktop on a Windows computer, you would type the
+following:
+
+```{r, eval=FALSE}
+setwd("C:/Users/Uname/Desktop/sdvwR-master")
+```
+
+In RStudio, it is recommended to work from *script files*. To open a new
+R script, click `File > New File` (see the 
+[RStudio website](http://www.rstudio.com/ide/docs/using/keyboard_shortcuts) for shortcuts.)
 Try typing and running (by pressing `ctl-Enter` in an RStudio script)
 the following calculations to see how R works and plot the result.
 
@@ -56,7 +69,6 @@ ride from Sheffield to Wakefield uploaded OpenStreetMap [3].
 
 ```{r, message=FALSE, results='hide', fig.keep='none'}
 install.packages("rgdal")
-# download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 ogrListLayers(dsn = "data/gps-trace.gpx")
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
@@ -66,7 +78,6 @@ points(shf2lds.p[seq(1, 3000, 100),])
 ```
 
 ```{r Leeds to Sheffield GPS data, message=FALSE, results='hide', echo=FALSE}
-download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")
 library(rgdal) # load the gdal package
 shf2lds <- readOGR(dsn = "data/gps-trace.gpx", layer = "tracks") # load track
 plot(shf2lds)

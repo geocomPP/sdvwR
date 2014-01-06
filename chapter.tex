@@ -222,9 +222,23 @@ to a zipfile that you can email to yourself or take on a memory stick.
 R has a unique syntax that is worth learning in basic terms before
 loading spatial data: to R spatial and non-spatial data are treated in
 the same way, although they have different underlying data structures.
-Try typing and running (by pressing \texttt{ctl-Enter} in an RStudio
-script) the following calculations to see how R works and plot the
-result.
+
+The first step is to ensure that you are in the correct working
+directory. Use \texttt{setwd} to select the correct folder. Assuming the
+folder has been downloaded from GitHub and unpacked into the desktop on
+a Windows computer, you would type the following:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"C:/Users/Uname/Desktop/sdvwR-master"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+In RStudio, it is recommended to work from \emph{script files}. To open
+a new R script, click \texttt{File \textgreater{} New File} (see the
+\href{http://www.rstudio.com/ide/docs/using/keyboard\_shortcuts}{RStudio
+website} for shortcuts.) Try typing and running (by pressing
+\texttt{ctl-Enter} in an RStudio script) the following calculations to
+see how R works and plot the result.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -266,12 +280,14 @@ data in R.
 \subsubsection{Loading spatial data in R}
 
 In most situations, the starting point of a spatial analysis project is
-to load in a datasets. These may originate from government agencies,
+to load in the datasets. These may originate from government agencies,
 remote sensing devices or `volunteered geographical information'
 (Goodchild 2007). R is able to import a very wide range of spatial data
 formats thanks to its interface with the Geospatial Data Abstraction
 Library (GDAL), which is enabled by the package \texttt{rgdal}. Below we
-will load data from two spatial data formats: GPS eXchange
+will install the rgdal package using the function
+\texttt{install.packages} (this can be used to install any packages) and
+then load data from two spatial data formats: GPS eXchange
 (\texttt{.gpx}) and ESRI's Shapefile.
 
 \texttt{readOGR} is in fact capable of loading dozens more file formats,
@@ -281,8 +297,14 @@ ride from Sheffield to Wakefield uploaded OpenStreetMap {[}3{]}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# download.file('http://www.openstreetmap.org/trace/1619756/data', destfile}
-\CommentTok{# = 'data/gps-trace.gpx')}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"rgdal"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+\begin{verbatim}
+## Error: trying to use CRAN without setting a mirror
+\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(rgdal)  }\CommentTok{# load the gdal package}
 \KeywordTok{ogrListLayers}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/gps-trace.gpx"}\NormalTok{)}
 \NormalTok{shf2lds <- }\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"data/gps-trace.gpx"}\NormalTok{, }\DataTypeTok{layer =} \StringTok{"tracks"}\NormalTok{)  }\CommentTok{# load track}
@@ -314,8 +336,8 @@ command tells us that various layers are available, including
 
 Finally, the basic \texttt{plot} function is used to visualize the newly
 imported objects, ensuring they make sense. In the second plot function
-(\texttt{points}), we add points for a subset of the object. To see how
-to add axes, enter \texttt{?axis}
+(\texttt{points}), we add points for a subset of the object. There will
+be no axes in the plot; to see how to add them, enter \texttt{?axis}
 
 Try discovering more about the function by typing \texttt{?readOGR}. The
 documentation explains that the \texttt{dsn =} argument is interpreted
@@ -376,7 +398,9 @@ function \texttt{object.size}:
 \end{verbatim}
 In fact, the objects have similar sizes: the GPS dataset is surprisingly
 large. To see why, we can find out how many \emph{vertices} (points
-connected by lines) are contained in each dataset:
+connected by lines) are contained in each dataset. To do this we use
+\texttt{fortify} from the ggplot2 package (use the same method used for
+rgdal, described above, to install it).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -411,15 +435,14 @@ row 2) use \texttt{nrow} to count the result.
 It is clear that the GPS data has almost 6 times the number of vertices
 compared to the London data, explaining its large size. Yet when
 plotted, the GPS data does not seem more detailed, implying that some of
-the vertices in the object are not needed for visualisation at the scale
-of the object's \emph{bounding box}.
+the vertices in the object are not needed for effective visualisation
+since the nodes of the line are imperceptible.
 
 \subsubsection{Simplifying geometries}
 
-In many cases the spatial data we have are too detailed for effective
-data visualisation. Simplifcation can help to make a graphic more
-readable and less cluttered. Within the `rgeos' package it is possible
-to use the \texttt{gSimplify} function to simplify spatial R objects:
+Simplifcation can help to make a graphic more readable and less
+cluttered. Within the `rgeos' package it is possible to use the
+\texttt{gSimplify} function to simplify spatial R objects:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -693,7 +716,7 @@ variables added, meaning the attribute join was successful.
 
 \subsection{Spatial joins}
 
-A spatial join, like attribute joins, is used to transfer information
+A spatial join, like an attribute join, is used to transfer information
 from one dataset to another. There is a clearly defined direction to
 spatial joins, with the \emph{target layer} receiving information from
 another spatial layer based on the proximity of elements from both
@@ -706,7 +729,7 @@ two as the third type is rarely used.
 One-to-one spatial joins are by far the easiest to understand and
 compute because they simply involve the transfer of attributes in one
 layer to another, based on location. A one-to-one join is depicted in
-figure 5 below, and can performed using the same technique as described
+Figure 6 below, and can performed using the same technique as described
 in the section on spatial aggregation.
 
 \begin{figure}[htbp]
@@ -753,9 +776,8 @@ sample of 500 of these over the previously loaded borough level
 administrative boundaries. The reason for plotting a sample of the
 points rather than all of them is that the boundary data becomes
 difficult to see if all of the points are plotted. It is also useful to
-see and practice sampling techniques in practice; try to plot only the
-first 500 points, rather than a random selection, and spot the
-difference.
+see and practice sampling techniques; try to plot only the first 500
+points, rather than a random selection, and spot the difference.
 
 The most obvious issue with the point data from the perspective of a
 spatial join with the borough data we have is that many of the points in
@@ -784,10 +806,9 @@ allowed this to happen: the first line ensured that the CRS associated
 with each layer is \emph{exactly} the same: this step should not be
 required in most cases, but it is worth knowing about. Of course, if the
 coordinate systems are \emph{actually} different in each layer, the
-function \texttt{spTransform} will be needed to make them compatible.
-This procedure is discussed in section !!!. In this case, only the name
-was slightly different hence direct alteration of the CRS name via the
-function \texttt{proj4string}.
+function \texttt{spTransform} will be needed to make them compatible. In
+this case, only the name was slightly different hence direct alteration
+of the CRS name via the function \texttt{proj4string}.
 
 The second line of code is where power of R's sp package becomes clear:
 all that was needed was to place another spatial object in the row index
@@ -832,7 +853,7 @@ perform a function on the output, in this case \texttt{length}, which
 simply means ``count'' in this context; and 3) creates a new spatial
 object equivalent to \texttt{lnd} but with updated attribute data to
 reflect the results of the spatial aggregation. The results, with a
-legend and colours added, are presented in Figure 8 below. The code used
+legend and colours added, are presented in Figure 9 below. The code used
 below involves a number of steps that we have not yet covered. Copy
 these to create the map and they will be explained in Section 3 of the
 tutorial.
@@ -935,7 +956,9 @@ component is especially useful in the context of spatial data since it
 is conceptually the same as map layers in Geographical Information
 Systems (GIS).
 
-First load the libraries required for this section:
+First ensure that the necessary packages are installed and that R is in
+the correct working directory (see above). Then load the packages used
+in this section.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -944,17 +967,10 @@ First load the libraries required for this section:
 \KeywordTok{library}\NormalTok{(gridExtra)}
 \end{Highlighting}
 \end{Shaded}
-Set your working directory as before:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"C:/Users/Uname/Desktop/sdvwR"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-For this section we are going to use a map of the world to demonstrate
-some of the cartographic principles as they are introduced. The world
-map used is available from the Natural Earth website. Because these are
-already saved in the data folder, we can proceed to load the data.
+We are going to use a map of the world to demonstrate some of the
+cartographic principles as they are introduced. The world map used is
+available from the Natural Earth website. Because these are already
+saved in the data folder, we can proceed to load the data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1197,8 +1213,8 @@ can also be done manually:
 \end{Shaded}
 \begin{figure}[htbp]
 \centering
-\includegraphics{figure/unnamed-chunk-6.png}
-\caption{unnamed-chunk-6}
+\includegraphics{figure/unnamed-chunk-5.png}
+\caption{unnamed-chunk-5}
 \end{figure}
 
 There are many other ways to specify and alter the colours in ggplot2

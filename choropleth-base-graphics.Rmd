@@ -1,0 +1,41 @@
+Choropleth maps using R's base graphics
+========================================================
+
+This example shows how to create a basic choropleth map in R
+as an add-on to a tutorial on R for spatial data visualisation:
+https://github.com/geocomPP/sdvwR
+
+In this tutorial we focus on ggplot2 for making attractive visualisations. 
+However, R's base graphics also allow for map creation and 
+choropleth maps. 
+
+As before, the first stage is to load the data.
+
+```{r}
+load("data/lndStC.RData")
+```
+
+There are many colour schemes available and they can be customised manually. 
+This can be time consuming, however, so it is recommended to use a colour package
+that can create colour schemes automatically. 
+Load the package and see what are available:
+
+```{r}
+library(RColorBrewer)
+brewer.pal.info
+```
+
+Now we create the breaks and plot the result:
+
+```{r Choropleth map of number of transport nodes in London boroughs}
+cols <- brewer.pal(4, "Greens")
+brks <- c(4, 12, 19, 29, 55)
+cut(lndStC$NUMBER, brks)
+gs <- cols[findInterval(lndStC$NUMBER, vec = brks)]
+# png(filename="figure/nStations.png", width = 600, height= 550) # add to save plot
+plot(lndStC, col = gs)
+legend("topleft", legend = levels(cut(lndStC$NUMBER, brks)), 
+       fill = cols, title="N. stations")
+# dev.off() # used to stop the png graphics driver
+```
+

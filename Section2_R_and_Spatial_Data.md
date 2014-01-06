@@ -375,6 +375,7 @@ proj4string(lnd)
 ```
 
 
+
 ```
 ## [1] "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy "
 ```
@@ -630,7 +631,9 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in Figure 9 below. The code used below involves a number of steps that we have not yet covered. Copy these to create the map and they will be explained in Section 3 of the tutorial.
+colours added, are presented in Figure 9 below. 
+The code used to create this plot is rather long; it can be 
+viewed online: http://rpubs.com/RobinLovelace/11738 . 
 
 
 
@@ -655,7 +658,7 @@ head(lnd.stations@data, n = 2)
 In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
 number of mice sightings reported by the public at that point (this is a
-fictional variable!!). To illustrate the power of the `aggregate`
+fictional variable!). To illustrate the power of the `aggregate`
 function, let us use it to find the average number of mice spotted in
 transport points in each London borough, and the standard deviation:
 

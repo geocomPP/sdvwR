@@ -698,9 +698,9 @@ perform a function on the output, in this case `length`, which simply
 means "count" in this context; and 3) creates a new spatial object
 equivalent to `lnd` but with updated attribute data to reflect the
 results of the spatial aggregation. The results, with a legend and
-colours added, are presented in Figure 9 below. The code used below
-involves a number of steps that we have not yet covered. Copy these to
-create the map and they will be explained in Section 3 of the tutorial.
+colours added, are presented in Figure 9 below. The code used to create
+this plot is rather long; it can be viewed online:
+http://rpubs.com/RobinLovelace/11738 .
 
 ![Number of stations in London boroughs](figure/nStations.png)
 
@@ -718,7 +718,7 @@ head(lnd.stations@data, n = 2)
 In this case we have three potentially interesting variables: "LEGEND",
 telling us what the point is, "NAME", and "MICE", which represents the
 number of mice sightings reported by the public at that point (this is a
-fictional variable!!). To illustrate the power of the `aggregate`
+fictional variable!). To illustrate the power of the `aggregate`
 function, let us use it to find the average number of mice spotted in
 transport points in each London borough, and the standard deviation:
 
@@ -823,20 +823,23 @@ plot(wrld)
 ![plot of chunk A Basic Map of the
 World](figure/A_Basic_Map_of_the_World.png)
 
-To see the first ten rows of attribute information assocuiated with each
-of the country boundaries type the following:
+Let's see a sample of the attribute data and remove the Falklands and
+French Southern and Antarctic Lands (to demonstrate the method - type
+`?regex` if interested how this works - and because these countries
+cause continent mis-assignment later on):
 
 ~~~~ {.r}
-head(wrld@data)[, 1:5]
+head(wrld@data)[1:3, 1:5]
 ~~~~
 
-    ##   scalerank      featurecla labelrank           sovereignt sov_a3
-    ## 0         1 Admin-0 country         3          Afghanistan    AFG
-    ## 1         1 Admin-0 country         3               Angola    AGO
-    ## 2         1 Admin-0 country         6              Albania    ALB
-    ## 3         1 Admin-0 country         4 United Arab Emirates    ARE
-    ## 4         1 Admin-0 country         2            Argentina    ARG
-    ## 5         1 Admin-0 country         6              Armenia    ARM
+    ##   scalerank      featurecla labelrank  sovereignt sov_a3
+    ## 0         1 Admin-0 country         3 Afghanistan    AFG
+    ## 1         1 Admin-0 country         3      Angola    AGO
+    ## 2         1 Admin-0 country         6     Albania    ALB
+
+~~~~ {.r}
+wrld <- wrld[!grepl("Falk|French Southern", wrld$name_long), ]
+~~~~
 
 You can see there are a lot of columns associated with this file.
 Although we will keep all of them, we are only really interested in the
@@ -922,7 +925,7 @@ command:
 ~~~~ {.r}
 # Produce a map of continents
 map.cont <- ggplot(wrld.pop.f, aes(long, lat, group = group, fill = continent)) + 
-    geom_polygon() + coord_equal() + labs(x = "Longitude", y = "Latitude", fill = "World Population") + 
+    geom_polygon() + coord_equal() + labs(x = "Longitude", y = "Latitude", fill = "World Continents") + 
     ggtitle("World Continents")
 
 # To see the default colours
@@ -988,10 +991,10 @@ print(brks)
 ~~~~
 
     ## style: quantile
-    ##        [-99,1790208)    [1790208,4579439)    [4579439,9035536) 
-    ##                   30                   29                   29 
-    ##   [9035536,16639804)  [16639804,40784057) [40784057,1.339e+09] 
-    ##                   30                   29                   30
+    ##        [-99,1990876)    [1990876,4615807)    [4615807,9059651) 
+    ##                   29                   29                   29 
+    ##   [9059651,16715999)  [16715999,40913584) [40913584,1.339e+09] 
+    ##                   29                   29                   30
 
 ~~~~ {.r}
 

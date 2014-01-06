@@ -66,7 +66,9 @@ Endnotes
     `RSiteSearch("spatial statistics")`. Experiment and see which you
     prefer!
     
-3. More information about this ride, and a
+3. The file was downloaded using the following command: 
+    "download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")".
+    More information about this ride, and a
     [video](http://www.youtube.com/watch?v=6a8QLiC4LV8&feature=share)
     from it, can be found on
     [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).

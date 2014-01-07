@@ -274,6 +274,11 @@ The same principles apply to all spatial classes including
 as well as associated `*DataFrame` classes. For more information on 
 this, see the `sp` documentation: `?Spatial`.
 
+To flatten a `Spatial*` object in R, so it becomes a simple
+data frame, the `fortify` function can be used (more on this later).
+For most spatial data handling tasks the `Spatial*` object classes are idea, 
+as illustrated below.
+
 Manipulating spatial data
 -------------------------
 

@@ -3,10 +3,10 @@ References
 ==========
 
 Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial
-statistical analysis using the language. Journal of Geographical
+statistical analysis using the R language. Journal of Geographical
 Systems, 2(3), 307–317.
 
-Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial
+Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2013). Applied spatial
 data: analysis with R. Springer.
 
 Burrough, P. A. & McDonnell, R. A. (1998). Principals of Geographic

@@ -114,21 +114,9 @@ sensible place on your computer (e.g. the Desktop). Explore the folder
 and try opening some of the files, especially those from the sub-folder
 entitled "data": these are the input datasets we'll be using.
 
-For the purpose of this practical we will be using the RStudio software
-installed on a server. This marks a real step forward in terms of the
-use of R "in the cloud" by enabling users to access the software from
-their web browser. This is the first time we have tried this so lets
-hope it goes smoothly!
-
-In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio (this is only
-accessible if you are part of the UCL network). Enter the log in details
-you have been given and you should see the RStudio interface. In the
-bottom right window you should see an "Upload" button. Click on this and
-upload the zipfile you have just downloaded from github. RStudio will
-automatically uncompress this and you should see the list of files and
-folders appear. At the end of today you can tick the boxes next to the
-files/ folders you want and then under the "More" menu export them to a
-zipfile that you can email to yourself or take on a memory stick.
+For the purpose of this practical we recommend the RStudio integrated
+development environment (IDE), which is specifically designed for
+enabling productivity using R.
 
 R and Spatial Data
 ==================
@@ -446,6 +434,11 @@ The same principles apply to all spatial classes including
 `Spatial* Points`, `Polygons` `Grids` and `Pixels` as well as associated
 `*DataFrame` classes. For more information on this, see the `sp`
 documentation: `?Spatial`.
+
+To flatten a `Spatial*` object in R, so it becomes a simple data frame,
+the `fortify` function can be used (more on this later). For most
+spatial data handling tasks the `Spatial*` object classes are idea, as
+illustrated below.
 
 Manipulating spatial data
 -------------------------
@@ -768,19 +761,19 @@ the features below – they should simply be seen as suggestions rather
 than firm principles.
 
 Effective map making is hard process – as Krygier and Wood (2011) put it
-"there is a lot to see, think about, and do"" (p6). It often comes at
-the end of a period of intense data analysis and perhaps when the
-priority is to get a paper finished or results published and can
-therefore be rushed as a result. The beauty of R (and other scripting
-languages) is the ability to save code and simply re-run it with
-different data. Colours, map adornments and other parameters can
-therefore be quickly applied, so it is well worth creating a template
-script that adheres to best practice.
+"there is a lot to see, think about, and do" (p6). It often comes at the
+end of a period of intense data analysis and perhaps when the priority
+is to get a paper finished or results published and can therefore be
+rushed as a result. The beauty of R (and other scripting languages) is
+the ability to save code and simply re-run it with different data.
+Colours, map adornments and other parameters can therefore be quickly
+applied, so it is well worth creating a template script that adheres to
+best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of our
 maps and spatial data visualisations because it has a number of these
-elements at its core. The "gg"" in its slightly odd name stands for
-"Grammar of Graphics"", which is a set of rules developed by Leland
+elements at its core. The "gg" in its slightly odd name stands for
+"Grammar of Graphics", which is a set of rules developed by Leland
 Wilkinson (2005) in a book of the same name. Grammar in the context of
 graphics works in much the same way as it does in language - it provides
 a structure. The structure is informed by both human perception and also
@@ -862,7 +855,7 @@ plot(wrld.rob)
 ![plot of chunk The Robinson
 Projection](figure/The_Robinson_Projection.png)
 
-`+proj=robin` refers to the Robinson prjection. You will have spotted
+`+proj=robin` refers to the Robinson projection. You will have spotted
 from the plot that the countries in the world map are much better
 proportioned.
 
@@ -875,7 +868,7 @@ wrld.rob.f <- fortify(wrld.rob, region = "sov_a3")
 ~~~~
 
     ## Loading required package: rgeos
-    ## rgeos version: 0.3-2, (SVN revision 413M)
+    ## rgeos version: 0.2-19, (SVN revision 394)
     ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
     ##  Polygon checking: TRUE
 
@@ -977,6 +970,12 @@ from the gridExtra package to display the maps side by side.
 
 ~~~~ {.r}
 library(classInt)
+~~~~
+
+    ## Loading required package: class
+    ## Loading required package: e1071
+
+~~~~ {.r}
 
 # Specify how many breaks you want - generally this should be fewer than 7.
 
@@ -1012,6 +1011,11 @@ can also be done manually:
 
 ~~~~ {.r}
 library()
+~~~~
+
+    ## Warning: library '/usr/lib/R/site-library' contains no packages
+
+~~~~ {.r}
 nbrks <- 4
 brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))
@@ -1524,10 +1528,10 @@ References
 ==========
 
 Bivand, R., & Gebhardt, A. (2000). Implementing functions for spatial
-statistical analysis using the language. Journal of Geographical
+statistical analysis using the R language. Journal of Geographical
 Systems, 2(3), 307–317.
 
-Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2008). Applied spatial
+Bivand, R. S., Pebesma, E. J., & Rubio, V. G. (2013). Applied spatial
 data: analysis with R. Springer.
 
 Burrough, P. A. & McDonnell, R. A. (1998). Principals of Geographic
@@ -1593,10 +1597,9 @@ Endnotes
     prefer!
 
 3.  The file was downloaded using the following command:
-
-`download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")`.
-
-    More information about this ride, and a
+    "download.file("http://www.openstreetmap.org/trace/1619756/data",
+    destfile = "data/gps-trace.gpx")". More information about this ride,
+    and a
     [video](http://www.youtube.com/watch?v=6a8QLiC4LV8&feature=share)
     from it, can be found on
     [robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
@@ -1633,5 +1636,5 @@ Endnotes
     data".
 
 ~~~~ {.r}
-source("chapter.R")  # convert chapter to tex
+source("md2pdf.R")  # convert chapter to tex
 ~~~~

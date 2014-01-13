@@ -103,5 +103,5 @@ Endnotes
     in the section on "Downloading addtional data". 
     
 ```{r}
-source("chapter.R") # convert chapter to tex
+source("md2pdf.R") # convert chapter to tex
 ```

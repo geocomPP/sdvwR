@@ -15,7 +15,7 @@ graphics contain all the features below – they should simply be seen
 as suggestions rather than firm principles.
 
 Effective map making is hard process – as Krygier and Wood (2011)
-put it "there is a lot to see, think about, and do"" (p6). 
+put it "there is a lot to see, think about, and do" (p6). 
 It often comes at the end of a period of intense data analysis
 and perhaps when the priority is to get a paper finished or results
 published and can therefore be rushed as a result. 
@@ -26,8 +26,8 @@ so it is well worth creating a template script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of 
 our maps and spatial data visualisations because it has a number 
-of these elements at its core. The "gg"" in its slightly odd name stands for
-"Grammar of Graphics"", which is a set of rules developed 
+of these elements at its core. The "gg" in its slightly odd name stands for
+"Grammar of Graphics", which is a set of rules developed 
 by Leland Wilkinson (2005) in a book of the same name. 
 Grammar in the context of graphics works in much the same way as it does in language - 
 it provides a structure. The structure is informed by both human perception 
@@ -119,7 +119,7 @@ plot(wrld.rob)
 ![plot of chunk The Robinson Projection](figure/The_Robinson_Projection.png) 
 
 
-`+proj=robin` refers to the Robinson prjection. You will have spotted
+`+proj=robin` refers to the Robinson projection. You will have spotted
 from the plot that the countries in the world map are much better proportioned.
 
 We now need to `fortify` this spatial data to convert it into a format
@@ -133,7 +133,7 @@ wrld.rob.f <- fortify(wrld.rob, region = "sov_a3")
 
 ```
 ## Loading required package: rgeos
-## rgeos version: 0.3-2, (SVN revision 413M)
+## rgeos version: 0.2-19, (SVN revision 394)
 ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 ```
@@ -229,6 +229,14 @@ In addition to altering the colour scale used to represent continuous data it ma
 
 ```r
 library(classInt)
+```
+
+```
+## Loading required package: class
+## Loading required package: e1071
+```
+
+```r
 
 # Specify how many breaks you want - generally this should be fewer than 7.
 
@@ -267,6 +275,13 @@ If you are not happy with the automatic methods of specifying breaks it can also
 
 ```r
 library()
+```
+
+```
+## Warning: library '/usr/lib/R/site-library' contains no packages
+```
+
+```r
 nbrks <- 4
 brks <- c(1e+08, 2.5e+08, 5e+07, 1e+09)
 map + scale_fill_gradientn(colours = brewer.pal(nbrks, "PuBu"), breaks = c(brks))

@@ -15,7 +15,7 @@ graphics contain all the features below – they should simply be seen
 as suggestions rather than firm principles.
 
 Effective map making is hard process – as Krygier and Wood (2011)
-put it "there is a lot to see, think about, and do"" (p6). 
+put it "there is a lot to see, think about, and do" (p6). 
 It often comes at the end of a period of intense data analysis
 and perhaps when the priority is to get a paper finished or results
 published and can therefore be rushed as a result. 
@@ -26,8 +26,8 @@ so it is well worth creating a template script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of 
 our maps and spatial data visualisations because it has a number 
-of these elements at its core. The "gg"" in its slightly odd name stands for
-"Grammar of Graphics"", which is a set of rules developed 
+of these elements at its core. The "gg" in its slightly odd name stands for
+"Grammar of Graphics", which is a set of rules developed 
 by Leland Wilkinson (2005) in a book of the same name. 
 Grammar in the context of graphics works in much the same way as it does in language - 
 it provides a structure. The structure is informed by both human perception 
@@ -54,7 +54,7 @@ some of the cartographic principles as they are introduced.
 The world map used is available from the Natural Earth website. 
 Because these are already saved in the data folder, we can proceed to load the data. 
 
-```{r A Basic Map of the World, fig.width = 8, fig.height= 5}
+```{r A Basic Map of the World, fig.width = 8, fig.height= 5, warning=FALSE}
 wrld <- readOGR("data/", "ne_110m_admin_0_countries")
 plot(wrld)
 ```
@@ -87,7 +87,7 @@ wrld.rob <- spTransform(wrld, CRS("+proj=robin"))
 plot(wrld.rob)
 ```
 
-`+proj=robin` refers to the Robinson prjection. You will have spotted
+`+proj=robin` refers to the Robinson projection. You will have spotted
 from the plot that the countries in the world map are much better proportioned.
 
 We now need to `fortify` this spatial data to convert it into a format

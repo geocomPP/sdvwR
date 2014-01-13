@@ -199,21 +199,9 @@ folder and try opening some of the files, especially those from the
 sub-folder entitled ``data'': these are the input datasets we'll be
 using.
 
-For the purpose of this practical we will be using the RStudio software
-installed on a server. This marks a real step forward in terms of the
-use of R ``in the cloud'' by enabling users to access the software from
-their web browser. This is the first time we have tried this so lets
-hope it goes smoothly!
-
-In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio (this is only
-accessible if you are part of the UCL network). Enter the log in details
-you have been given and you should see the RStudio interface. In the
-bottom right window you should see an ``Upload'' button. Click on this
-and upload the zipfile you have just downloaded from github. RStudio
-will automatically uncompress this and you should see the list of files
-and folders appear. At the end of today you can tick the boxes next to
-the files/ folders you want and then under the ``More'' menu export them
-to a zipfile that you can email to yourself or take on a memory stick.
+For the purpose of this practical we recommend the RStudio integrated
+development environment (IDE), which is specifically designed for
+enabling productivity using R.
 
 \section{R and Spatial Data}
 
@@ -573,6 +561,11 @@ The same principles apply to all spatial classes including
 more information on this, see the \texttt{sp} documentation:
 \texttt{?Spatial}.
 
+To flatten a \texttt{Spatial*} object in R, so it becomes a simple data
+frame, the \texttt{fortify} function can be used (more on this later).
+For most spatial data handling tasks the \texttt{Spatial*} object
+classes are idea, as illustrated below.
+
 \subsection{Manipulating spatial data}
 
 \subsubsection{Coordinate reference systems}
@@ -931,7 +924,7 @@ the features below -- they should simply be seen as suggestions rather
 than firm principles.
 
 Effective map making is hard process -- as Krygier and Wood (2011) put
-it ``there is a lot to see, think about, and do''" (p6). It often comes
+it ``there is a lot to see, think about, and do'' (p6). It often comes
 at the end of a period of intense data analysis and perhaps when the
 priority is to get a paper finished or results published and can
 therefore be rushed as a result. The beauty of R (and other scripting
@@ -942,8 +935,8 @@ script that adheres to best practice.
 
 We have selected ggplot2 as our package of choice for the bulk of our
 maps and spatial data visualisations because it has a number of these
-elements at its core. The ``gg''" in its slightly odd name stands for
-``Grammar of Graphics''", which is a set of rules developed by Leland
+elements at its core. The ``gg'' in its slightly odd name stands for
+``Grammar of Graphics'', which is a set of rules developed by Leland
 Wilkinson (2005) in a book of the same name. Grammar in the context of
 graphics works in much the same way as it does in language - it provides
 a structure. The structure is informed by both human perception and also
@@ -1039,7 +1032,7 @@ preservation. We therefore project it as follows.
 \caption{The Robinson Projection}
 \end{figure}
 
-\texttt{+proj=robin} refers to the Robinson prjection. You will have
+\texttt{+proj=robin} refers to the Robinson projection. You will have
 spotted from the plot that the countries in the world map are much
 better proportioned.
 
@@ -1054,7 +1047,7 @@ the attribute data that is lost in the fortify operation.
 \end{Shaded}
 \begin{verbatim}
 ## Loading required package: rgeos
-## rgeos version: 0.3-2, (SVN revision 413M)
+## rgeos version: 0.2-19, (SVN revision 394)
 ##  GEOS runtime version: 3.3.8-CAPI-1.7.8 
 ##  Polygon checking: TRUE
 \end{verbatim}
@@ -1171,6 +1164,14 @@ function from the gridExtra package to display the maps side by side.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(classInt)}
+\end{Highlighting}
+\end{Shaded}
+\begin{verbatim}
+## Loading required package: class
+## Loading required package: e1071
+\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
 
 \CommentTok{# Specify how many breaks you want - generally this should be fewer than 7.}
 
@@ -1209,6 +1210,13 @@ can also be done manually:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+\begin{verbatim}
+## Warning: library '/usr/lib/R/site-library' contains no packages
+\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{nbrks <- }\DecValTok{4}
 \NormalTok{brks <- }\KeywordTok{c}\NormalTok{(}\FloatTok{1e+08}\NormalTok{, }\FloatTok{2.5e+08}\NormalTok{, }\FloatTok{5e+07}\NormalTok{, }\FloatTok{1e+09}\NormalTok{)}
 \NormalTok{map + }\KeywordTok{scale_fill_gradientn}\NormalTok{(}\DataTypeTok{colours =} \KeywordTok{brewer.pal}\NormalTok{(nbrks, }\StringTok{"PuBu"}\NormalTok{), }\DataTypeTok{breaks =} \KeywordTok{c}\NormalTok{(brks))}
@@ -1789,10 +1797,10 @@ opportunities ahead to improve on what is presented here.
 \section{References}
 
 Bivand, R., \& Gebhardt, A. (2000). Implementing functions for spatial
-statistical analysis using the language. Journal of Geographical
+statistical analysis using the R language. Journal of Geographical
 Systems, 2(3), 307--317.
 
-Bivand, R. S., Pebesma, E. J., \& Rubio, V. G. (2008). Applied spatial
+Bivand, R. S., Pebesma, E. J., \& Rubio, V. G. (2013). Applied spatial
 data: analysis with R. Springer.
 
 Burrough, P. A. \& McDonnell, R. A. (1998). Principals of Geographic
@@ -1859,17 +1867,12 @@ Statistics. 19, 1: 3-28
   you prefer!
 \item
   The file was downloaded using the following command:
-\end{enumerate}
-\texttt{download.file("http://www.openstreetmap.org/trace/1619756/data", destfile = "data/gps-trace.gpx")}.
-
-\begin{verbatim}
-More information about this ride, and a
-[video](http://www.youtube.com/watch?v=6a8QLiC4LV8&feature=share)
-from it, can be found on
-[robinlovelace.net](http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html).
-\end{verbatim}
-\begin{enumerate}[1.]
-\setcounter{enumi}{3}
+  ``download.file(''http://www.openstreetmap.org/trace/1619756/data``,
+  destfile =''data/gps-trace.gpx``)''. More information about this ride,
+  and a
+  \href{http://www.youtube.com/watch?v=6a8QLiC4LV8\&feature=share}{video}
+  from it, can be found on
+  \href{http://robinlovelace.net/ecotech/2013/10/13/bicycle-trailer-move.html}{robinlovelace.net}.
 \item
   A complete list of drivers for importing and exporting spatial data
   can be displayed by typing \texttt{getGDALDriverNames()}.
@@ -1907,7 +1910,7 @@ from it, can be found on
 \end{enumerate}
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"chapter.R"}\NormalTok{)  }\CommentTok{# convert chapter to tex}
+\KeywordTok{source}\NormalTok{(}\StringTok{"md2pdf.R"}\NormalTok{)  }\CommentTok{# convert chapter to tex}
 \end{Highlighting}
 \end{Shaded}
 

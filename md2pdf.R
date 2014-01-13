@@ -1,29 +1,29 @@
 # Compiling the chapter
-# The following can be used to compile the chapter into a single document:
+# This code compiles the .md files into a single document:
 
-system("pandoc -f markdown -t markdown S*.md > chapter.md")
-mess <- paste('pandoc -f markdown -t latex -s -o', "chapter.tex",
-              "chapter.md")
+system("pandoc -f markdown -t markdown S*.md > sdv-tutorial.md")
+mess <- paste('pandoc -f markdown -t latex -s -o', "sdv-tutorial.tex",
+              "sdv-tutorial.md")
 system(mess) # create latex file
 
-mess <- paste("sed -i -e 's/plot of.chunk.//g' chapter.tex")
+mess <- paste("sed -i -e 's/plot of.chunk.//g' sdv-tutorial.tex")
 system(mess) # replace "plot of chunk " text with nowt
 
-mess <- paste("sed -i -e 's/width=\\\\maxwidth/width=10cm/g' chapter.tex")
+mess <- paste("sed -i -e 's/width=\\\\maxwidth/width=10cm/g' sdv-tutorial.tex")
 system(mess) # reduce plot size
 
-# mess <- paste("sed -i -e 's/\\\\section{References}/\\\\newpage \\\\section{References}/g' chapter.tex")
+# mess <- paste("sed -i -e 's/\\\\section{References}/\\\\newpage \\\\section{References}/g' sdv-tutorial.tex")
 # system(mess) # Put refs on new page
 
-mess <- "sed -i -e '71i\\\\\\maketitle' chapter.tex"
+mess <- "sed -i -e '71i\\\\\\maketitle' sdv-tutorial.tex"
 system(mess) # make title, after \begin{document}
 
-mess <- "sed -i -e '68i\\\\\\usepackage[margin=1.8cm]{geometry}' chapter.tex"
+mess <- "sed -i -e '68i\\\\\\usepackage[margin=1.8cm]{geometry}' sdv-tutorial.tex"
 system(mess) # shrink margins
 
 idx <- 69
 # open the file and read in all the lines
-conn <- file("chapter.tex")
+conn <- file("sdv-tutorial.tex")
 text <- readLines(conn)
 block <- "\\author{
 Cheshire, James\\\\

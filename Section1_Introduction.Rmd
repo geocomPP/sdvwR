@@ -111,20 +111,6 @@ Click on the "Download ZIP" button on the right, and unpack the folder to a sens
 on your computer (e.g. the Desktop). Explore the folder and try opening some of the files, 
 especially those from the sub-folder entitled "data": these are the input datasets we'll be using.
 
-For the purpose of this practical we will be using the RStudio software installed on a server. This marks a real step forward in terms of the use of R "in the cloud" by enabling users to access the software from their web browser. This is the first time we have tried this so lets hope it goes smoothly!
-
-In Firefox go to http://marlin.casa.ucl.ac.uk/rstudio 
-(this is only accessible if you are part of the UCL network). 
-Enter the log in details you have been given and you should 
-see the RStudio interface. In the bottom right window you 
-should see an "Upload" button. Click on this and upload the 
-zipfile you have just downloaded from github. RStudio will 
-automatically uncompress this and you should see the list of 
-files and folders appear. At the end of today you can tick 
-the boxes next to the files/ folders you want and then under 
-the "More" menu export them to a zipfile that you can email 
-to yourself or take on a memory stick.
-
-
-
+For the purpose of this practical we recommend the RStudio integrated development 
+environment (IDE), which is specifically designed for enabling productivity using R.
 

@@ -1,0 +1,83 @@
+Harmongraphs
+========================================================
+
+```{r, echo=FALSE}
+library(scales)
+htheme <- theme_classic() + theme(
+        axis.line = element_line(size = 3, colour = "white", linetype = "dotted")) 
+notheme <- htheme + theme(axis.text = element_blank(),
+                          axis.ticks = element_blank(),
+                          axis.title = element_blank())
+```
+
+
+Harmonographs are made when two or more
+pendulums are joined together. The finely 
+spaced lines results from the slowdown in the pendulum's 
+swing, such that each successive curve is drawn slightly
+closer to the centre. 
+
+The basic equation of a pendulum swing over time (t)
+is:
+
+$$x = A sin(tf+p)e^{-dt}$$
+
+where *x* is the axis of motion, $A$ is the size of the initial swing, $f$
+is the frequency of swing and $p$ is the phase, representing when the swing starts.
+$d$ controls the rate of decay in the exponential decay ($e^{-dt}$) bit.
+The movement of a pendulum is simply variations on the above equation. 
+In R code, this can be described as follows:
+
+```{r}
+# set parameters
+A = 1
+f = 5
+p = 0
+d = 0.4
+t = seq(from = 0, to = 10, by = 0.01)
+
+x = A * sin(t * f + p) * exp(-d * t)
+
+qplot(x = t, y = x, geom="line") + htheme
+```
+
+When another axis is defined, you can plot against x and y for 
+the duration of the harmonograph's movement:
+
+```{r}
+t = seq(from = 0, to = 30, by = 0.01); 
+x = A * sin(t * f + p) * exp(-d * t)
+x2 = 2 * A * sin(t * 10 + p) * exp(-0.2 * t)
+
+qplot(x, x2, geom="path") + notheme
+
+qplot(x, x2, geom="path", size = I(t)) + geom_path(linejoin="mitre") + notheme
+```
+
+More complex harmonographs use two or more interconnected pendulums.
+
+```{r}
+x = A * sin(t * f + p) * exp(-0.1 * t) + 
+  2 * A * sin(t * 10 + p) * exp(-0.2 * t)
+y = 0.5 * A * sin(t * 20 + p) * exp(-0.1 * t) + 
+  2 * A * sin(t * 10 + 1) * exp(-0.2 * t)
+qplot(x, y, geom="path") + notheme
+```
+
+```{r}
+capt <-   paste(
+'The digital snail:
+x = A * sin(t * f + p) * exp(-0.1 * t) + 
+2 * A * sin(t * 10 + p) * exp(-0.2 * t);
+y = 0.5 * A * sin(t * 20 + p) * exp(-0.1 * t) + 
+2 * A * sin(t * 10 + 1) * exp(-0.2 * t)
+qplot(x, y, geom="path") + notheme
+Made with free software ggplot2. 
+Happy Christmas!')
+
+qplot(x, y, geom="path") + notheme + geom_text(aes(x = -1.2, y = 1.6, label =capt), size = 4, ) + theme(panel.border = element_rect(colour = "black", fill=NA))
+
+ggsave("snail.pdf")
+```
+
+

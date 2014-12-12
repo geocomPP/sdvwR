@@ -214,7 +214,8 @@ This example is rather contrived because even the larger object
 memory available to modern computers. However, it underlines a wider point:
 for visualizing *small scale* maps, spatial data *geometries*
 can often be simplified to reduce processing time and
-use of memory.
+use of memory. This information is also provided on  an 
+[on-line vignette](http://rpubs.com/RobinLovelace/11962).
 
 ### Saving and exporting spatial objects
 
